@@ -1,0 +1,316 @@
+Build a complete **React Native mobile app using Expo** called **PupSense – Dog Health Assistant** for iOS and Android.
+
+Use **TypeScript** and **React Navigation**. I should be able to run it by doing `npm install` and `npx expo start`.
+
+---
+
+## Tech stack & project setup
+
+- Use **Expo** (managed workflow) with TypeScript.
+- Use **React Navigation** for navigation with:
+  - A root **stack navigator** for onboarding/auth vs app.
+  - A **bottom tab navigator** inside the app for Home, Poop, Behavior, Profile.
+- File structure:
+
+  - `App.tsx`
+  - `src/`
+    - `navigation/`
+      - `RootNavigator.tsx`
+      - `AppTabs.tsx`
+    - `screens/`
+      - `SplashScreen.tsx`
+      - `OnboardingScreen.tsx`
+      - `HomeScreen.tsx`
+      - `PoopCheckScreen.tsx`
+      - `FoodScannerScreen.tsx`
+      - `BehaviorCheckScreen.tsx`
+      - `ProfileScreen.tsx`
+      - `HistoryScreen.tsx`
+    - `components/`
+      - `Header.tsx`
+      - `FeatureCard.tsx`
+      - `RiskBadge.tsx`
+      - `ScoreBadge.tsx`
+      - `ResultCard.tsx`
+      - `PrimaryButton.tsx`
+      - `TextInputField.tsx`
+    - `theme/`
+      - `colors.ts`
+      - `spacing.ts`
+      - `typography.ts`
+
+- Include a basic `package.json` with all necessary dependencies (expo, react-native, react-navigation, etc).
+
+---
+
+## Design system (important – follow this)
+
+### Colors
+
+Define these in `src/theme/colors.ts` and use them consistently:
+
+- `primaryBlue: "#4A7BFF"`
+- `primaryGradientStart: "#4A7BFF"`
+- `primaryGradientEnd: "#6ED2FF"`
+- `softGreen: "#6ED29B"`
+- `warningYellow: "#FFD95F"`
+- `urgentRed: "#FF6B6B"`
+- `background: "#F6F6F6"`
+- `cardBackground: "#FFFFFF"`
+- `textDark: "#1E1E1E"`
+- `textMuted: "#6E6E6E"`
+- `borderLight: "#E5E5E5"`
+
+For risk levels:
+
+- Low: `softGreen`
+- Medium: `warningYellow`
+- High: `urgentRed`
+
+### Typography
+
+Define typography tokens in `src/theme/typography.ts`:
+
+- Use React Native default fonts but simulate:
+
+  - `headingL`: fontSize 28, fontWeight "700"
+  - `headingM`: fontSize 22, fontWeight "600"
+  - `headingS`: fontSize 18, fontWeight "600"
+  - `bodyM`: fontSize 16, fontWeight "400"
+  - `bodyS`: fontSize 14, fontWeight "400"
+  - `label`: fontSize 13, fontWeight "500"
+
+Use these via a shared `Text` component or style objects.
+
+### Layout & spacing
+
+Create `spacing.ts`:
+
+- `xs: 4`
+- `sm: 8`
+- `md: 16`
+- `lg: 24`
+- `xl: 32`
+
+All screens should:
+
+- Use `SafeAreaView`.
+- Use padding `md` or `lg`.
+- Use card-like containers with `borderRadius: 16`–`20`, `backgroundColor: cardBackground`, and a soft shadow (e.g., `elevation` or `shadowColor`, `shadowOpacity`, etc).
+
+---
+
+## App concept & screens
+
+### 1. SplashScreen
+
+- Full-screen gradient background from `primaryGradientStart` to `primaryGradientEnd`.
+- Center logo circle (just a simple View with white background and paw emoji "🐾").
+- Text at the bottom: “Powered by AI Vision” (bodyS, white, 0.8 opacity).
+- After 1–2 seconds, automatically navigate to `OnboardingScreen`.
+
+### 2. OnboardingScreen
+
+- Single screen with:
+  - Illustration placeholder card (rounded rect, light background).
+  - Title: “Understand your dog in seconds” (headingL).
+  - Subtitle: “AI insights to help you act with confidence.” (bodyM muted).
+  - Primary button: “Get Started”.
+- Tapping “Get Started” navigates to `HomeScreen`.
+
+### 3. HomeScreen
+
+- Header at top:
+  - Left: circular avatar placeholder for dog.
+  - Right: bell icon placeholder (can use a simple emoji or vector icon).
+- Greeting section:
+  - “Hi Juan 👋” (headingM)
+  - “How’s your pup today?” (bodyS muted)
+- Three big **FeatureCard** components in a responsive layout (2 cards on top row, 1 card below):
+  - Card 1 – Poop Check
+    - Icon: 💩
+    - Title: “Poop Check”
+    - Subtitle: “Analyze stool instantly”
+    - On press → navigate to `PoopCheckScreen`.
+  - Card 2 – Food Scanner
+    - Icon: 🍖
+    - Title: “Food Scanner”
+    - Subtitle: “Is this safe for your dog?”
+    - On press → navigate to `FoodScannerScreen`.
+  - Card 3 – Behavior Check
+    - Icon: 🐕
+    - Title: “Behavior Check”
+    - Subtitle: “Is your dog stressed?”
+    - On press → navigate to `BehaviorCheckScreen`.
+- Bottom tab bar (via React Navigation):
+  - Tabs: Home, Poop, Behavior, Profile.
+  - Tab icons can be emojis for now.
+
+### 4. PoopCheckScreen
+
+Purpose: Text-based triage v1 (no images yet).
+
+UI:
+
+- Header: “Poop Check”.
+- Short description: “Describe your dog’s stool to get triage advice.”
+- Multi-line text input (`TextInputField`) with placeholder like:  
+  “Example: soft, light brown, some mucus, no visible blood, started this morning.”
+- Primary button: “Analyze Poop”.
+- On press, for now **simulate AI response** with static dummy data in state (no real API yet).
+- Show a result section below using `ResultCard`:
+  - Risk badge using `RiskBadge` component with color (green/yellow/red).
+  - Summary text.
+  - Bullet-style tips.
+
+`RiskBadge` props example:
+
+- `level: "Low" | "Medium" | "High"`
+
+### 5. FoodScannerScreen
+
+UI:
+
+- Title: “Food Scanner”.
+- Description: “Paste an ingredient list or description of the food.”
+- Multiline text input.
+- Button: “Analyze Food”.
+- For now, simulate an AI response with dummy data:
+  - `score: number`
+  - `summary: string`
+  - `good: string[]`
+  - `bad: string[]`
+  - `toxins: string[]`
+- Use `ScoreBadge` to show a circular score badge with color:
+  - 0–50: urgentRed
+  - 51–75: warningYellow
+  - 76–100: softGreen
+- Display:
+  - Positives list.
+  - Concerns list.
+  - If toxins present, show a red warning card.
+
+### 6. BehaviorCheckScreen
+
+UI:
+
+- Title: “Behavior Check”.
+- Description: “Describe your dog’s body language or recent behavior.”
+- Multiline text input.
+- Button: “Analyze Behavior”.
+- For now, simulate AI response with dummy data:
+  - `state: "Relaxed" | "Anxious" | "Overstimulated" | "Defensive" | "Possibly in Pain"`
+  - `explanation: string`
+  - `tips: string[]`
+- Show:
+  - Colored emotional state pill (e.g., anxious → orange / warningYellow).
+  - Explanation.
+  - Tips bullet list.
+
+### 7. ProfileScreen
+
+UI:
+
+- Dog avatar, dog details (name, age, breed) as static text for now.
+- Buttons / rows:
+  - View History (navigate to `HistoryScreen`).
+  - App Info / Disclaimer.
+- Disclaimer text:  
+  “PupSense does not replace a veterinarian. Always consult a licensed vet if you’re unsure.”
+
+### 8. HistoryScreen
+
+- Simple list of previous results using static dummy data:
+  - Each item: type (Poop/Food/Behavior), date string, and short summary.
+- Use a flat list with cards.
+
+---
+
+## Components details
+
+### `FeatureCard`
+
+Props:
+
+- `title: string`
+- `subtitle: string`
+- `icon: string` (emoji)
+- `onPress: () => void`
+
+Style:
+
+- `backgroundColor: cardBackground`
+- `borderRadius: 20`
+- `padding: md`
+- `margin: sm`
+- Soft shadow
+- Icon large at top, title under it, subtitle last.
+
+### `PrimaryButton`
+
+- Full-width button.
+- Rounded corners (16).
+- `backgroundColor: primaryBlue`
+- Centered white label.
+- Optional `variant="secondary"` for outlined button later.
+
+### `TextInputField`
+
+- Label above.
+- Rounded corners.
+- `borderColor: borderLight`, `borderWidth: 1`.
+- Padding inside.
+- Supports `multiline`.
+
+---
+
+## Navigation specifics
+
+- `App.tsx` should wrap navigation in `NavigationContainer`.
+- `RootNavigator`:
+  - Stack:
+    - SplashScreen
+    - OnboardingScreen
+    - AppTabs (bottom tab navigator)
+- `AppTabs`:
+  - Tabs:
+    - Home
+    - PoopCheck
+    - BehaviorCheck
+    - Profile
+
+---
+
+## Placeholder logic (no real backend yet)
+
+Do NOT integrate real AI or backend yet. Instead:
+
+- When user taps “Analyze Poop”, “Analyze Food”, or “Analyze Behavior”:
+  - Use a small `setTimeout` to simulate loading (e.g., 1 second).
+  - Then set dummy result data in React state and render it.
+
+Add comments in each screen where AI integration would go later, like:
+
+```ts
+// TODO: Replace this dummy data with real API call to AI backend.
+What I expect from you
+Generate all necessary files with TypeScript.
+
+Include realistic dummy data and clean UI with the design system above.
+
+Make sure the app runs with npm install and npx expo start.
+
+Add comments explaining:
+
+Where to plug in AI calls later.
+
+Where to tweak colors and typography.
+
+Use clean, readable code, with proper component extraction and no inline giant styles.
+
+Now generate the full project.
+
+yaml
+Copy code
+
+---
