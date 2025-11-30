@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Image, TextInput } from "react-native";
+import { StyleSheet, View, Image, TextInput, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Feather } from "@expo/vector-icons";
 import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
-import { ScreenScrollView } from "@/components/ScreenScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
@@ -78,7 +77,10 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
       ]}
     >
       {step === "intro" && (
-        <ScreenScrollView>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+        >
           <View style={styles.content}>
             <View
               style={[
@@ -122,7 +124,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           <View style={styles.buttonContainer}>
             <Button onPress={handleIntroNext}>Get Started</Button>
           </View>
-        </ScreenScrollView>
+        </ScrollView>
       )}
 
       {step === "registration" && (
@@ -276,6 +278,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: Spacing.lg,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "space-between",
+    paddingVertical: Spacing.lg,
   },
   content: {
     flex: 1,
