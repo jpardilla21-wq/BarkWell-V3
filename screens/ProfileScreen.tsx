@@ -1,13 +1,11 @@
-import { useState } from "react";
-import { StyleSheet, View, TextInput } from "react-native";
+import React from "react";
+import { StyleSheet, View, Pressable } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
-import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
+import { ScreenScrollView } from "@/components/ScreenScrollView";
 import { ThemedText } from "@/components/ThemedText";
-import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, Typography } from "@/constants/theme";
-import Spacer from "@/components/Spacer";
+import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 import type { ProfileStackParamList } from "@/navigation/ProfileStackNavigator";
 
 type ProfileScreenProps = {
@@ -15,180 +13,137 @@ type ProfileScreenProps = {
 };
 
 export default function ProfileScreen({ navigation }: ProfileScreenProps) {
-  const { theme, isDark } = useTheme();
-
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = () => {
-    console.log("Form submitted:", { name, email, password });
-  };
-
-  const inputStyle = [
-    styles.input,
-    {
-      backgroundColor: theme.backgroundDefault,
-      color: theme.text,
-    },
-  ];
+  const { theme } = useTheme();
 
   return (
-    <ScreenKeyboardAwareScrollView>
-      <View style={styles.section}>
-        <ThemedText type="h1">Heading 1</ThemedText>
-        <ThemedText type="small" style={styles.meta}>
-          32px • Bold
+    <ScreenScrollView>
+      <View style={styles.profileSection}>
+        <View
+          style={[
+            styles.avatar,
+            { backgroundColor: theme.backgroundDefault },
+          ]}
+        >
+          <Feather name="github" size={48} color={Colors.light.primary} />
+        </View>
+        <ThemedText type="h2" style={styles.dogName}>
+          Max
+        </ThemedText>
+        <ThemedText type="body" style={{ color: theme.textMuted }}>
+          3 years old • Golden Retriever
         </ThemedText>
       </View>
 
-      <View style={styles.section}>
-        <ThemedText type="h2">Heading 2</ThemedText>
-        <ThemedText type="small" style={styles.meta}>
-          28px • Bold
-        </ThemedText>
+      <View style={styles.menuSection}>
+        <Pressable
+          onPress={() => navigation.navigate("History")}
+          style={({ pressed }) => [
+            styles.menuItem,
+            { backgroundColor: theme.backgroundDefault, opacity: pressed ? 0.7 : 1 },
+          ]}
+        >
+          <View style={styles.menuItemLeft}>
+            <View
+              style={[
+                styles.menuIcon,
+                { backgroundColor: Colors.light.primary + "20" },
+              ]}
+            >
+              <Feather name="clock" size={20} color={Colors.light.primary} />
+            </View>
+            <ThemedText type="body">View History</ThemedText>
+          </View>
+          <Feather name="chevron-right" size={20} color={theme.textMuted} />
+        </Pressable>
+
+        <Pressable
+          style={({ pressed }) => [
+            styles.menuItem,
+            { backgroundColor: theme.backgroundDefault, opacity: pressed ? 0.7 : 1 },
+          ]}
+        >
+          <View style={styles.menuItemLeft}>
+            <View
+              style={[
+                styles.menuIcon,
+                { backgroundColor: Colors.light.softGreen + "20" },
+              ]}
+            >
+              <Feather name="info" size={20} color={Colors.light.softGreen} />
+            </View>
+            <ThemedText type="body">App Info</ThemedText>
+          </View>
+          <Feather name="chevron-right" size={20} color={theme.textMuted} />
+        </Pressable>
       </View>
 
-      <View style={styles.section}>
-        <ThemedText type="h3">Heading 3</ThemedText>
-        <ThemedText type="small" style={styles.meta}>
-          24px • Semi-Bold
-        </ThemedText>
-      </View>
-
-      <View style={styles.section}>
-        <ThemedText type="h4">Heading 4</ThemedText>
-        <ThemedText type="small" style={styles.meta}>
-          20px • Semi-Bold
-        </ThemedText>
-      </View>
-
-      <View style={styles.section}>
-        <ThemedText type="body">
-          Body text - This is the default text style for paragraphs and general
-          content.
-        </ThemedText>
-        <ThemedText type="small" style={styles.meta}>
-          16px • Regular
-        </ThemedText>
-      </View>
-
-      <View style={styles.section}>
-        <ThemedText type="small">
-          Small text - Used for captions, labels, and secondary information.
-        </ThemedText>
-        <ThemedText type="small" style={styles.meta}>
-          14px • Regular
-        </ThemedText>
-      </View>
-
-      <View style={styles.section}>
-        <ThemedText type="link">Link text - Interactive elements</ThemedText>
-        <ThemedText type="small" style={styles.meta}>
-          16px • Regular • Colored
-        </ThemedText>
-      </View>
-
-      <Spacer height={Spacing["4xl"]} />
-
-      <View style={styles.fieldContainer}>
-        <ThemedText type="small" style={styles.label}>
-          Name
-        </ThemedText>
-        <TextInput
-          style={inputStyle}
-          value={name}
-          onChangeText={setName}
-          placeholder="Enter your name"
-          placeholderTextColor={isDark ? "#9BA1A6" : "#687076"}
-          autoCapitalize="words"
-          returnKeyType="next"
-        />
-      </View>
-
-      <Spacer height={Spacing.lg} />
-
-      <View style={styles.fieldContainer}>
-        <ThemedText type="small" style={styles.label}>
-          Email
-        </ThemedText>
-        <TextInput
-          style={inputStyle}
-          value={email}
-          onChangeText={setEmail}
-          placeholder="your.email@example.com"
-          placeholderTextColor={isDark ? "#9BA1A6" : "#687076"}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          returnKeyType="next"
-        />
-      </View>
-
-      <Spacer height={Spacing.lg} />
-
-      <View style={styles.fieldContainer}>
-        <ThemedText type="small" style={styles.label}>
-          Password
-        </ThemedText>
-        <TextInput
-          style={inputStyle}
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Enter a password"
-          placeholderTextColor={isDark ? "#9BA1A6" : "#687076"}
-          secureTextEntry
-          autoCapitalize="none"
-          returnKeyType="next"
-        />
-      </View>
-
-      <Spacer height={Spacing.lg} />
-
-      <Button onPress={handleSubmit}>Submit Form</Button>
-
-      <Spacer height={Spacing["2xl"]} />
-
-      <ThemedText type="h3" style={styles.sectionTitle}>
-        Testing
-      </ThemedText>
-      <Spacer height={Spacing.md} />
-      <Button
-        onPress={() => navigation.navigate("Crash")}
-        style={styles.crashButton}
+      <View
+        style={[
+          styles.disclaimerCard,
+          { backgroundColor: theme.backgroundDefault },
+        ]}
       >
-        Crash App
-      </Button>
-    </ScreenKeyboardAwareScrollView>
+        <Feather
+          name="alert-circle"
+          size={20}
+          color={theme.textMuted}
+          style={styles.disclaimerIcon}
+        />
+        <ThemedText type="small" style={{ color: theme.textMuted }}>
+          PupSense does not replace a veterinarian. Always consult a licensed
+          vet if you're unsure.
+        </ThemedText>
+      </View>
+    </ScreenScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  section: {
-    marginBottom: Spacing["3xl"],
+  profileSection: {
+    alignItems: "center",
+    marginBottom: Spacing.xl,
   },
-  meta: {
-    opacity: 0.5,
-    marginTop: Spacing.sm,
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: Spacing.md,
   },
-  fieldContainer: {
-    width: "100%",
+  dogName: {
+    marginBottom: Spacing.xs,
   },
-  label: {
-    marginBottom: Spacing.sm,
-    fontWeight: "600",
-    opacity: 0.8,
+  menuSection: {
+    gap: Spacing.sm,
+    marginBottom: Spacing.xl,
   },
-  input: {
-    height: Spacing.inputHeight,
-    borderWidth: 0,
+  menuItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: Spacing.md,
     borderRadius: BorderRadius.md,
-    paddingHorizontal: Spacing.lg,
-    fontSize: Typography.body.fontSize,
   },
-  sectionTitle: {
-    marginTop: Spacing.xl,
+  menuItemLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.md,
   },
-  crashButton: {
-    backgroundColor: "#FF3B30",
+  menuIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: BorderRadius.sm,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  disclaimerCard: {
+    flexDirection: "row",
+    padding: Spacing.md,
+    borderRadius: BorderRadius.md,
+    gap: Spacing.sm,
+  },
+  disclaimerIcon: {
+    marginTop: 2,
   },
 });

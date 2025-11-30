@@ -1,43 +1,56 @@
 import { Platform } from "react-native";
 
-const tintColorLight = "#007AFF";
-const tintColorDark = "#0A84FF";
-
 export const Colors = {
   light: {
-    text: "#11181C",
+    text: "#1E1E1E",
+    textMuted: "#6E6E6E",
     buttonText: "#FFFFFF",
-    tabIconDefault: "#687076",
-    tabIconSelected: tintColorLight,
-    link: "#007AFF",
-    backgroundRoot: "#FFFFFF", // Elevation 0
-    backgroundDefault: "#F2F2F2", // Elevation 1
-    backgroundSecondary: "#E6E6E6", // Elevation 2
-    backgroundTertiary: "#D9D9D9", // Elevation 3
+    tabIconDefault: "#6E6E6E",
+    tabIconSelected: "#4A7BFF",
+    link: "#4A7BFF",
+    backgroundRoot: "#F6F6F6",
+    backgroundDefault: "#FFFFFF",
+    backgroundSecondary: "#F0F0F0",
+    backgroundTertiary: "#E5E5E5",
+    primary: "#4A7BFF",
+    primaryGradientStart: "#4A7BFF",
+    primaryGradientEnd: "#6ED2FF",
+    softGreen: "#6ED29B",
+    warningYellow: "#FFD95F",
+    urgentRed: "#FF6B6B",
+    cardBackground: "#FFFFFF",
+    borderLight: "#E5E5E5",
   },
   dark: {
     text: "#ECEDEE",
+    textMuted: "#9BA1A6",
     buttonText: "#FFFFFF",
     tabIconDefault: "#9BA1A6",
-    tabIconSelected: tintColorDark,
-    link: "#0A84FF",
-    backgroundRoot: "#1F2123", // Elevation 0
-    backgroundDefault: "#2A2C2E", // Elevation 1
-    backgroundSecondary: "#353739", // Elevation 2
-    backgroundTertiary: "#404244", // Elevation 3
+    tabIconSelected: "#6ED2FF",
+    link: "#6ED2FF",
+    backgroundRoot: "#1A1A1A",
+    backgroundDefault: "#2A2A2A",
+    backgroundSecondary: "#353535",
+    backgroundTertiary: "#404040",
+    primary: "#4A7BFF",
+    primaryGradientStart: "#4A7BFF",
+    primaryGradientEnd: "#6ED2FF",
+    softGreen: "#6ED29B",
+    warningYellow: "#FFD95F",
+    urgentRed: "#FF6B6B",
+    cardBackground: "#2A2A2A",
+    borderLight: "#404040",
   },
 };
 
 export const Spacing = {
   xs: 4,
   sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 20,
-  "2xl": 24,
-  "3xl": 32,
-  "4xl": 40,
-  "5xl": 48,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  "2xl": 40,
+  "3xl": 48,
   inputHeight: 48,
   buttonHeight: 52,
 };
@@ -45,61 +58,73 @@ export const Spacing = {
 export const BorderRadius = {
   xs: 8,
   sm: 12,
-  md: 18,
-  lg: 24,
-  xl: 30,
-  "2xl": 40,
-  "3xl": 50,
+  md: 16,
+  lg: 20,
+  xl: 24,
+  "2xl": 32,
   full: 9999,
 };
 
 export const Typography = {
+  headingL: {
+    fontSize: 28,
+    fontWeight: "700" as const,
+  },
+  headingM: {
+    fontSize: 22,
+    fontWeight: "600" as const,
+  },
+  headingS: {
+    fontSize: 18,
+    fontWeight: "600" as const,
+  },
+  bodyM: {
+    fontSize: 16,
+    fontWeight: "400" as const,
+  },
+  bodyS: {
+    fontSize: 14,
+    fontWeight: "400" as const,
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: "500" as const,
+  },
   h1: {
-    fontSize: 32,
-    lineHeight: 40,
+    fontSize: 28,
     fontWeight: "700" as const,
   },
   h2: {
-    fontSize: 28,
-    lineHeight: 36,
-    fontWeight: "700" as const,
+    fontSize: 22,
+    fontWeight: "600" as const,
   },
   h3: {
-    fontSize: 24,
-    lineHeight: 32,
+    fontSize: 18,
     fontWeight: "600" as const,
   },
   h4: {
-    fontSize: 20,
-    lineHeight: 28,
+    fontSize: 16,
     fontWeight: "600" as const,
   },
   body: {
     fontSize: 16,
-    lineHeight: 24,
     fontWeight: "400" as const,
   },
   small: {
     fontSize: 14,
-    lineHeight: 20,
     fontWeight: "400" as const,
   },
   link: {
     fontSize: 16,
-    lineHeight: 24,
     fontWeight: "400" as const,
   },
 };
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
     sans: "system-ui",
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
     serif: "ui-serif",
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
     rounded: "ui-rounded",
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: "ui-monospace",
   },
   default: {

@@ -4,11 +4,15 @@ import { Feather } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { Platform, StyleSheet } from "react-native";
 import HomeStackNavigator from "@/navigation/HomeStackNavigator";
+import PoopStackNavigator from "@/navigation/PoopStackNavigator";
+import BehaviorStackNavigator from "@/navigation/BehaviorStackNavigator";
 import ProfileStackNavigator from "@/navigation/ProfileStackNavigator";
 import { useTheme } from "@/hooks/useTheme";
 
 export type MainTabParamList = {
   HomeTab: undefined;
+  PoopTab: undefined;
+  BehaviorTab: undefined;
   ProfileTab: undefined;
 };
 
@@ -50,6 +54,26 @@ export default function MainTabNavigator() {
           title: "Home",
           tabBarIcon: ({ color, size }) => (
             <Feather name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="PoopTab"
+        component={PoopStackNavigator}
+        options={{
+          title: "Poop",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="target" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="BehaviorTab"
+        component={BehaviorStackNavigator}
+        options={{
+          title: "Behavior",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="activity" size={size} color={color} />
           ),
         }}
       />

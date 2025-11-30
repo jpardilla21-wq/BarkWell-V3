@@ -6,10 +6,8 @@ import Animated, {
   withSpring,
   WithSpringConfig,
 } from "react-native-reanimated";
-
 import { ThemedText } from "@/components/ThemedText";
-import { useTheme } from "@/hooks/useTheme";
-import { BorderRadius, Spacing } from "@/constants/theme";
+import { Colors, BorderRadius, Spacing } from "@/constants/theme";
 
 interface ButtonProps {
   onPress?: () => void;
@@ -34,7 +32,6 @@ export function Button({
   style,
   disabled = false,
 }: ButtonProps) {
-  const { theme } = useTheme();
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -62,17 +59,14 @@ export function Button({
       style={[
         styles.button,
         {
-          backgroundColor: theme.link,
+          backgroundColor: Colors.light.primary,
           opacity: disabled ? 0.5 : 1,
         },
         style,
         animatedStyle,
       ]}
     >
-      <ThemedText
-        type="body"
-        style={[styles.buttonText, { color: theme.buttonText }]}
-      >
+      <ThemedText type="body" style={styles.buttonText}>
         {children}
       </ThemedText>
     </AnimatedPressable>
@@ -82,11 +76,12 @@ export function Button({
 const styles = StyleSheet.create({
   button: {
     height: Spacing.buttonHeight,
-    borderRadius: BorderRadius.full,
+    borderRadius: BorderRadius.md,
     alignItems: "center",
     justifyContent: "center",
   },
   buttonText: {
     fontWeight: "600",
+    color: "#FFFFFF",
   },
 });

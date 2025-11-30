@@ -1,14 +1,14 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "@/screens/HomeScreen";
-import DetailScreen from "@/screens/DetailScreen";
+import FoodScannerScreen from "@/screens/FoodScannerScreen";
 import { HeaderTitle } from "@/components/HeaderTitle";
 import { useTheme } from "@/hooks/useTheme";
 import { getCommonScreenOptions } from "@/navigation/screenOptions";
 
 export type HomeStackParamList = {
   Home: undefined;
-  Detail: undefined;
+  FoodScanner: undefined;
 };
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -26,13 +26,13 @@ export default function HomeStackNavigator() {
         name="Home"
         component={HomeScreen}
         options={{
-          headerTitle: () => <HeaderTitle title="My App" />,
+          headerTitle: () => <HeaderTitle title="PupSense" />,
         }}
       />
       <Stack.Screen
-        name="Detail"
-        component={DetailScreen}
-        options={{ headerTitle: "Detail" }}
+        name="FoodScanner"
+        component={FoodScannerScreen}
+        options={{ headerTitle: "Food Scanner" }}
       />
     </Stack.Navigator>
   );
