@@ -3,7 +3,7 @@ import { StyleSheet, View, TextInput, FlatList, Pressable } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, Typography } from "@/constants/theme";
+import { Spacing, BorderRadius, Typography, Colors } from "@/constants/theme";
 
 interface DogBreedDropdownProps {
   value: string;
@@ -62,38 +62,27 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
 
   return (
     <View style={styles.container}>
-      <Pressable
-        onPress={() => setShowDropdown(!showDropdown)}
+      <TextInput
         style={[
-          styles.inputWrapper,
+          styles.input,
           {
             backgroundColor: theme.backgroundDefault,
+            color: theme.text,
             borderColor: theme.borderLight,
           },
         ]}
-      >
-        <TextInput
-          style={[
-            styles.input,
-            {
-              color: theme.text,
-            },
-          ]}
-          value={value}
-          onChangeText={onSelect}
-          onFocus={() => setShowDropdown(true)}
-          placeholder="Start typing a breed..."
-          placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-          autoCapitalize="words"
-          editable={true}
-        />
-        <Feather
-          name={showDropdown ? "chevron-up" : "chevron-down"}
-          size={20}
-          color={theme.textMuted}
-          style={styles.icon}
-        />
-      </Pressable>
+        value={value}
+        onChangeText={(text) => {
+          onSelect(text);
+          setShowDropdown(text.length > 0);
+        }}
+        onFocus={() => setShowDropdown(true)}
+        onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+        placeholder="Start typing a breed..."
+        placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+        autoCapitalize="words"
+        editable={true}
+      />
 
       {showDropdown && filteredBreeds.length > 0 && (
         <View
@@ -118,7 +107,9 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
                   styles.option,
                   {
                     backgroundColor:
-                      value === item ? theme.backgroundLight : "transparent",
+                      value === item
+                        ? Colors.light.primary + "20"
+                        : "transparent",
                   },
                 ]}
               >
@@ -131,7 +122,7 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
         </View>
       )}
 
-      {showDropdown && filteredBreeds.length === 0 && (
+      {showDropdown && filteredBreeds.length === 0 && value.length > 0 && (
         <View
           style={[
             styles.dropdown,
@@ -157,38 +148,32 @@ const styles = StyleSheet.create({
     position: "relative",
     zIndex: 10,
   },
-  inputWrapper: {
+  input: {
     height: Spacing.inputHeight,
     borderWidth: 1,
     borderRadius: BorderRadius.md,
     paddingHorizontal: Spacing.md,
-    paddingRight: Spacing.lg,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  input: {
-    flex: 1,
     fontSize: Typography.bodyM.fontSize,
-    height: "100%",
-  },
-  icon: {
-    marginLeft: Spacing.sm,
   },
   dropdown: {
     position: "absolute",
-    top: Spacing.inputHeight + 8,
+    top: Spacing.inputHeight + 4,
     left: 0,
     right: 0,
     borderWidth: 1,
     borderRadius: BorderRadius.md,
     marginTop: Spacing.xs,
-    zIndex: 100,
+    zIndex: 1000,
     maxHeight: 220,
+    elevation: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
   },
   option: {
     paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
+    paddingVertical: Spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(0,0,0,0.05)",
   },

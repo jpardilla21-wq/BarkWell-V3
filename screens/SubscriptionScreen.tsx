@@ -14,7 +14,7 @@ type SubscriptionScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Subscription">;
 };
 
-type PlanType = "weekly" | "monthly" | "free";
+type PlanType = "weekly" | "monthly";
 
 interface Plan {
   id: PlanType;
@@ -23,22 +23,11 @@ interface Plan {
   period: string;
   description: string;
   features: string[];
+  trial?: string;
   highlighted?: boolean;
 }
 
 const PLANS: Plan[] = [
-  {
-    id: "free",
-    name: "Free",
-    price: "Free",
-    period: "Forever",
-    description: "Get started with basic features",
-    features: [
-      "5 analyses per month",
-      "Basic poop check",
-      "Simple behavior insights",
-    ],
-  },
   {
     id: "weekly",
     name: "Weekly",
@@ -60,6 +49,7 @@ const PLANS: Plan[] = [
     price: "$9.99",
     period: "Per month",
     description: "Best value for pet parents",
+    trial: "3 days free",
     features: [
       "Unlimited analyses",
       "Advanced poop analysis",
@@ -77,19 +67,14 @@ export default function SubscriptionScreen({
 }: SubscriptionScreenProps) {
   const insets = useSafeAreaInsets();
   const { theme } = useTheme();
-  const [selectedPlan, setSelectedPlan] = useState<PlanType>("free");
+  const [selectedPlan, setSelectedPlan] = useState<PlanType>("weekly");
 
   const handleSelectPlan = (planId: PlanType) => {
     setSelectedPlan(planId);
   };
 
   const handleContinue = () => {
-    navigation.replace("Root");
-  };
-
-  const handleSkip = () => {
-    setSelectedPlan("free");
-    navigation.replace("Root");
+    navigation.replace("MainTabs");
   };
 
   return (
@@ -160,6 +145,25 @@ export default function SubscriptionScreen({
                   </View>
                 )}
 
+                {plan.trial && (
+                  <View
+                    style={[
+                      styles.trialBadge,
+                      { backgroundColor: Colors.light.softGreen },
+                    ]}
+                  >
+                    <ThemedText
+                      type="small"
+                      style={[
+                        styles.badgeText,
+                        { color: "#FFFFFF", fontWeight: "700" },
+                      ]}
+                    >
+                      {plan.trial}
+                    </ThemedText>
+                  </View>
+                )}
+
                 <View style={styles.planHeader}>
                   <View>
                     <ThemedText type="h3" style={styles.planName}>
@@ -223,18 +227,11 @@ export default function SubscriptionScreen({
 
       <View style={styles.buttonContainer}>
         <Button onPress={handleContinue} style={styles.continueButton}>
-          Continue with {selectedPlan === "free" ? "Free" : "This Plan"}
+          Continue with{" "}
+          {selectedPlan === "weekly"
+            ? "Weekly Plan"
+            : "Monthly Plan"}
         </Button>
-        {selectedPlan !== "free" && (
-          <Pressable onPress={handleSkip}>
-            <ThemedText
-              type="body"
-              style={[styles.skipText, { color: Colors.light.primary }]}
-            >
-              Or continue with free plan
-            </ThemedText>
-          </Pressable>
-        )}
       </View>
     </ThemedView>
   );
@@ -275,6 +272,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.xs,
     borderRadius: BorderRadius.md,
+    marginBottom: Spacing.md,
+  },
+  trialBadge: {
+    alignSelf: "flex-end",
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.xs,
+    borderRadius: BorderRadius.md,
+    marginTop: -Spacing.lg,
+    marginRight: -Spacing.lg,
     marginBottom: Spacing.md,
   },
   badgeText: {
@@ -336,9 +342,5 @@ const styles = StyleSheet.create({
   },
   continueButton: {
     marginBottom: Spacing.sm,
-  },
-  skipText: {
-    textAlign: "center",
-    fontWeight: "600",
   },
 });
