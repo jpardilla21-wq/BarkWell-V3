@@ -1,12 +1,31 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TextInput } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Platform,
+  Pressable,
+  Alert,
+  Text,
+  Linking,
+  TextInput,
+  ScrollView,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { Feather } from "@expo/vector-icons";
 import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
 import { ScoreBadge } from "@/components/ScoreBadge";
 import { ResultCard } from "@/components/ResultCard";
 import { useTheme } from "@/hooks/useTheme";
-import { Colors, Spacing, BorderRadius, Typography } from "@/constants/theme";
+import {
+  Colors,
+  Spacing,
+  BorderRadius,
+  Typography,
+} from "@/constants/theme";
 
 interface FoodAnalysisResult {
   score: number;
@@ -14,52 +33,320 @@ interface FoodAnalysisResult {
   good: string[];
   bad: string[];
   toxins: string[];
+  recommendations: {
+    name: string;
+    reason: string;
+    affiliateLink: string;
+  }[];
 }
+
+const RECOMMENDED_FOODS = [
+  {
+    name: "Orijen Original Dog Food",
+    reason: "High protein, grain-free, no artificial ingredients",
+    affiliateLink: "https://www.amazon.com/Orijen-Original-Dog-Food/s",
+  },
+  {
+    name: "Acana Heritage Dog Food",
+    reason: "Premium ingredients, limited additives",
+    affiliateLink: "https://www.amazon.com/Acana-Heritage-Dog-Food/s",
+  },
+  {
+    name: "Stella & Chewy's Raw Diet",
+    reason: "Raw, freeze-dried, natural ingredients",
+    affiliateLink: "https://www.amazon.com/Stella-Chewy-Freeze-Dried-Raw/s",
+  },
+  {
+    name: "Merrick Grain-Free Dog Food",
+    reason: "No grains, real meat, no artificial preservatives",
+    affiliateLink: "https://www.amazon.com/Merrick-Grain-Free-Dog-Food/s",
+  },
+  {
+    name: "Primal Raw Dog Food",
+    reason: "USDA certified, raw, balanced nutrition",
+    affiliateLink: "https://www.primalpet.com/products/primal-raw-dog",
+  },
+];
 
 export default function FoodScannerScreen() {
   const { theme, isDark } = useTheme();
+  const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<FoodAnalysisResult | null>(null);
 
+  const requestCameraPermission = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Camera Permission",
+        "We need camera permission to scan food labels. Please enable it in settings.",
+        Platform.OS !== "web"
+          ? [
+              { text: "Cancel", style: "cancel" },
+              {
+                text: "Open Settings",
+                onPress: async () => {
+                  if (Platform.OS !== "web") {
+                    try {
+                      await require("expo-linking").default.openSettings();
+                    } catch (error) {
+                      // Linking not supported
+                    }
+                  }
+                },
+              },
+            ]
+          : [{ text: "OK" }]
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const handleTakePhoto = async () => {
+    const hasPermission = await requestCameraPermission();
+    if (!hasPermission) return;
+
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+      });
+
+      if (!result.canceled) {
+        setPhotoUri(result.assets[0].uri);
+        setIngredients("");
+        setResult(null);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to take photo. Please try again.");
+    }
+  };
+
+  const handlePickFromLibrary = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+      });
+
+      if (!result.canceled) {
+        setPhotoUri(result.assets[0].uri);
+        setIngredients("");
+        setResult(null);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to pick image. Please try again.");
+    }
+  };
+
   const handleAnalyze = () => {
-    if (!ingredients.trim()) return;
+    if (!photoUri && !ingredients.trim()) return;
 
     setIsAnalyzing(true);
     setResult(null);
 
+    // Simulate OCR and ingredient analysis
     setTimeout(() => {
+      const toxicIngredients = [
+        "chocolate",
+        "xylitol",
+        "onion",
+        "garlic",
+        "grapes",
+        "raisins",
+      ];
+      const concernIngredients = [
+        "corn",
+        "soy",
+        "artificial colors",
+        "artificial flavors",
+        "BHA",
+        "BHT",
+        "ethoxyquin",
+        "by-products",
+        "meal",
+      ];
+
+      const ingredientList = ingredients
+        .toLowerCase()
+        .split(",")
+        .map((i) => i.trim());
+
+      const foundToxins = toxicIngredients.filter(
+        (t) =>
+          ingredients.toLowerCase().includes(t) ||
+          ingredientList.some((i) => i.includes(t))
+      );
+
+      const foundConcerns = concernIngredients.filter(
+        (c) =>
+          ingredients.toLowerCase().includes(c) ||
+          ingredientList.some((i) => i.includes(c))
+      );
+
+      const hasProtein =
+        ingredients.toLowerCase().includes("chicken") ||
+        ingredients.toLowerCase().includes("beef") ||
+        ingredients.toLowerCase().includes("fish");
+
+      const hasOmega =
+        ingredients.toLowerCase().includes("fish") ||
+        ingredients.toLowerCase().includes("salmon") ||
+        ingredients.toLowerCase().includes("omega");
+
+      const scoreBase = 100;
+      const toxinPenalty = foundToxins.length * 25;
+      const concernPenalty = foundConcerns.length * 8;
+      const proteinBonus = hasProtein ? 5 : 0;
+      const omegaBonus = hasOmega ? 5 : 0;
+
+      const score = Math.max(
+        0,
+        scoreBase - toxinPenalty - concernPenalty + proteinBonus + omegaBonus
+      );
+
       const dummyResult: FoodAnalysisResult = {
-        score: 72,
+        score: Math.min(100, score),
         summary:
-          "This food contains mostly safe ingredients for dogs, but there are a few concerns to be aware of.",
+          foundToxins.length > 0
+            ? "⚠️ This food contains ingredients that are toxic to dogs. Please avoid or consult your vet."
+            : foundConcerns.length > 0
+              ? "This food has some questionable ingredients. Consider switching to a higher-quality option."
+              : "This food appears to be safe with good nutritional value for your dog.",
         good: [
-          "High protein content from chicken",
-          "Contains beneficial omega fatty acids",
-          "Includes digestible carbohydrates",
-        ],
-        bad: [
-          "Contains some artificial preservatives",
-          "Higher sodium content than recommended",
-        ],
-        toxins: ingredients.toLowerCase().includes("onion")
-          ? ["Onion - toxic to dogs, can cause anemia"]
-          : [],
+          ...(hasProtein ? ["Good protein source from meat"] : []),
+          ...(hasOmega ? ["Contains omega fatty acids for coat health"] : []),
+          ...(ingredientList.some(
+            (i) =>
+              i.includes("vegetable") ||
+              i.includes("fruit") ||
+              i.includes("sweet potato")
+          )
+            ? ["Includes vegetables and natural carbohydrates"]
+            : []),
+        ].slice(0, 3),
+        bad: foundConcerns.slice(0, 3),
+        toxins: foundToxins.map((t) => {
+          const warnings: { [key: string]: string } = {
+            chocolate: "Chocolate - Toxic, can cause seizures and heart problems",
+            xylitol:
+              "Xylitol - Highly toxic, can cause rapid insulin release and liver failure",
+            onion: "Onion - Toxic, damages red blood cells causing anemia",
+            garlic: "Garlic - Toxic, can damage red blood cells",
+            grapes: "Grapes - Toxic, can cause kidney failure",
+            raisins: "Raisins - Toxic, can cause kidney failure",
+          };
+          return warnings[t] || `${t} - Toxic to dogs`;
+        }),
+        recommendations: RECOMMENDED_FOODS.slice(0, 3),
       };
+
       setResult(dummyResult);
       setIsAnalyzing(false);
-    }, 1500);
+    }, 2000);
+  };
+
+  const handleClearPhoto = () => {
+    setPhotoUri(null);
+    setIngredients("");
+    setResult(null);
+  };
+
+  const handleRecommendationPress = (link: string) => {
+    Linking.openURL(link).catch(() => {
+      Alert.alert("Error", "Could not open link. Please try again later.");
+    });
   };
 
   return (
     <ScreenKeyboardAwareScrollView>
       <ThemedText type="body" style={{ color: theme.textMuted }}>
-        Paste an ingredient list or description of the food.
+        Scan your dog food label or manually enter ingredients.
       </ThemedText>
+
+      {!photoUri ? (
+        <View style={styles.photoSection}>
+          <ThemedView
+            style={[
+              styles.photoPlaceholder,
+              { borderColor: Colors.light.primary },
+            ]}
+          >
+            <Feather
+              name="barcode"
+              size={48}
+              color={Colors.light.primary}
+              style={{ marginBottom: Spacing.md }}
+            />
+            <ThemedText type="body" style={{ textAlign: "center" }}>
+              Scan your dog's food label
+            </ThemedText>
+          </ThemedView>
+
+          <View style={styles.buttonGroup}>
+            <Pressable
+              onPress={handleTakePhoto}
+              style={[
+                styles.halfButton,
+                {
+                  backgroundColor: theme.backgroundDefault,
+                  borderColor: Colors.light.primary,
+                  borderWidth: 1,
+                },
+              ]}
+            >
+              <View style={styles.buttonContent}>
+                <Feather name="camera" size={18} color={Colors.light.primary} />
+                <Text style={styles.buttonText}>Scan</Text>
+              </View>
+            </Pressable>
+
+            <Pressable
+              onPress={handlePickFromLibrary}
+              style={[
+                styles.halfButton,
+                {
+                  backgroundColor: theme.backgroundDefault,
+                  borderColor: Colors.light.primary,
+                  borderWidth: 1,
+                },
+              ]}
+            >
+              <View style={styles.buttonContent}>
+                <Feather name="image" size={18} color={Colors.light.primary} />
+                <Text style={styles.buttonText}>Browse</Text>
+              </View>
+            </Pressable>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.photoContainer}>
+          <Image
+            source={{ uri: photoUri }}
+            style={styles.photoImage}
+            resizeMode="cover"
+          />
+          <Pressable
+            onPress={handleClearPhoto}
+            style={[
+              styles.clearButton,
+              { backgroundColor: Colors.light.primary },
+            ]}
+          >
+            <Feather name="x" size={20} color="white" />
+          </Pressable>
+        </View>
+      )}
+
+      <View style={styles.divider} />
 
       <View style={styles.inputContainer}>
         <ThemedText type="small" style={styles.label}>
-          Ingredients
+          Ingredients {photoUri ? "(Auto-detected)" : "(Manual)"}
         </ThemedText>
         <TextInput
           style={[
@@ -72,19 +359,19 @@ export default function FoodScannerScreen() {
           ]}
           value={ingredients}
           onChangeText={setIngredients}
-          placeholder="Example: chicken, rice, carrots, chicken broth, salt, preservatives..."
+          placeholder="chicken, rice, carrots, chicken broth, salt..."
           placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
           multiline
-          numberOfLines={5}
+          numberOfLines={4}
           textAlignVertical="top"
         />
       </View>
 
       <Button
         onPress={handleAnalyze}
-        disabled={!ingredients.trim() || isAnalyzing}
+        disabled={!photoUri && !ingredients.trim() && !isAnalyzing}
       >
-        {isAnalyzing ? "Analyzing..." : "Analyze Food"}
+        {isAnalyzing ? "Analyzing..." : "Analyze Ingredients"}
       </Button>
 
       {result ? (
@@ -113,15 +400,15 @@ export default function FoodScannerScreen() {
                 type="h4"
                 style={{ color: Colors.light.urgentRed, marginBottom: Spacing.sm }}
               >
-                Warning: Toxins Detected
+                Toxic Ingredients Found
               </ThemedText>
               {result.toxins.map((toxin, index) => (
                 <ThemedText
                   key={index}
                   type="body"
-                  style={{ color: Colors.light.urgentRed }}
+                  style={{ color: Colors.light.urgentRed, marginBottom: Spacing.xs }}
                 >
-                  {toxin}
+                  • {toxin}
                 </ThemedText>
               ))}
             </View>
@@ -168,15 +455,127 @@ export default function FoodScannerScreen() {
               ))}
             </View>
           ) : null}
+
+          {result.recommendations.length > 0 ? (
+            <View style={styles.recommendationSection}>
+              <ThemedText
+                type="h4"
+                style={{ marginBottom: Spacing.md, color: Colors.light.primary }}
+              >
+                Recommended Alternatives
+              </ThemedText>
+              {result.recommendations.map((rec, index) => (
+                <Pressable
+                  key={index}
+                  onPress={() => handleRecommendationPress(rec.affiliateLink)}
+                  style={[
+                    styles.recommendationCard,
+                    { backgroundColor: theme.backgroundDefault },
+                  ]}
+                >
+                  <View style={styles.recContent}>
+                    <ThemedText type="body" style={{ fontWeight: "600" }}>
+                      {rec.name}
+                    </ThemedText>
+                    <ThemedText
+                      type="body"
+                      style={{ color: theme.textMuted, marginTop: Spacing.xs }}
+                    >
+                      {rec.reason}
+                    </ThemedText>
+                  </View>
+                  <Feather
+                    name="external-link"
+                    size={18}
+                    color={Colors.light.primary}
+                  />
+                </Pressable>
+              ))}
+              <ThemedText
+                type="small"
+                style={{
+                  color: theme.textMuted,
+                  marginTop: Spacing.md,
+                  fontStyle: "italic",
+                }}
+              >
+                * Links may contain affiliate partnerships
+              </ThemedText>
+            </View>
+          ) : null}
         </ResultCard>
       ) : null}
     </ScreenKeyboardAwareScrollView>
   );
 }
 
+
 const styles = StyleSheet.create({
-  inputContainer: {
+  photoSection: {
     marginTop: Spacing.lg,
+    marginBottom: Spacing.lg,
+  },
+  photoPlaceholder: {
+    height: 220,
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderRadius: BorderRadius.lg,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: Spacing.lg,
+  },
+  photoContainer: {
+    position: "relative",
+    marginTop: Spacing.lg,
+    marginBottom: Spacing.lg,
+  },
+  photoImage: {
+    height: 250,
+    borderRadius: BorderRadius.lg,
+    overflow: "hidden",
+  },
+  clearButton: {
+    position: "absolute",
+    top: Spacing.md,
+    right: Spacing.md,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+  },
+  buttonGroup: {
+    flexDirection: "row",
+    gap: Spacing.md,
+  },
+  halfButton: {
+    flex: 1,
+    borderRadius: BorderRadius.md,
+    paddingVertical: Spacing.md,
+    justifyContent: "center",
+  },
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: Spacing.sm,
+  },
+  buttonText: {
+    color: Colors.light.primary,
+    fontSize: Typography.bodyM.fontSize,
+    fontWeight: "600",
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "rgba(0,0,0,0.1)",
+    marginVertical: Spacing.lg,
+  },
+  inputContainer: {
     marginBottom: Spacing.lg,
   },
   label: {
@@ -184,7 +583,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   textInput: {
-    minHeight: 120,
+    minHeight: 100,
     borderWidth: 1,
     borderRadius: BorderRadius.md,
     paddingHorizontal: Spacing.md,
@@ -226,6 +625,26 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   listText: {
+    flex: 1,
+  },
+  recommendationSection: {
+    marginTop: Spacing.lg,
+    paddingTop: Spacing.lg,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(0,0,0,0.1)",
+  },
+  recommendationCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.md,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    borderColor: "rgba(0,0,0,0.1)",
+    marginBottom: Spacing.md,
+  },
+  recContent: {
     flex: 1,
   },
 });
