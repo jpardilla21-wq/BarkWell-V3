@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Image, TextInput, ScrollView } from "react-native";
+import { StyleSheet, View, Image, TextInput, ScrollView, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  KeyboardAwareScrollView,
+} from "react-native-keyboard-controller";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Feather } from "@expo/vector-icons";
-import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
@@ -65,6 +67,8 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
       setStep("registration");
     }
   };
+
+  const ScrollViewComponent = step === "intro" ? ScrollView : (Platform.OS === "web" ? ScrollView : KeyboardAwareScrollView);
 
   return (
     <ThemedView
@@ -128,147 +132,303 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
       )}
 
       {step === "registration" && (
-        <ScreenKeyboardAwareScrollView>
-          <View style={styles.stepContainer}>
-            <ThemedText type="h2" style={styles.stepTitle}>
-              Tell us about you
-            </ThemedText>
-            <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
-              We'll use this to personalize your experience
-            </ThemedText>
-
-            <View style={styles.fieldContainer}>
-              <ThemedText type="small" style={styles.label}>
-                Your Name
+        Platform.OS === "web" ? (
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+          >
+            <View style={styles.stepContainer}>
+              <ThemedText type="h2" style={styles.stepTitle}>
+                Tell us about you
               </ThemedText>
-              <TextInput
-                style={inputStyle}
-                value={formData.ownerName}
-                onChangeText={(value) => updateField("ownerName", value)}
-                placeholder="Enter your name"
-                placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                autoCapitalize="words"
-                returnKeyType="next"
-              />
+              <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
+                We'll use this to personalize your experience
+              </ThemedText>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Your Name
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.ownerName}
+                  onChangeText={(value) => updateField("ownerName", value)}
+                  placeholder="Enter your name"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                />
+              </View>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Email Address
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.email}
+                  onChangeText={(value) => updateField("email", value)}
+                  placeholder="your.email@example.com"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  returnKeyType="done"
+                />
+              </View>
             </View>
 
-            <View style={styles.fieldContainer}>
-              <ThemedText type="small" style={styles.label}>
-                Email Address
-              </ThemedText>
-              <TextInput
-                style={inputStyle}
-                value={formData.email}
-                onChangeText={(value) => updateField("email", value)}
-                placeholder="your.email@example.com"
-                placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                returnKeyType="done"
-              />
+            <View style={styles.buttonRow}>
+              <Button
+                onPress={handleGoBack}
+                style={[
+                  styles.secondaryButton,
+                  { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
+                ]}
+              >
+                <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
+                  Back
+                </ThemedText>
+              </Button>
+              <Button
+                onPress={handleRegistrationNext}
+                disabled={!formData.ownerName.trim() || !formData.email.trim()}
+                style={styles.flexButton}
+              >
+                Continue
+              </Button>
             </View>
-          </View>
-
-          <View style={styles.buttonRow}>
-            <Button
-              onPress={handleGoBack}
-              style={[
-                styles.secondaryButton,
-                { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
-              ]}
-            >
-              <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
-                Back
+          </ScrollView>
+        ) : (
+          <KeyboardAwareScrollView
+            style={[styles.scrollView, { backgroundColor: theme.backgroundRoot }]}
+            contentContainerStyle={styles.scrollContent}
+          >
+            <View style={styles.stepContainer}>
+              <ThemedText type="h2" style={styles.stepTitle}>
+                Tell us about you
               </ThemedText>
-            </Button>
-            <Button
-              onPress={handleRegistrationNext}
-              disabled={!formData.ownerName.trim() || !formData.email.trim()}
-              style={styles.flexButton}
-            >
-              Continue
-            </Button>
-          </View>
-        </ScreenKeyboardAwareScrollView>
+              <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
+                We'll use this to personalize your experience
+              </ThemedText>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Your Name
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.ownerName}
+                  onChangeText={(value) => updateField("ownerName", value)}
+                  placeholder="Enter your name"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                />
+              </View>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Email Address
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.email}
+                  onChangeText={(value) => updateField("email", value)}
+                  placeholder="your.email@example.com"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  returnKeyType="done"
+                />
+              </View>
+            </View>
+
+            <View style={styles.buttonRow}>
+              <Button
+                onPress={handleGoBack}
+                style={[
+                  styles.secondaryButton,
+                  { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
+                ]}
+              >
+                <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
+                  Back
+                </ThemedText>
+              </Button>
+              <Button
+                onPress={handleRegistrationNext}
+                disabled={!formData.ownerName.trim() || !formData.email.trim()}
+                style={styles.flexButton}
+              >
+                Continue
+              </Button>
+            </View>
+          </KeyboardAwareScrollView>
+        )
       )}
 
       {step === "dogInfo" && (
-        <ScreenKeyboardAwareScrollView>
-          <View style={styles.stepContainer}>
-            <ThemedText type="h2" style={styles.stepTitle}>
-              Tell us about your pup
-            </ThemedText>
-            <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
-              This helps us provide breed-specific insights
-            </ThemedText>
-
-            <View style={styles.fieldContainer}>
-              <ThemedText type="small" style={styles.label}>
-                Dog's Name
+        Platform.OS === "web" ? (
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+          >
+            <View style={styles.stepContainer}>
+              <ThemedText type="h2" style={styles.stepTitle}>
+                Tell us about your pup
               </ThemedText>
-              <TextInput
-                style={inputStyle}
-                value={formData.dogName}
-                onChangeText={(value) => updateField("dogName", value)}
-                placeholder="e.g., Max, Bella, Charlie"
-                placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                autoCapitalize="words"
-                returnKeyType="next"
-              />
+              <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
+                This helps us provide breed-specific insights
+              </ThemedText>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Dog's Name
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.dogName}
+                  onChangeText={(value) => updateField("dogName", value)}
+                  placeholder="e.g., Max, Bella, Charlie"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                />
+              </View>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Breed
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.dogBreed}
+                  onChangeText={(value) => updateField("dogBreed", value)}
+                  placeholder="e.g., Golden Retriever, Labrador"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                />
+              </View>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Age (in years)
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.dogAge}
+                  onChangeText={(value) => updateField("dogAge", value)}
+                  placeholder="e.g., 3"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  keyboardType="decimal-pad"
+                  returnKeyType="done"
+                />
+              </View>
             </View>
 
-            <View style={styles.fieldContainer}>
-              <ThemedText type="small" style={styles.label}>
-                Breed
+            <View style={styles.buttonRow}>
+              <Button
+                onPress={handleGoBack}
+                style={[
+                  styles.secondaryButton,
+                  { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
+                ]}
+              >
+                <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
+                  Back
+                </ThemedText>
+              </Button>
+              <Button
+                onPress={handleDogInfoNext}
+                disabled={!formData.dogName.trim() || !formData.dogBreed.trim() || !formData.dogAge.trim()}
+                style={styles.flexButton}
+              >
+                Next
+              </Button>
+            </View>
+          </ScrollView>
+        ) : (
+          <KeyboardAwareScrollView
+            style={[styles.scrollView, { backgroundColor: theme.backgroundRoot }]}
+            contentContainerStyle={styles.scrollContent}
+          >
+            <View style={styles.stepContainer}>
+              <ThemedText type="h2" style={styles.stepTitle}>
+                Tell us about your pup
               </ThemedText>
-              <TextInput
-                style={inputStyle}
-                value={formData.dogBreed}
-                onChangeText={(value) => updateField("dogBreed", value)}
-                placeholder="e.g., Golden Retriever, Labrador"
-                placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                autoCapitalize="words"
-                returnKeyType="next"
-              />
+              <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
+                This helps us provide breed-specific insights
+              </ThemedText>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Dog's Name
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.dogName}
+                  onChangeText={(value) => updateField("dogName", value)}
+                  placeholder="e.g., Max, Bella, Charlie"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                />
+              </View>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Breed
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.dogBreed}
+                  onChangeText={(value) => updateField("dogBreed", value)}
+                  placeholder="e.g., Golden Retriever, Labrador"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                />
+              </View>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Age (in years)
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.dogAge}
+                  onChangeText={(value) => updateField("dogAge", value)}
+                  placeholder="e.g., 3"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  keyboardType="decimal-pad"
+                  returnKeyType="done"
+                />
+              </View>
             </View>
 
-            <View style={styles.fieldContainer}>
-              <ThemedText type="small" style={styles.label}>
-                Age (in years)
-              </ThemedText>
-              <TextInput
-                style={inputStyle}
-                value={formData.dogAge}
-                onChangeText={(value) => updateField("dogAge", value)}
-                placeholder="e.g., 3"
-                placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                keyboardType="decimal-pad"
-                returnKeyType="done"
-              />
+            <View style={styles.buttonRow}>
+              <Button
+                onPress={handleGoBack}
+                style={[
+                  styles.secondaryButton,
+                  { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
+                ]}
+              >
+                <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
+                  Back
+                </ThemedText>
+              </Button>
+              <Button
+                onPress={handleDogInfoNext}
+                disabled={!formData.dogName.trim() || !formData.dogBreed.trim() || !formData.dogAge.trim()}
+                style={styles.flexButton}
+              >
+                Next
+              </Button>
             </View>
-          </View>
-
-          <View style={styles.buttonRow}>
-            <Button
-              onPress={handleGoBack}
-              style={[
-                styles.secondaryButton,
-                { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
-              ]}
-            >
-              <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
-                Back
-              </ThemedText>
-            </Button>
-            <Button
-              onPress={handleDogInfoNext}
-              disabled={!formData.dogName.trim() || !formData.dogBreed.trim() || !formData.dogAge.trim()}
-              style={styles.flexButton}
-            >
-              Next
-            </Button>
-          </View>
-        </ScreenKeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
+        )
       )}
     </ThemedView>
   );
@@ -286,6 +446,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "space-between",
     paddingVertical: Spacing.lg,
+    paddingHorizontal: Spacing.md,
   },
   content: {
     flex: 1,
