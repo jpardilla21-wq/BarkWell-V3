@@ -92,16 +92,16 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
               ]}
             >
               <View style={styles.iconRow}>
-                <View style={[styles.iconCircle, { backgroundColor: Colors.light.softGreen }]}>
-                  <Feather name="heart" size={28} color="#FFFFFF" />
+                <View style={[styles.iconCircle, { backgroundColor: Colors.light.warningYellow }]}>
+                  <ThemedText style={styles.iconEmoji}>💩</ThemedText>
                 </View>
-                <View style={[styles.iconCircle, { backgroundColor: Colors.light.primary }]}>
-                  <Feather name="shield" size={28} color="#FFFFFF" />
+                <View style={[styles.iconCircle, { backgroundColor: Colors.light.softGreen }]}>
+                  <ThemedText style={styles.iconEmoji}>🦴</ThemedText>
                 </View>
                 <View
-                  style={[styles.iconCircle, { backgroundColor: Colors.light.primaryGradientEnd }]}
+                  style={[styles.iconCircle, { backgroundColor: Colors.light.primary }]}
                 >
-                  <Feather name="eye" size={28} color="#FFFFFF" />
+                  <Feather name="activity" size={28} color="#FFFFFF" />
                 </View>
               </View>
               <Image
@@ -463,6 +463,9 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     justifyContent: "center",
     alignItems: "center",
+  },
+  iconEmoji: {
+    fontSize: 32,
   },
   logo: {
     width: 100,
