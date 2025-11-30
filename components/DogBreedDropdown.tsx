@@ -1,6 +1,5 @@
-import React, { useState, useMemo, useRef } from "react";
-import { StyleSheet, View, TextInput, FlatList, Pressable, Modal } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import React, { useState, useMemo } from "react";
+import { StyleSheet, View, TextInput, ScrollView, Pressable } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius, Typography, Colors } from "@/constants/theme";
@@ -47,7 +46,6 @@ const POPULAR_BREEDS = [
 export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownProps) {
   const { theme } = useTheme();
   const [showDropdown, setShowDropdown] = useState(false);
-  const inputRef = useRef<TextInput>(null);
 
   const filteredBreeds = useMemo(() => {
     if (!value.trim()) return POPULAR_BREEDS;
@@ -63,13 +61,16 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
 
   const handleInputChange = (text: string) => {
     onSelect(text);
-    setShowDropdown(text.length > 0);
+    if (text.length > 0) {
+      setShowDropdown(true);
+    } else {
+      setShowDropdown(false);
+    }
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.wrapper}>
       <TextInput
-        ref={inputRef}
         style={[
           styles.input,
           {
@@ -80,76 +81,54 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
         ]}
         value={value}
         onChangeText={handleInputChange}
-        onFocus={() => setShowDropdown(value.length > 0)}
+        onFocus={() => value.length > 0 && setShowDropdown(true)}
+        onBlur={() => setTimeout(() => setShowDropdown(false), 100)}
         placeholder="Start typing a breed..."
         placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
         autoCapitalize="words"
-        editable={true}
       />
 
-      {showDropdown && (
-        <Modal
-          transparent
-          visible={showDropdown}
-          onRequestClose={() => setShowDropdown(false)}
+      {showDropdown && filteredBreeds.length > 0 && (
+        <ScrollView
+          nestedScrollEnabled={true}
+          style={[
+            styles.dropdown,
+            {
+              backgroundColor: theme.backgroundDefault,
+              borderColor: theme.borderLight,
+            },
+          ]}
+          scrollEnabled={filteredBreeds.length > 6}
         >
-          <Pressable
-            style={styles.overlay}
-            onPress={() => setShowDropdown(false)}
-          >
-            <View
+          {filteredBreeds.map((breed, index) => (
+            <Pressable
+              key={breed}
+              onPress={() => handleSelectBreed(breed)}
               style={[
-                styles.dropdown,
+                styles.option,
                 {
-                  backgroundColor: theme.backgroundDefault,
-                  borderColor: theme.borderLight,
+                  backgroundColor:
+                    value === breed ? Colors.light.primary + "20" : "transparent",
+                  borderBottomColor: theme.borderLight,
+                  borderBottomWidth: index < filteredBreeds.length - 1 ? 1 : 0,
                 },
               ]}
             >
-              {filteredBreeds.length > 0 ? (
-                <FlatList
-                  data={filteredBreeds}
-                  keyExtractor={(item) => item}
-                  scrollEnabled={filteredBreeds.length > 6}
-                  nestedScrollEnabled={true}
-                  style={{ maxHeight: 220 }}
-                  renderItem={({ item }) => (
-                    <Pressable
-                      onPress={() => handleSelectBreed(item)}
-                      style={[
-                        styles.option,
-                        {
-                          backgroundColor:
-                            value === item
-                              ? Colors.light.primary + "20"
-                              : "transparent",
-                        },
-                      ]}
-                    >
-                      <ThemedText type="body" style={styles.optionText}>
-                        {item}
-                      </ThemedText>
-                    </Pressable>
-                  )}
-                />
-              ) : (
-                <View style={styles.emptyState}>
-                  <ThemedText type="body" style={{ color: theme.textMuted }}>
-                    No breeds found
-                  </ThemedText>
-                </View>
-              )}
-            </View>
-          </Pressable>
-        </Modal>
+              <ThemedText type="body" style={styles.optionText}>
+                {breed}
+              </ThemedText>
+            </Pressable>
+          ))}
+        </ScrollView>
       )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
     width: "100%",
+    zIndex: 1000,
   },
   input: {
     height: Spacing.inputHeight,
@@ -158,17 +137,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     fontSize: Typography.bodyM.fontSize,
   },
-  overlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   dropdown: {
-    width: "80%",
-    maxWidth: 300,
+    marginTop: Spacing.xs,
     borderWidth: 1,
     borderRadius: BorderRadius.md,
-    maxHeight: 300,
+    maxHeight: 220,
     elevation: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -178,15 +151,8 @@ const styles = StyleSheet.create({
   option: {
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(0,0,0,0.05)",
   },
   optionText: {
     fontSize: Typography.bodyM.fontSize,
-  },
-  emptyState: {
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.lg,
-    alignItems: "center",
   },
 });
