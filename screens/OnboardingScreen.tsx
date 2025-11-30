@@ -6,6 +6,7 @@ import {
 } from "react-native-keyboard-controller";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Feather } from "@expo/vector-icons";
+import { DogBreedDropdown } from "@/components/DogBreedDropdown";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
@@ -67,8 +68,6 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
       setStep("registration");
     }
   };
-
-  const ScrollViewComponent = step === "intro" ? ScrollView : (Platform.OS === "web" ? ScrollView : KeyboardAwareScrollView);
 
   return (
     <ThemedView
@@ -300,14 +299,10 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 <ThemedText type="small" style={styles.label}>
                   Breed
                 </ThemedText>
-                <TextInput
-                  style={inputStyle}
+                <DogBreedDropdown
                   value={formData.dogBreed}
-                  onChangeText={(value) => updateField("dogBreed", value)}
-                  placeholder="e.g., Golden Retriever, Labrador"
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  autoCapitalize="words"
-                  returnKeyType="next"
+                  onSelect={(breed) => updateField("dogBreed", breed)}
+                  isDark={isDark}
                 />
               </View>
 
@@ -380,14 +375,10 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 <ThemedText type="small" style={styles.label}>
                   Breed
                 </ThemedText>
-                <TextInput
-                  style={inputStyle}
+                <DogBreedDropdown
                   value={formData.dogBreed}
-                  onChangeText={(value) => updateField("dogBreed", value)}
-                  placeholder="e.g., Golden Retriever, Labrador"
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  autoCapitalize="words"
-                  returnKeyType="next"
+                  onSelect={(breed) => updateField("dogBreed", breed)}
+                  isDark={isDark}
                 />
               </View>
 
