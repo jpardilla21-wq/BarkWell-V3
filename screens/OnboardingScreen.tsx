@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Feather } from "@expo/vector-icons";
 import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
+import { ScreenScrollView } from "@/components/ScreenScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
@@ -77,7 +78,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
       ]}
     >
       {step === "intro" && (
-        <ScreenKeyboardAwareScrollView>
+        <ScreenScrollView>
           <View style={styles.content}>
             <View
               style={[
@@ -121,7 +122,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           <View style={styles.buttonContainer}>
             <Button onPress={handleIntroNext}>Get Started</Button>
           </View>
-        </ScreenKeyboardAwareScrollView>
+        </ScreenScrollView>
       )}
 
       {step === "registration" && (
