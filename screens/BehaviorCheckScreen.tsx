@@ -1,102 +1,501 @@
-import React, { useState } from "react";
-import { StyleSheet, View, TextInput } from "react-native";
+import React, { useState, useRef } from "react";
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  Alert,
+  Text,
+  Platform,
+  Linking,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { Feather } from "@expo/vector-icons";
 import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
 import { StatePill } from "@/components/StatePill";
 import { ResultCard } from "@/components/ResultCard";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, Typography } from "@/constants/theme";
+import {
+  Colors,
+  Spacing,
+  BorderRadius,
+  Typography,
+} from "@/constants/theme";
 
 type BehaviorState =
   | "Relaxed"
   | "Anxious"
   | "Overstimulated"
   | "Defensive"
-  | "Possibly in Pain";
+  | "Possibly in Pain"
+  | "Happy & Engaged";
 
 interface BehaviorAnalysisResult {
   state: BehaviorState;
   explanation: string;
+  observations: {
+    tail: string;
+    body: string;
+    face: string;
+    mouth: string;
+  };
   tips: string[];
 }
 
+const BEHAVIOR_GUIDELINES = {
+  Relaxed: {
+    emoji: "😌",
+    tips: [
+      "Your dog is calm and content - great! Maintain this peaceful environment",
+      "Keep current routines and activities that promote relaxation",
+      "Good time for training sessions as your dog is receptive",
+      "Monitor for any changes in behavior that might indicate stress",
+    ],
+  },
+  "Happy & Engaged": {
+    emoji: "😊",
+    tips: [
+      "Your dog is happy and enjoying interaction - wonderful!",
+      "Continue positive activities and playtime your dog enjoys",
+      "This is an excellent time to practice commands and training",
+      "Maintain healthy exercise and socialization routines",
+    ],
+  },
+  Anxious: {
+    emoji: "😟",
+    tips: [
+      "Create a quiet, safe space where your dog can retreat",
+      "Maintain a consistent daily routine for feeding and walks",
+      "Use calming aids like anxiety wraps or pheromone diffusers",
+      "Avoid reinforcing anxious behavior with excessive attention",
+      "Consult a veterinary behaviorist if symptoms persist",
+    ],
+  },
+  Overstimulated: {
+    emoji: "😵",
+    tips: [
+      "Give your dog a break and a quiet space to cool down",
+      "Remove triggering stimuli (loud noises, excessive activity)",
+      "Provide calm activities like gentle petting or puzzle toys",
+      "Practice breathing exercises alongside your dog",
+      "Reduce exercise intensity and take more frequent breaks",
+    ],
+  },
+  Defensive: {
+    emoji: "😠",
+    tips: [
+      "Give your dog space and avoid direct interaction right now",
+      "Remove any perceived threats or stressors",
+      "Use positive reinforcement when your dog displays calm behavior",
+      "Never punish defensive behavior - seek professional help",
+      "Contact a certified dog behaviorist immediately",
+    ],
+  },
+  "Possibly in Pain": {
+    emoji: "🤕",
+    tips: [
+      "Your dog may be uncomfortable - contact your vet immediately",
+      "Avoid rough play or activities that might worsen the issue",
+      "Provide a comfortable resting area with supportive bedding",
+      "Monitor for additional symptoms like limping or appetite changes",
+      "Get a professional veterinary evaluation as soon as possible",
+    ],
+  },
+};
+
 export default function BehaviorCheckScreen() {
   const { theme, isDark } = useTheme();
-  const [description, setDescription] = useState("");
+  const [videoUri, setVideoUri] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<BehaviorAnalysisResult | null>(null);
+  const [recordingTime, setRecordingTime] = useState(0);
 
-  const handleAnalyze = () => {
-    if (!description.trim()) return;
+  const requestCameraPermission = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Camera Permission",
+        "We need camera permission to record your dog. Please enable it in settings.",
+        Platform.OS !== "web"
+          ? [
+              { text: "Cancel", style: "cancel" },
+              {
+                text: "Open Settings",
+                onPress: async () => {
+                  if (Platform.OS !== "web") {
+                    try {
+                      await Linking.openSettings();
+                    } catch (error) {
+                      // Linking not supported
+                    }
+                  }
+                },
+              },
+            ]
+          : [{ text: "OK" }]
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const handleRecordVideo = async () => {
+    if (Platform.OS === "web") {
+      Alert.alert(
+        "Not Available on Web",
+        "Run in Expo Go to record videos of your dog"
+      );
+      return;
+    }
+
+    const hasPermission = await requestCameraPermission();
+    if (!hasPermission) return;
+
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsEditing: true,
+        aspect: [9, 16],
+        quality: 0.8,
+        videoMaxDuration: 60,
+      });
+
+      if (!result.canceled) {
+        setVideoUri(result.assets[0].uri);
+        setResult(null);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to record video. Please try again.");
+    }
+  };
+
+  const handlePickVideo = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsEditing: true,
+        aspect: [9, 16],
+        quality: 0.8,
+      });
+
+      if (!result.canceled) {
+        setVideoUri(result.assets[0].uri);
+        setResult(null);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to pick video. Please try again.");
+    }
+  };
+
+  const analyzeVideo = () => {
+    if (!videoUri) return;
 
     setIsAnalyzing(true);
     setResult(null);
 
+    // Simulate video analysis - in reality, this would send to an AI service
     setTimeout(() => {
-      const dummyResult: BehaviorAnalysisResult = {
-        state: "Anxious",
-        explanation:
-          "Based on your description, your dog appears to be showing signs of anxiety. Common triggers include changes in environment, loud noises, or separation from family members. The behaviors you described - pacing, panting, and avoiding eye contact - are typical anxiety indicators.",
-        tips: [
-          "Create a quiet, safe space where your dog can retreat",
-          "Maintain a consistent daily routine for feeding and walks",
-          "Consider calming aids like anxiety wraps or pheromone diffusers",
-          "Avoid reinforcing anxious behavior with excessive attention",
-          "If symptoms persist, consult a veterinary behaviorist",
-        ],
+      const states: BehaviorState[] = [
+        "Relaxed",
+        "Happy & Engaged",
+        "Anxious",
+        "Overstimulated",
+        "Defensive",
+      ];
+
+      // Random behavior analysis for demo
+      const randomState = states[Math.floor(Math.random() * states.length)];
+
+      const analysisResults: {
+        [key in BehaviorState]: BehaviorAnalysisResult;
+      } = {
+        Relaxed: {
+          state: "Relaxed",
+          explanation:
+            "Your dog shows calm body language with relaxed posture. The tail is in a neutral position, ears are in a normal state, and overall demeanor suggests contentment. This is a healthy emotional state.",
+          observations: {
+            tail: "Neutral position, occasional gentle wags",
+            body: "Relaxed posture, normal muscle tension, comfortable stance",
+            face: "Soft eyes, ears in normal position, relaxed mouth",
+            mouth: "Closed or slightly open, no tension in jaw",
+          },
+          tips: BEHAVIOR_GUIDELINES.Relaxed.tips,
+        },
+        "Happy & Engaged": {
+          state: "Happy & Engaged",
+          explanation:
+            "Your dog is displaying positive, engaged behavior! The tail is actively wagging, body language is open and playful, and your dog appears interested and happy. This indicates a great emotional state.",
+          observations: {
+            tail: "Active wagging, high or medium position",
+            body: "Play bow position, bouncy movements, forward-facing posture",
+            face: "Bright eyes, forward-facing ears, mouth open in play",
+            mouth: "Open mouth smile, playful expression, relaxed jaw",
+          },
+          tips: BEHAVIOR_GUIDELINES["Happy & Engaged"].tips,
+        },
+        Anxious: {
+          state: "Anxious",
+          explanation:
+            "Your dog is showing signs of anxiety. The body language suggests tension - tail position is low or tucked, ears are back, and overall posture appears defensive or withdrawn. Your dog may be experiencing stress from the environment or situation.",
+          observations: {
+            tail: "Tucked or lowered position, minimal movement",
+            body: "Lowered posture, tension visible, withdrawn stance",
+            face: "Tension around eyes, ears back or pinned, worried expression",
+            mouth: "Closed or panting, tension in jaw, possible lip licking",
+          },
+          tips: BEHAVIOR_GUIDELINES.Anxious.tips,
+        },
+        Overstimulated: {
+          state: "Overstimulated",
+          explanation:
+            "Your dog appears overstimulated and might need a break. Signs include excessive energy, rapid movements, and heightened arousal. This state can lead to poor decisions if not managed - giving your dog time to calm down is important.",
+          observations: {
+            tail: "Rapid wagging, high position, stiff movements",
+            body: "Tense muscles, rapid pacing or jumping, jerky movements",
+            face: "Wide eyes, forward ears, intense stare, possible growling",
+            mouth: "Open, rapid panting, possible nipping or play biting",
+          },
+          tips: BEHAVIOR_GUIDELINES.Overstimulated.tips,
+        },
+        Defensive: {
+          state: "Defensive",
+          explanation:
+            "Your dog is displaying defensive behaviors and should not be approached right now. This emotional state requires professional intervention and careful management to prevent escalation.",
+          observations: {
+            tail: "Lowered or tucked, stiff, minimal movement",
+            body: "Stiff posture, lowered body, backing away or holding ground",
+            face: "Tense jaw, ears back or pinned, intense eye contact or averted",
+            mouth: "Closed, possible growling or snarling, bared teeth",
+          },
+          tips: BEHAVIOR_GUIDELINES.Defensive.tips,
+        },
+        "Possibly in Pain": {
+          state: "Possibly in Pain",
+          explanation:
+            "Your dog may be in pain or discomfort. Behavioral indicators include reluctance to move, abnormal posture, and signs of distress. Veterinary attention is recommended.",
+          observations: {
+            tail: "Tucked, immobile, or held stiffly",
+            body: "Hunched posture, reluctance to move, limping or stiffness",
+            face: "Tensed facial muscles, worried expression, possible panting",
+            mouth: "Tense jaw, possible drooling, signs of discomfort",
+          },
+          tips: BEHAVIOR_GUIDELINES["Possibly in Pain"].tips,
+        },
       };
-      setResult(dummyResult);
+
+      setResult(analysisResults[randomState]);
       setIsAnalyzing(false);
-    }, 1500);
+    }, 2500);
+  };
+
+  const handleClearVideo = () => {
+    setVideoUri(null);
+    setResult(null);
   };
 
   return (
     <ScreenKeyboardAwareScrollView>
       <ThemedText type="body" style={{ color: theme.textMuted }}>
-        Describe your dog's body language or recent behavior.
+        Record a 30-60 second video of your dog's body language and behavior
+        for AI analysis.
       </ThemedText>
 
-      <View style={styles.inputContainer}>
-        <ThemedText type="small" style={styles.label}>
-          Description
-        </ThemedText>
-        <TextInput
-          style={[
-            styles.textInput,
-            {
-              backgroundColor: theme.backgroundDefault,
-              color: theme.text,
-              borderColor: theme.borderLight,
-            },
-          ]}
-          value={description}
-          onChangeText={setDescription}
-          placeholder="Example: tail tucked, ears back, pacing around the room, won't make eye contact, panting heavily..."
-          placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-          multiline
-          numberOfLines={5}
-          textAlignVertical="top"
-        />
-      </View>
+      {!videoUri ? (
+        <View style={styles.videoSection}>
+          <ThemedView
+            style={[
+              styles.videoPlaceholder,
+              { borderColor: Colors.light.primary },
+            ]}
+          >
+            <Feather
+              name="video"
+              size={48}
+              color={Colors.light.primary}
+              style={{ marginBottom: Spacing.md }}
+            />
+            <ThemedText type="body" style={{ textAlign: "center" }}>
+              Record your dog's behavior
+            </ThemedText>
+            <ThemedText
+              type="small"
+              style={{
+                color: theme.textMuted,
+                marginTop: Spacing.sm,
+                textAlign: "center",
+              }}
+            >
+              30-60 seconds recommended
+            </ThemedText>
+          </ThemedView>
+
+          <View style={styles.buttonGroup}>
+            <Pressable
+              onPress={handleRecordVideo}
+              style={[
+                styles.halfButton,
+                {
+                  backgroundColor: theme.backgroundDefault,
+                  borderColor: Colors.light.primary,
+                  borderWidth: 1,
+                },
+              ]}
+            >
+              <View style={styles.buttonContent}>
+                <Feather
+                  name="video"
+                  size={18}
+                  color={Colors.light.primary}
+                />
+                <Text style={styles.buttonText}>Record</Text>
+              </View>
+            </Pressable>
+
+            <Pressable
+              onPress={handlePickVideo}
+              style={[
+                styles.halfButton,
+                {
+                  backgroundColor: theme.backgroundDefault,
+                  borderColor: Colors.light.primary,
+                  borderWidth: 1,
+                },
+              ]}
+            >
+              <View style={styles.buttonContent}>
+                <Feather
+                  name="film"
+                  size={18}
+                  color={Colors.light.primary}
+                />
+                <Text style={styles.buttonText}>Browse</Text>
+              </View>
+            </Pressable>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.videoContainer}>
+          <ThemedView
+            style={[
+              styles.videoPreview,
+              { backgroundColor: Colors.light.backgroundDark },
+            ]}
+          >
+            <Feather name="check-circle" size={48} color={Colors.light.softGreen} />
+            <ThemedText type="body" style={{ marginTop: Spacing.md }}>
+              Video Ready
+            </ThemedText>
+          </ThemedView>
+          <Pressable
+            onPress={handleClearVideo}
+            style={[styles.clearButton, { backgroundColor: Colors.light.primary }]}
+          >
+            <Feather name="x" size={20} color="white" />
+          </Pressable>
+        </View>
+      )}
 
       <Button
-        onPress={handleAnalyze}
-        disabled={!description.trim() || isAnalyzing}
+        onPress={analyzeVideo}
+        disabled={!videoUri || isAnalyzing}
       >
-        {isAnalyzing ? "Analyzing..." : "Analyze Behavior"}
+        {isAnalyzing ? "Analyzing Behavior..." : "Analyze Behavior"}
       </Button>
 
       {result ? (
         <ResultCard style={styles.resultCard}>
           <View style={styles.resultHeader}>
-            <ThemedText type="h4">Emotional State</ThemedText>
+            <View>
+              <ThemedText type="h4">Emotional State</ThemedText>
+              <ThemedText
+                type="small"
+                style={{ color: theme.textMuted, marginTop: Spacing.xs }}
+              >
+                Based on body language analysis
+              </ThemedText>
+            </View>
             <StatePill state={result.state} />
           </View>
 
           <ThemedText type="body" style={styles.explanation}>
             {result.explanation}
           </ThemedText>
+
+          <View style={styles.observationsSection}>
+            <ThemedText type="h4" style={styles.sectionTitle}>
+              Observations
+            </ThemedText>
+
+            <View style={styles.observationItem}>
+              <Feather
+                name="move"
+                size={18}
+                color={Colors.light.primary}
+                style={{ marginRight: Spacing.sm }}
+              />
+              <View style={styles.observationContent}>
+                <ThemedText type="small" style={{ fontWeight: "600" }}>
+                  Tail
+                </ThemedText>
+                <ThemedText type="body" style={{ color: theme.textMuted }}>
+                  {result.observations.tail}
+                </ThemedText>
+              </View>
+            </View>
+
+            <View style={styles.observationItem}>
+              <Feather
+                name="square"
+                size={18}
+                color={Colors.light.primary}
+                style={{ marginRight: Spacing.sm }}
+              />
+              <View style={styles.observationContent}>
+                <ThemedText type="small" style={{ fontWeight: "600" }}>
+                  Body
+                </ThemedText>
+                <ThemedText type="body" style={{ color: theme.textMuted }}>
+                  {result.observations.body}
+                </ThemedText>
+              </View>
+            </View>
+
+            <View style={styles.observationItem}>
+              <Feather
+                name="eye"
+                size={18}
+                color={Colors.light.primary}
+                style={{ marginRight: Spacing.sm }}
+              />
+              <View style={styles.observationContent}>
+                <ThemedText type="small" style={{ fontWeight: "600" }}>
+                  Face
+                </ThemedText>
+                <ThemedText type="body" style={{ color: theme.textMuted }}>
+                  {result.observations.face}
+                </ThemedText>
+              </View>
+            </View>
+
+            <View style={styles.observationItem}>
+              <Feather
+                name="smile"
+                size={18}
+                color={Colors.light.primary}
+                style={{ marginRight: Spacing.sm }}
+              />
+              <View style={styles.observationContent}>
+                <ThemedText type="small" style={{ fontWeight: "600" }}>
+                  Mouth
+                </ThemedText>
+                <ThemedText type="body" style={{ color: theme.textMuted }}>
+                  {result.observations.mouth}
+                </ThemedText>
+              </View>
+            </View>
+          </View>
 
           <View style={styles.tipsContainer}>
             <ThemedText type="h4" style={styles.tipsTitle}>
@@ -120,21 +519,66 @@ export default function BehaviorCheckScreen() {
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
+  videoSection: {
     marginTop: Spacing.lg,
     marginBottom: Spacing.lg,
   },
-  label: {
-    marginBottom: Spacing.sm,
-    fontWeight: "600",
+  videoPlaceholder: {
+    height: 220,
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderRadius: BorderRadius.lg,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: Spacing.lg,
   },
-  textInput: {
-    minHeight: 120,
-    borderWidth: 1,
+  videoContainer: {
+    position: "relative",
+    marginTop: Spacing.lg,
+    marginBottom: Spacing.lg,
+  },
+  videoPreview: {
+    height: 250,
+    borderRadius: BorderRadius.lg,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+  clearButton: {
+    position: "absolute",
+    top: Spacing.md,
+    right: Spacing.md,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+  },
+  buttonGroup: {
+    flexDirection: "row",
+    gap: Spacing.md,
+  },
+  halfButton: {
+    flex: 1,
     borderRadius: BorderRadius.md,
-    paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
+    justifyContent: "center",
+  },
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: Spacing.sm,
+  },
+  buttonText: {
+    color: Colors.light.primary,
     fontSize: Typography.bodyM.fontSize,
+    fontWeight: "600",
   },
   resultCard: {
     marginTop: Spacing.lg,
@@ -142,17 +586,33 @@ const styles = StyleSheet.create({
   resultHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginBottom: Spacing.lg,
   },
   explanation: {
     marginBottom: Spacing.lg,
   },
+  observationsSection: {
+    marginBottom: Spacing.lg,
+    paddingBottom: Spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(0,0,0,0.1)",
+  },
+  sectionTitle: {
+    marginBottom: Spacing.md,
+  },
+  observationItem: {
+    flexDirection: "row",
+    marginBottom: Spacing.md,
+  },
+  observationContent: {
+    flex: 1,
+  },
   tipsContainer: {
     gap: Spacing.sm,
   },
   tipsTitle: {
-    marginBottom: Spacing.xs,
+    marginBottom: Spacing.md,
   },
   tipRow: {
     flexDirection: "row",
