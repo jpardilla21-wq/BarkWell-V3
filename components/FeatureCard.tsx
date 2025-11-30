@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Pressable, ViewStyle, StyleProp } from "react-native";
+import { StyleSheet, Pressable, ViewStyle, StyleProp, Text } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import Animated, {
   useAnimatedStyle,
@@ -14,8 +14,9 @@ import { Spacing, BorderRadius } from "@/constants/theme";
 interface FeatureCardProps {
   title: string;
   subtitle: string;
-  iconName: keyof typeof Feather.glyphMap;
-  iconColor: string;
+  iconName?: keyof typeof Feather.glyphMap;
+  iconColor?: string;
+  emoji?: string;
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
 }
@@ -35,6 +36,7 @@ export function FeatureCard({
   subtitle,
   iconName,
   iconColor,
+  emoji,
   onPress,
   style,
 }: FeatureCardProps) {
@@ -65,7 +67,11 @@ export function FeatureCard({
         animatedStyle,
       ]}
     >
-      <Feather name={iconName} size={36} color={iconColor} style={styles.icon} />
+      {emoji ? (
+        <Text style={styles.emoji}>{emoji}</Text>
+      ) : (
+        <Feather name={iconName!} size={36} color={iconColor} style={styles.icon} />
+      )}
       <ThemedText type="h4" style={styles.title}>
         {title}
       </ThemedText>
@@ -87,6 +93,10 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   icon: {
+    marginBottom: Spacing.sm,
+  },
+  emoji: {
+    fontSize: 36,
     marginBottom: Spacing.sm,
   },
   title: {

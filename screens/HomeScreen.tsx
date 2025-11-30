@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -18,9 +18,34 @@ type HomeScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<MainTabParamList>
 >;
 
+interface HistoryItem {
+  id: string;
+  type: "poop" | "food" | "behavior";
+  title: string;
+  date: string;
+}
+
 export default function HomeScreen() {
   const { theme } = useTheme();
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const [history] = useState<HistoryItem[]>([
+    { id: "1", type: "poop", title: "Poop Check - Healthy", date: "Today, 2:30 PM" },
+    { id: "2", type: "food", title: "Food Scanner - Chicken Meal", date: "Yesterday" },
+    { id: "3", type: "behavior", title: "Behavior Check - Relaxed", date: "2 days ago" },
+  ]);
+
+  const getHistoryIcon = (type: string) => {
+    switch (type) {
+      case "poop":
+        return "💩";
+      case "food":
+        return "🦴";
+      case "behavior":
+        return "🐕";
+      default:
+        return "📋";
+    }
+  };
 
   return (
     <ScreenScrollView>
@@ -55,16 +80,14 @@ export default function HomeScreen() {
           <FeatureCard
             title="Poop Check"
             subtitle="Analyze stool instantly"
-            iconName="target"
-            iconColor={Colors.light.warningYellow}
+            emoji="💩"
             onPress={() => navigation.navigate("PoopTab")}
             style={styles.cardHalf}
           />
           <FeatureCard
             title="Food Scanner"
             subtitle="Is this safe for your dog?"
-            iconName="search"
-            iconColor={Colors.light.softGreen}
+            emoji="🦴"
             onPress={() => navigation.navigate("FoodScanner")}
             style={styles.cardHalf}
           />
@@ -77,6 +100,39 @@ export default function HomeScreen() {
           onPress={() => navigation.navigate("BehaviorTab")}
           style={styles.cardFull}
         />
+      </View>
+
+      <View style={styles.historySection}>
+        <ThemedText type="h4" style={styles.historyTitle}>
+          Recent Activity
+        </ThemedText>
+        {history.map((item) => (
+          <Pressable
+            key={item.id}
+            style={[
+              styles.historyItem,
+              { backgroundColor: theme.backgroundDefault },
+            ]}
+          >
+            <ThemedText style={styles.historyIcon}>
+              {getHistoryIcon(item.type)}
+            </ThemedText>
+            <View style={styles.historyContent}>
+              <ThemedText type="body">{item.title}</ThemedText>
+              <ThemedText
+                type="small"
+                style={{ color: theme.textMuted, marginTop: Spacing.xs }}
+              >
+                {item.date}
+              </ThemedText>
+            </View>
+            <Feather
+              name="chevron-right"
+              size={20}
+              color={theme.textMuted}
+            />
+          </Pressable>
+        ))}
       </View>
     </ScreenScrollView>
   );
@@ -109,6 +165,7 @@ const styles = StyleSheet.create({
   },
   cardsGrid: {
     gap: Spacing.md,
+    marginBottom: Spacing.lg,
   },
   cardsRow: {
     flexDirection: "row",
@@ -119,5 +176,24 @@ const styles = StyleSheet.create({
   },
   cardFull: {
     width: "100%",
+  },
+  historySection: {
+    gap: Spacing.md,
+  },
+  historyTitle: {
+    marginBottom: Spacing.sm,
+  },
+  historyItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: Spacing.md,
+    borderRadius: BorderRadius.md,
+    gap: Spacing.md,
+  },
+  historyIcon: {
+    fontSize: 24,
+  },
+  historyContent: {
+    flex: 1,
   },
 });
