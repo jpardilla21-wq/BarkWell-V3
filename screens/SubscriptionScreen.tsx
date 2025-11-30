@@ -74,7 +74,12 @@ export default function SubscriptionScreen({
   };
 
   const handleContinue = () => {
-    navigation.replace("MainTabs");
+    // Navigate to main app
+    try {
+      navigation.replace("MainTabs");
+    } catch (error) {
+      console.error("Navigation error:", error);
+    }
   };
 
   return (
@@ -226,7 +231,7 @@ export default function SubscriptionScreen({
       </ScrollView>
 
       <View style={styles.buttonContainer}>
-        <Button onPress={handleContinue} style={styles.continueButton}>
+        <Button onPress={() => navigation.replace("MainTabs")} style={styles.continueButton}>
           Continue with{" "}
           {selectedPlan === "weekly"
             ? "Weekly Plan"

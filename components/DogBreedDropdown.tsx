@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { StyleSheet, View, TextInput, FlatList, Pressable } from "react-native";
+import React, { useState, useMemo, useRef } from "react";
+import { StyleSheet, View, TextInput, FlatList, Pressable, Modal } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
@@ -47,6 +47,7 @@ const POPULAR_BREEDS = [
 export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownProps) {
   const { theme } = useTheme();
   const [showDropdown, setShowDropdown] = useState(false);
+  const inputRef = useRef<TextInput>(null);
 
   const filteredBreeds = useMemo(() => {
     if (!value.trim()) return POPULAR_BREEDS;
@@ -60,9 +61,15 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
     setShowDropdown(false);
   };
 
+  const handleInputChange = (text: string) => {
+    onSelect(text);
+    setShowDropdown(text.length > 0);
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
+        ref={inputRef}
         style={[
           styles.input,
           {
@@ -72,72 +79,69 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
           },
         ]}
         value={value}
-        onChangeText={(text) => {
-          onSelect(text);
-          setShowDropdown(text.length > 0);
-        }}
-        onFocus={() => setShowDropdown(true)}
-        onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+        onChangeText={handleInputChange}
+        onFocus={() => setShowDropdown(value.length > 0)}
         placeholder="Start typing a breed..."
         placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
         autoCapitalize="words"
         editable={true}
       />
 
-      {showDropdown && filteredBreeds.length > 0 && (
-        <View
-          style={[
-            styles.dropdown,
-            {
-              backgroundColor: theme.backgroundDefault,
-              borderColor: theme.borderLight,
-            },
-          ]}
+      {showDropdown && (
+        <Modal
+          transparent
+          visible={showDropdown}
+          onRequestClose={() => setShowDropdown(false)}
         >
-          <FlatList
-            data={filteredBreeds}
-            keyExtractor={(item) => item}
-            scrollEnabled={filteredBreeds.length > 6}
-            nestedScrollEnabled={true}
-            style={{ maxHeight: 220 }}
-            renderItem={({ item }) => (
-              <Pressable
-                onPress={() => handleSelectBreed(item)}
-                style={[
-                  styles.option,
-                  {
-                    backgroundColor:
-                      value === item
-                        ? Colors.light.primary + "20"
-                        : "transparent",
-                  },
-                ]}
-              >
-                <ThemedText type="body" style={styles.optionText}>
-                  {item}
-                </ThemedText>
-              </Pressable>
-            )}
-          />
-        </View>
-      )}
-
-      {showDropdown && filteredBreeds.length === 0 && value.length > 0 && (
-        <View
-          style={[
-            styles.dropdown,
-            {
-              backgroundColor: theme.backgroundDefault,
-              borderColor: theme.borderLight,
-            },
-          ]}
-        >
-          <View style={styles.emptyState}>
-            <ThemedText type="body" style={{ color: theme.textMuted }}>
-              No breeds found
-            </ThemedText>
-          </View>
-        </View>
+          <Pressable
+            style={styles.overlay}
+            onPress={() => setShowDropdown(false)}
+          >
+            <View
+              style={[
+                styles.dropdown,
+                {
+                  backgroundColor: theme.backgroundDefault,
+                  borderColor: theme.borderLight,
+                },
+              ]}
+            >
+              {filteredBreeds.length > 0 ? (
+                <FlatList
+                  data={filteredBreeds}
+                  keyExtractor={(item) => item}
+                  scrollEnabled={filteredBreeds.length > 6}
+                  nestedScrollEnabled={true}
+                  style={{ maxHeight: 220 }}
+                  renderItem={({ item }) => (
+                    <Pressable
+                      onPress={() => handleSelectBreed(item)}
+                      style={[
+                        styles.option,
+                        {
+                          backgroundColor:
+                            value === item
+                              ? Colors.light.primary + "20"
+                              : "transparent",
+                        },
+                      ]}
+                    >
+                      <ThemedText type="body" style={styles.optionText}>
+                        {item}
+                      </ThemedText>
+                    </Pressable>
+                  )}
+                />
+              ) : (
+                <View style={styles.emptyState}>
+                  <ThemedText type="body" style={{ color: theme.textMuted }}>
+                    No breeds found
+                  </ThemedText>
+                </View>
+              )}
+            </View>
+          </Pressable>
+        </Modal>
       )}
     </View>
   );
@@ -145,8 +149,7 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
-    zIndex: 10,
+    width: "100%",
   },
   input: {
     height: Spacing.inputHeight,
@@ -155,21 +158,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     fontSize: Typography.bodyM.fontSize,
   },
+  overlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   dropdown: {
-    position: "absolute",
-    top: Spacing.inputHeight + 4,
-    left: 0,
-    right: 0,
+    width: "80%",
+    maxWidth: 300,
     borderWidth: 1,
     borderRadius: BorderRadius.md,
-    marginTop: Spacing.xs,
-    zIndex: 1000,
-    maxHeight: 220,
+    maxHeight: 300,
     elevation: 10,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
-    shadowRadius: 4,
+    shadowRadius: 8,
   },
   option: {
     paddingHorizontal: Spacing.md,
