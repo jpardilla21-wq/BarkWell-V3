@@ -96,6 +96,11 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 style={styles.splashImage}
                 resizeMode="cover"
               />
+              <Image
+                source={require("../assets/images/pupsense-logo.png")}
+                style={styles.logoOverlay}
+                resizeMode="contain"
+              />
             </View>
 
             <View style={styles.textContainer}>
@@ -439,11 +444,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: Spacing.xl,
     overflow: "hidden",
+    position: "relative",
   },
   splashImage: {
     width: "100%",
     height: "100%",
     borderRadius: BorderRadius.lg,
+  },
+  logoOverlay: {
+    position: "absolute",
+    top: Spacing.md,
+    left: Spacing.md,
+    width: 120,
+    height: 50,
   },
   textContainer: {
     alignItems: "center",
