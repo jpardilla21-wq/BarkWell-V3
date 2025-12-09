@@ -91,23 +91,10 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 { backgroundColor: theme.backgroundDefault },
               ]}
             >
-              <View style={styles.iconRow}>
-                <View style={[styles.iconCircle, { backgroundColor: Colors.light.warningYellow }]}>
-                  <ThemedText style={styles.iconEmoji}>💩</ThemedText>
-                </View>
-                <View style={[styles.iconCircle, { backgroundColor: Colors.light.softGreen }]}>
-                  <ThemedText style={styles.iconEmoji}>🦴</ThemedText>
-                </View>
-                <View
-                  style={[styles.iconCircle, { backgroundColor: Colors.light.primary }]}
-                >
-                  <Feather name="activity" size={28} color="#FFFFFF" />
-                </View>
-              </View>
               <Image
-                source={require("../assets/images/icon.png")}
-                style={styles.logo}
-                resizeMode="contain"
+                source={require("../assets/images/splash-dog.png")}
+                style={styles.splashImage}
+                resizeMode="cover"
               />
             </View>
 
@@ -451,25 +438,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: Spacing.xl,
+    overflow: "hidden",
   },
-  iconRow: {
-    flexDirection: "row",
-    gap: Spacing.md,
-    marginBottom: Spacing.lg,
-  },
-  iconCircle: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  iconEmoji: {
-    fontSize: 32,
-  },
-  logo: {
-    width: 100,
-    height: 100,
+  splashImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: BorderRadius.lg,
   },
   textContainer: {
     alignItems: "center",
