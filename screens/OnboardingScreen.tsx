@@ -85,19 +85,17 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           contentContainerStyle={styles.scrollContent}
         >
           <View style={styles.content}>
-            <View style={styles.illustrationContainer}>
+            <View
+              style={[
+                styles.illustrationContainer,
+                { backgroundColor: theme.backgroundDefault },
+              ]}
+            >
               <Image
                 source={require("../assets/images/splash-dog.png")}
                 style={styles.splashImage}
                 resizeMode="cover"
               />
-              <View style={styles.logoContainer}>
-                <Image
-                  source={require("../assets/images/pupsense-logo.png")}
-                  style={styles.logoOverlay}
-                  resizeMode="contain"
-                />
-              </View>
             </View>
 
             <View style={styles.textContainer}>
@@ -437,23 +435,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 280,
     borderRadius: BorderRadius.lg,
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: Spacing.xl,
     overflow: "hidden",
   },
   splashImage: {
     width: "100%",
     height: "100%",
-  },
-  logoContainer: {
-    position: "absolute",
-    top: Spacing.md,
-    left: Spacing.md,
-    width: 120,
-    height: 50,
-  },
-  logoOverlay: {
-    width: "100%",
-    height: "100%",
+    borderRadius: BorderRadius.lg,
   },
   textContainer: {
     alignItems: "center",
