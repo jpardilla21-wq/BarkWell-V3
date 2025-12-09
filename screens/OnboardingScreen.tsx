@@ -84,11 +84,6 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
         >
-          <Image
-            source={require("../assets/images/pupsense-logo.png")}
-            style={styles.headerLogo}
-            resizeMode="contain"
-          />
           <View style={styles.content}>
             <View
               style={[
@@ -430,13 +425,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: Spacing.lg,
     paddingHorizontal: Spacing.md,
-  },
-  headerLogo: {
-    height: 50,
-    width: 200,
-    marginBottom: Spacing.lg,
-    marginLeft: -Spacing.md,
-    alignSelf: "flex-start",
   },
   content: {
     flex: 1,
