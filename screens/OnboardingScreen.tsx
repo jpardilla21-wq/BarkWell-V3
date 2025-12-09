@@ -113,13 +113,13 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
 
             <View style={styles.textContainer}>
               <ThemedText type="h1" style={styles.title}>
-                Understand your dog in seconds
+                AI-powered answers for everyday dog problems
               </ThemedText>
               <ThemedText
                 type="body"
                 style={[styles.subtitle, { color: theme.textMuted }]}
               >
-                AI insights to help you act with confidence.
+                Your all-in-one pet wellness assistant
               </ThemedText>
             </View>
           </View>
