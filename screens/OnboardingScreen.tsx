@@ -435,6 +435,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 200,
     marginBottom: Spacing.lg,
+    marginLeft: -Spacing.md,
     alignSelf: "flex-start",
   },
   content: {
