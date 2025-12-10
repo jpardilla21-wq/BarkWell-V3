@@ -7,8 +7,52 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 import type { RootStackParamList } from "@/navigation/RootNavigator";
+
+const translations = {
+  eng: {
+    chooseYourPlan: "Choose Your Plan",
+    unlockFeatures: "Unlock advanced features to better care for your pup",
+    weekly: "Weekly",
+    monthly: "Monthly",
+    perWeek: "Per week",
+    perMonth: "Per month",
+    trialDays: "3 days free",
+    mostPopular: "Most Popular",
+    unlimitedAnalyses: "Unlimited analyses",
+    advancedPoopAnalysis: "Advanced poop analysis",
+    foodToxinDetection: "Food toxin detection",
+    behaviorInsights: "Behavior insights",
+    weeklyHealthReport: "Weekly health report",
+    prioritySupport: "Priority support",
+    saveDiscount: "Save 33% vs weekly",
+    perfectForTrying: "Perfect for trying advanced features",
+    bestValue: "Best value for pet parents",
+    continueButton: "Continue to App",
+  },
+  esp: {
+    chooseYourPlan: "Elige Tu Plan",
+    unlockFeatures: "Desbloquea funciones avanzadas para cuidar mejor a tu mascota",
+    weekly: "Semanal",
+    monthly: "Mensual",
+    perWeek: "Por semana",
+    perMonth: "Por mes",
+    trialDays: "3 días gratis",
+    mostPopular: "Más Popular",
+    unlimitedAnalyses: "Análisis ilimitados",
+    advancedPoopAnalysis: "Análisis avanzado de heces",
+    foodToxinDetection: "Detección de toxinas en alimentos",
+    behaviorInsights: "Análisis de comportamiento",
+    weeklyHealthReport: "Informe de salud semanal",
+    prioritySupport: "Soporte prioritario",
+    saveDiscount: "Ahorrar 33% vs semanal",
+    perfectForTrying: "Perfecto para probar funciones avanzadas",
+    bestValue: "Mejor valor para los dueños de mascotas",
+    continueButton: "Continuar a la Aplicación",
+  },
+};
 
 type SubscriptionScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Subscription">;
@@ -27,37 +71,37 @@ interface Plan {
   highlighted?: boolean;
 }
 
-const PLANS: Plan[] = [
+const getPLANS = (t: any): Plan[] => [
   {
     id: "weekly",
-    name: "Weekly",
+    name: t.weekly,
     price: "$2.99",
-    period: "Per week",
-    description: "Perfect for trying advanced features",
+    period: t.perWeek,
+    description: t.perfectForTrying,
     features: [
-      "Unlimited analyses",
-      "Advanced poop analysis",
-      "Food toxin detection",
-      "Behavior insights",
-      "Weekly health report",
+      t.unlimitedAnalyses,
+      t.advancedPoopAnalysis,
+      t.foodToxinDetection,
+      t.behaviorInsights,
+      t.weeklyHealthReport,
     ],
     highlighted: true,
   },
   {
     id: "monthly",
-    name: "Monthly",
+    name: t.monthly,
     price: "$9.99",
-    period: "Per month",
-    description: "Best value for pet parents",
-    trial: "3 days free",
+    period: t.perMonth,
+    description: t.bestValue,
+    trial: t.trialDays,
     features: [
-      "Unlimited analyses",
-      "Advanced poop analysis",
-      "Food toxin detection",
-      "Behavior insights",
-      "Weekly health report",
-      "Priority support",
-      "Save 33% vs weekly",
+      t.unlimitedAnalyses,
+      t.advancedPoopAnalysis,
+      t.foodToxinDetection,
+      t.behaviorInsights,
+      t.weeklyHealthReport,
+      t.prioritySupport,
+      t.saveDiscount,
     ],
   },
 ];
@@ -67,6 +111,8 @@ export default function SubscriptionScreen({
 }: SubscriptionScreenProps) {
   const insets = useSafeAreaInsets();
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   const [selectedPlan, setSelectedPlan] = useState<PlanType>("weekly");
 
   const handleSelectPlan = (planId: PlanType) => {
@@ -99,18 +145,18 @@ export default function SubscriptionScreen({
       >
         <View style={styles.header}>
           <ThemedText type="h1" style={styles.title}>
-            Choose Your Plan
+            {t.chooseYourPlan}
           </ThemedText>
           <ThemedText
             type="body"
             style={[styles.subtitle, { color: theme.textMuted }]}
           >
-            Unlock advanced features to better care for your pup
+            {t.unlockFeatures}
           </ThemedText>
         </View>
 
         <View style={styles.plansContainer}>
-          {PLANS.map((plan) => {
+          {getPLANS(t).map((plan) => {
             const isSelected = selectedPlan === plan.id;
             const isHighlighted = plan.highlighted;
 
@@ -145,7 +191,7 @@ export default function SubscriptionScreen({
                         { color: "#FFFFFF", fontWeight: "700" },
                       ]}
                     >
-                      Most Popular
+                      {t.mostPopular}
                     </ThemedText>
                   </View>
                 )}

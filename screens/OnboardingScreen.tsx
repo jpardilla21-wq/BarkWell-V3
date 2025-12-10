@@ -10,6 +10,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Colors, Spacing, BorderRadius, Typography } from "@/constants/theme";
 import type { RootStackParamList } from "@/navigation/RootNavigator";
 
@@ -68,8 +69,8 @@ const translations = {
 export default function OnboardingScreen({ navigation }: OnboardingScreenProps) {
   const insets = useSafeAreaInsets();
   const { theme, isDark } = useTheme();
+  const { language, setLanguage } = useLanguage();
   const [step, setStep] = useState<FormStep>("intro");
-  const [language, setLanguage] = useState<Language>("eng");
   const [formData, setFormData] = useState({
     ownerName: "",
     email: "",
