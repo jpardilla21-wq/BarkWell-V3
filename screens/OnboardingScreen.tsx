@@ -116,7 +116,7 @@ const createEmptyDog = (): DogProfile => ({
 export default function OnboardingScreen({ navigation }: OnboardingScreenProps) {
   const insets = useSafeAreaInsets();
   const { theme, isDark } = useTheme();
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
   const [step, setStep] = useState<FormStep>("intro");
   const [ownerData, setOwnerData] = useState({
     name: "",
@@ -334,8 +334,8 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         </ThemedText>
         {dogs.length > 1 && (
           <Pressable onPress={() => removeDog(dog.id)} style={styles.removeButton}>
-            <Feather name="trash-2" size={18} color={Colors.light.softRed} />
-            <ThemedText type="small" style={{ color: Colors.light.softRed, marginLeft: 4 }}>
+            <Feather name="trash-2" size={18} color={Colors.light.urgentRed} />
+            <ThemedText type="small" style={{ color: Colors.light.urgentRed, marginLeft: 4 }}>
               {t.removeDog}
             </ThemedText>
           </Pressable>
@@ -432,31 +432,6 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         },
       ]}
     >
-      <View style={styles.languageSelector}>
-        <Pressable
-          onPress={() => setLanguage("eng")}
-          style={[
-            styles.languageButton,
-            language === "eng" && styles.languageButtonActive,
-          ]}
-        >
-          <ThemedText type="small" style={language === "eng" ? styles.languageButtonTextActive : {}}>
-            English
-          </ThemedText>
-        </Pressable>
-        <Pressable
-          onPress={() => setLanguage("esp")}
-          style={[
-            styles.languageButton,
-            language === "esp" && styles.languageButtonActive,
-          ]}
-        >
-          <ThemedText type="small" style={language === "esp" ? styles.languageButtonTextActive : {}}>
-            Español
-          </ThemedText>
-        </Pressable>
-      </View>
-
       {step === "intro" && (
         <ScrollView
           style={styles.scrollView}
@@ -645,26 +620,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: Spacing.lg,
   },
-  languageSelector: {
-    flexDirection: "row",
-    gap: Spacing.sm,
-    paddingTop: Spacing.md,
-  },
-  languageButton: {
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    borderRadius: BorderRadius.md,
-    borderWidth: 1,
-    borderColor: Colors.light.primary + "40",
-  },
-  languageButtonActive: {
-    backgroundColor: Colors.light.primary + "20",
-    borderColor: Colors.light.primary,
-  },
-  languageButtonTextActive: {
-    color: Colors.light.primary,
-    fontWeight: "600",
-  },
   scrollView: {
     flex: 1,
   },
@@ -766,14 +721,14 @@ const styles = StyleSheet.create({
   dogCard: {
     borderWidth: 1,
     borderRadius: BorderRadius.lg,
-    padding: Spacing.md,
-    marginBottom: Spacing.lg,
+    padding: Spacing.lg,
+    marginBottom: Spacing.xl,
   },
   dogCardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.lg,
   },
   dogCardTitle: {
     marginBottom: 0,
@@ -785,18 +740,19 @@ const styles = StyleSheet.create({
   },
   photoRow: {
     flexDirection: "row",
-    gap: Spacing.md,
-    marginBottom: Spacing.md,
+    gap: Spacing.lg,
+    marginBottom: Spacing.xl,
   },
   photoContainer: {
-    width: 100,
-    height: 100,
+    width: 110,
+    height: 110,
     borderRadius: BorderRadius.lg,
     borderWidth: 2,
     borderStyle: "dashed",
     overflow: "hidden",
     justifyContent: "center",
     alignItems: "center",
+    flexShrink: 0,
   },
   dogPhoto: {
     width: "100%",
@@ -808,11 +764,12 @@ const styles = StyleSheet.create({
   },
   photoFieldsColumn: {
     flex: 1,
-    gap: Spacing.sm,
+    gap: Spacing.md,
   },
   dogFieldsRow: {
     flexDirection: "row",
     gap: Spacing.md,
+    marginTop: Spacing.lg,
   },
   addDogButton: {
     flexDirection: "row",
