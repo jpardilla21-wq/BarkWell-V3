@@ -31,6 +31,10 @@ const translations = {
     perfectForTrying: "Perfect for trying advanced features",
     bestValue: "Best value for pet parents",
     continueButton: "Continue to App",
+    disclaimer: "No hidden fees. Cancel anytime. Billed securely through App Store.",
+    continueWith: "Continue with",
+    weeklyPlan: "Weekly Plan",
+    monthlyPlan: "Monthly Plan",
   },
   esp: {
     chooseYourPlan: "Elige Tu Plan",
@@ -51,6 +55,10 @@ const translations = {
     perfectForTrying: "Perfecto para probar funciones avanzadas",
     bestValue: "Mejor valor para los dueños de mascotas",
     continueButton: "Continuar a la Aplicación",
+    disclaimer: "Sin cargos ocultos. Cancela en cualquier momento. Facturado de forma segura a través de la App Store.",
+    continueWith: "Continuar con",
+    weeklyPlan: "Plan Semanal",
+    monthlyPlan: "Plan Mensual",
   },
 };
 
@@ -271,17 +279,17 @@ export default function SubscriptionScreen({
             type="small"
             style={[styles.disclaimerText, { color: theme.textMuted }]}
           >
-            No hidden fees. Cancel anytime. Billed securely through App Store.
+            {t.disclaimer}
           </ThemedText>
         </View>
       </ScrollView>
 
       <View style={styles.buttonContainer}>
         <Button onPress={() => navigation.replace("MainTabs")} style={styles.continueButton}>
-          Continue with{" "}
+          {t.continueWith}{" "}
           {selectedPlan === "weekly"
-            ? "Weekly Plan"
-            : "Monthly Plan"}
+            ? t.weeklyPlan
+            : t.monthlyPlan}
         </Button>
       </View>
     </ThemedView>
