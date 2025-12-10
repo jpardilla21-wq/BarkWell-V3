@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Image, TextInput, ScrollView, Platform } from "react-native";
+import { StyleSheet, View, Image, TextInput, ScrollView, Platform, Linking, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   KeyboardAwareScrollView,
 } from "react-native-keyboard-controller";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Feather } from "@expo/vector-icons";
 import { DogBreedDropdown } from "@/components/DogBreedDropdown";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -18,7 +17,7 @@ type OnboardingScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Onboarding">;
 };
 
-type FormStep = "intro" | "registration" | "dogInfo";
+type FormStep = "intro" | "form";
 
 export default function OnboardingScreen({ navigation }: OnboardingScreenProps) {
   const insets = useSafeAreaInsets();
@@ -33,17 +32,17 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   });
 
   const handleIntroNext = () => {
-    setStep("registration");
+    setStep("form");
   };
 
-  const handleRegistrationNext = () => {
-    if (formData.ownerName.trim() && formData.email.trim()) {
-      setStep("dogInfo");
-    }
-  };
-
-  const handleDogInfoNext = () => {
-    if (formData.dogName.trim() && formData.dogBreed.trim() && formData.dogAge.trim()) {
+  const handleFormSubmit = () => {
+    if (
+      formData.ownerName.trim() &&
+      formData.email.trim() &&
+      formData.dogName.trim() &&
+      formData.dogBreed.trim() &&
+      formData.dogAge.trim()
+    ) {
       navigation.replace("Subscription");
     }
   };
@@ -62,11 +61,17 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   ];
 
   const handleGoBack = () => {
-    if (step === "registration") {
+    if (step === "form") {
       setStep("intro");
-    } else if (step === "dogInfo") {
-      setStep("registration");
     }
+  };
+
+  const handleTermsPress = () => {
+    Linking.openURL("https://pupsense.elmtstudio.xyz/terms").catch(() => {});
+  };
+
+  const handlePrivacyPress = () => {
+    Linking.openURL("https://pupsense.elmtstudio.xyz/privacy").catch(() => {});
   };
 
   return (
@@ -117,7 +122,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         </ScrollView>
       )}
 
-      {step === "registration" && (
+      {step === "form" && (
         Platform.OS === "web" ? (
           <ScrollView
             style={styles.scrollView}
@@ -125,7 +130,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           >
             <View style={styles.stepContainer}>
               <ThemedText type="h2" style={styles.stepTitle}>
-                Tell us about you
+                Tell us about you and your pup
               </ThemedText>
               <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
                 We'll use this to personalize your experience
@@ -158,114 +163,9 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                   placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
                   keyboardType="email-address"
                   autoCapitalize="none"
-                  returnKeyType="done"
-                />
-              </View>
-            </View>
-
-            <View style={styles.buttonRow}>
-              <Button
-                onPress={handleGoBack}
-                style={[
-                  styles.secondaryButton,
-                  { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
-                ]}
-              >
-                <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
-                  Back
-                </ThemedText>
-              </Button>
-              <Button
-                onPress={handleRegistrationNext}
-                disabled={!formData.ownerName.trim() || !formData.email.trim()}
-                style={styles.flexButton}
-              >
-                Continue
-              </Button>
-            </View>
-          </ScrollView>
-        ) : (
-          <KeyboardAwareScrollView
-            style={[styles.scrollView, { backgroundColor: theme.backgroundRoot }]}
-            contentContainerStyle={styles.scrollContent}
-          >
-            <View style={styles.stepContainer}>
-              <ThemedText type="h2" style={styles.stepTitle}>
-                Tell us about you
-              </ThemedText>
-              <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
-                We'll use this to personalize your experience
-              </ThemedText>
-
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  Your Name
-                </ThemedText>
-                <TextInput
-                  style={inputStyle}
-                  value={formData.ownerName}
-                  onChangeText={(value) => updateField("ownerName", value)}
-                  placeholder="Enter your name"
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  autoCapitalize="words"
                   returnKeyType="next"
                 />
               </View>
-
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  Email Address
-                </ThemedText>
-                <TextInput
-                  style={inputStyle}
-                  value={formData.email}
-                  onChangeText={(value) => updateField("email", value)}
-                  placeholder="your.email@example.com"
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  returnKeyType="done"
-                />
-              </View>
-            </View>
-
-            <View style={styles.buttonRow}>
-              <Button
-                onPress={handleGoBack}
-                style={[
-                  styles.secondaryButton,
-                  { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
-                ]}
-              >
-                <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
-                  Back
-                </ThemedText>
-              </Button>
-              <Button
-                onPress={handleRegistrationNext}
-                disabled={!formData.ownerName.trim() || !formData.email.trim()}
-                style={styles.flexButton}
-              >
-                Continue
-              </Button>
-            </View>
-          </KeyboardAwareScrollView>
-        )
-      )}
-
-      {step === "dogInfo" && (
-        Platform.OS === "web" ? (
-          <ScrollView
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollContent}
-          >
-            <View style={styles.stepContainer}>
-              <ThemedText type="h2" style={styles.stepTitle}>
-                Tell us about your pup
-              </ThemedText>
-              <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
-                This helps us provide breed-specific insights
-              </ThemedText>
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
@@ -307,6 +207,22 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                   returnKeyType="done"
                 />
               </View>
+
+              <View style={styles.linksContainer}>
+                <Pressable onPress={handleTermsPress}>
+                  <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
+                    Terms of Service
+                  </ThemedText>
+                </Pressable>
+                <ThemedText type="small" style={{ color: theme.textMuted }}>
+                  {" • "}
+                </ThemedText>
+                <Pressable onPress={handlePrivacyPress}>
+                  <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
+                    Privacy Policy
+                  </ThemedText>
+                </Pressable>
+              </View>
             </View>
 
             <View style={styles.buttonRow}>
@@ -322,11 +238,17 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 </ThemedText>
               </Button>
               <Button
-                onPress={handleDogInfoNext}
-                disabled={!formData.dogName.trim() || !formData.dogBreed.trim() || !formData.dogAge.trim()}
+                onPress={handleFormSubmit}
+                disabled={
+                  !formData.ownerName.trim() ||
+                  !formData.email.trim() ||
+                  !formData.dogName.trim() ||
+                  !formData.dogBreed.trim() ||
+                  !formData.dogAge.trim()
+                }
                 style={styles.flexButton}
               >
-                Next
+                Continue
               </Button>
             </View>
           </ScrollView>
@@ -337,11 +259,42 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           >
             <View style={styles.stepContainer}>
               <ThemedText type="h2" style={styles.stepTitle}>
-                Tell us about your pup
+                Tell us about you and your pup
               </ThemedText>
               <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
-                This helps us provide breed-specific insights
+                We'll use this to personalize your experience
               </ThemedText>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Your Name
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.ownerName}
+                  onChangeText={(value) => updateField("ownerName", value)}
+                  placeholder="Enter your name"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                />
+              </View>
+
+              <View style={styles.fieldContainer}>
+                <ThemedText type="small" style={styles.label}>
+                  Email Address
+                </ThemedText>
+                <TextInput
+                  style={inputStyle}
+                  value={formData.email}
+                  onChangeText={(value) => updateField("email", value)}
+                  placeholder="your.email@example.com"
+                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                />
+              </View>
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
@@ -383,6 +336,22 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                   returnKeyType="done"
                 />
               </View>
+
+              <View style={styles.linksContainer}>
+                <Pressable onPress={handleTermsPress}>
+                  <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
+                    Terms of Service
+                  </ThemedText>
+                </Pressable>
+                <ThemedText type="small" style={{ color: theme.textMuted }}>
+                  {" • "}
+                </ThemedText>
+                <Pressable onPress={handlePrivacyPress}>
+                  <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
+                    Privacy Policy
+                  </ThemedText>
+                </Pressable>
+              </View>
             </View>
 
             <View style={styles.buttonRow}>
@@ -398,11 +367,17 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 </ThemedText>
               </Button>
               <Button
-                onPress={handleDogInfoNext}
-                disabled={!formData.dogName.trim() || !formData.dogBreed.trim() || !formData.dogAge.trim()}
+                onPress={handleFormSubmit}
+                disabled={
+                  !formData.ownerName.trim() ||
+                  !formData.email.trim() ||
+                  !formData.dogName.trim() ||
+                  !formData.dogBreed.trim() ||
+                  !formData.dogAge.trim()
+                }
                 style={styles.flexButton}
               >
-                Next
+                Continue
               </Button>
             </View>
           </KeyboardAwareScrollView>
@@ -479,6 +454,16 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     paddingHorizontal: Spacing.md,
     fontSize: Typography.bodyM.fontSize,
+  },
+  linksContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: Spacing.lg,
+    gap: Spacing.xs,
+  },
+  link: {
+    textDecorationLine: "underline",
   },
   buttonContainer: {
     width: "100%",
