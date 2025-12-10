@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Image, TextInput, ScrollView, Platform, Linking, Pressable } from "react-native";
+import { StyleSheet, View, Image, TextInput, ScrollView, Platform, Linking, Pressable, Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   KeyboardAwareScrollView,
 } from "react-native-keyboard-controller";
+import { Feather } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DogBreedDropdown } from "@/components/DogBreedDropdown";
 import { ThemedText } from "@/components/ThemedText";
@@ -18,87 +20,205 @@ type OnboardingScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Onboarding">;
 };
 
-type FormStep = "intro" | "form";
+type FormStep = "intro" | "owner" | "dogs";
 type Language = "eng" | "esp";
+
+interface DogProfile {
+  id: string;
+  name: string;
+  nickname: string;
+  breed: string;
+  age: string;
+  photo: string | null;
+}
 
 const translations = {
   eng: {
     getStarted: "Get Started",
     title: "AI-powered answers for everyday dog problems",
     subtitle: "Your all-in-one pet wellness assistant",
-    formTitle: "Tell us about you and your pup",
-    formSubtitle: "We'll use this to personalize your experience",
+    ownerFormTitle: "Tell us about you",
+    ownerFormSubtitle: "We'll use this to personalize your experience",
+    dogsFormTitle: "Add your dogs",
+    dogsFormSubtitle: "Create profiles for each of your furry friends",
     yourName: "Your Name",
     namePlaceholder: "Enter your name",
     emailLabel: "Email Address",
     emailPlaceholder: "your.email@example.com",
-    dogName: "Dog's Name",
-    dogNamePlaceholder: "e.g., Max, Bella, Charlie",
+    dogName: "Name",
+    dogNamePlaceholder: "e.g., Max, Bella",
+    nickname: "Nickname",
+    nicknamePlaceholder: "e.g., Buddy, Sweetie",
     breed: "Breed",
-    age: "Age (in years)",
+    age: "Age (years)",
     agePlaceholder: "e.g., 3",
+    addPhoto: "Add Photo",
+    changePhoto: "Change",
+    addAnotherDog: "Add Another Dog",
+    removeDog: "Remove",
     back: "Back",
     continue: "Continue",
     termsLink: "Terms of Service",
     privacyLink: "Privacy Policy",
     disclaimer: "By clicking Continue, you agree to our Terms of Service and Privacy Policy.",
+    atLeastOneDog: "Please add at least one dog profile",
+    fillAllFields: "Please fill in all required fields for each dog",
+    takePhoto: "Take Photo",
+    chooseFromLibrary: "Choose from Library",
+    cancel: "Cancel",
   },
   esp: {
     getStarted: "Comenzar",
     title: "Respuestas impulsadas por IA para los problemas cotidianos de tu perro",
     subtitle: "Tu asistente integral de bienestar para mascotas",
-    formTitle: "Cuéntanos sobre ti y tu perro",
-    formSubtitle: "Usaremos esto para personalizar tu experiencia",
+    ownerFormTitle: "Cuéntanos sobre ti",
+    ownerFormSubtitle: "Usaremos esto para personalizar tu experiencia",
+    dogsFormTitle: "Agrega tus perros",
+    dogsFormSubtitle: "Crea perfiles para cada uno de tus amigos peludos",
     yourName: "Tu Nombre",
     namePlaceholder: "Ingresa tu nombre",
     emailLabel: "Correo Electrónico",
     emailPlaceholder: "tu.correo@ejemplo.com",
-    dogName: "Nombre del Perro",
-    dogNamePlaceholder: "Por ej., Max, Bella, Charlie",
+    dogName: "Nombre",
+    dogNamePlaceholder: "Por ej., Max, Bella",
+    nickname: "Apodo",
+    nicknamePlaceholder: "Por ej., Amigo, Cariño",
     breed: "Raza",
-    age: "Edad (en años)",
+    age: "Edad (años)",
     agePlaceholder: "Por ej., 3",
+    addPhoto: "Agregar Foto",
+    changePhoto: "Cambiar",
+    addAnotherDog: "Agregar Otro Perro",
+    removeDog: "Eliminar",
     back: "Atrás",
     continue: "Continuar",
     termsLink: "Términos de Servicio",
     privacyLink: "Política de Privacidad",
     disclaimer: "Al hacer clic en Continuar, aceptas nuestros Términos de Servicio y Política de Privacidad.",
+    atLeastOneDog: "Por favor agrega al menos un perfil de perro",
+    fillAllFields: "Por favor completa todos los campos requeridos para cada perro",
+    takePhoto: "Tomar Foto",
+    chooseFromLibrary: "Elegir de la Galería",
+    cancel: "Cancelar",
   },
 };
+
+const createEmptyDog = (): DogProfile => ({
+  id: Date.now().toString(),
+  name: "",
+  nickname: "",
+  breed: "",
+  age: "",
+  photo: null,
+});
 
 export default function OnboardingScreen({ navigation }: OnboardingScreenProps) {
   const insets = useSafeAreaInsets();
   const { theme, isDark } = useTheme();
   const { language, setLanguage } = useLanguage();
   const [step, setStep] = useState<FormStep>("intro");
-  const [formData, setFormData] = useState({
-    ownerName: "",
+  const [ownerData, setOwnerData] = useState({
+    name: "",
     email: "",
-    dogName: "",
-    dogBreed: "",
-    dogAge: "",
   });
+  const [dogs, setDogs] = useState<DogProfile[]>([createEmptyDog()]);
 
   const t = translations[language];
 
   const handleIntroNext = () => {
-    setStep("form");
+    setStep("owner");
   };
 
-  const handleFormSubmit = () => {
-    if (
-      formData.ownerName.trim() &&
-      formData.email.trim() &&
-      formData.dogName.trim() &&
-      formData.dogBreed.trim() &&
-      formData.dogAge.trim()
-    ) {
-      navigation.replace("Subscription");
+  const handleOwnerNext = () => {
+    if (ownerData.name.trim() && ownerData.email.trim()) {
+      setStep("dogs");
     }
   };
 
-  const updateField = (field: keyof typeof formData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const handleFormSubmit = () => {
+    const validDogs = dogs.filter(
+      (dog) => dog.name.trim() && dog.breed.trim() && dog.age.trim()
+    );
+    if (validDogs.length === 0) {
+      Alert.alert("", t.atLeastOneDog);
+      return;
+    }
+    navigation.replace("Subscription");
+  };
+
+  const updateOwnerField = (field: keyof typeof ownerData, value: string) => {
+    setOwnerData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const updateDogField = (dogId: string, field: keyof DogProfile, value: string | null) => {
+    setDogs((prev) =>
+      prev.map((dog) =>
+        dog.id === dogId ? { ...dog, [field]: value } : dog
+      )
+    );
+  };
+
+  const addDog = () => {
+    setDogs((prev) => [...prev, createEmptyDog()]);
+  };
+
+  const removeDog = (dogId: string) => {
+    if (dogs.length > 1) {
+      setDogs((prev) => prev.filter((dog) => dog.id !== dogId));
+    }
+  };
+
+  const pickImage = async (dogId: string) => {
+    if (Platform.OS === "web") {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets[0]) {
+        updateDogField(dogId, "photo", result.assets[0].uri);
+      }
+    } else {
+      Alert.alert(
+        "",
+        t.addPhoto,
+        [
+          {
+            text: t.takePhoto,
+            onPress: async () => {
+              const { status } = await ImagePicker.requestCameraPermissionsAsync();
+              if (status === "granted") {
+                const result = await ImagePicker.launchCameraAsync({
+                  allowsEditing: true,
+                  aspect: [1, 1],
+                  quality: 0.8,
+                });
+                if (!result.canceled && result.assets[0]) {
+                  updateDogField(dogId, "photo", result.assets[0].uri);
+                }
+              }
+            },
+          },
+          {
+            text: t.chooseFromLibrary,
+            onPress: async () => {
+              const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 0.8,
+              });
+              if (!result.canceled && result.assets[0]) {
+                updateDogField(dogId, "photo", result.assets[0].uri);
+              }
+            },
+          },
+          { text: t.cancel, style: "cancel" },
+        ]
+      );
+    }
   };
 
   const inputStyle = [
@@ -111,7 +231,9 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   ];
 
   const handleGoBack = () => {
-    if (step === "form") {
+    if (step === "dogs") {
+      setStep("owner");
+    } else if (step === "owner") {
       setStep("intro");
     }
   };
@@ -123,6 +245,113 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   const handlePrivacyPress = () => {
     Linking.openURL("https://pupsense.elmtstudio.xyz/privacy").catch(() => {});
   };
+
+  const isOwnerFormValid = ownerData.name.trim() && ownerData.email.trim();
+  const isDogsFormValid = dogs.some(
+    (dog) => dog.name.trim() && dog.breed.trim() && dog.age.trim()
+  );
+
+  const renderDogCard = (dog: DogProfile, index: number) => (
+    <View
+      key={dog.id}
+      style={[
+        styles.dogCard,
+        { backgroundColor: theme.backgroundDefault, borderColor: theme.borderLight },
+      ]}
+    >
+      <View style={styles.dogCardHeader}>
+        <ThemedText type="h4" style={styles.dogCardTitle}>
+          {language === "eng" ? `Dog ${index + 1}` : `Perro ${index + 1}`}
+        </ThemedText>
+        {dogs.length > 1 && (
+          <Pressable onPress={() => removeDog(dog.id)} style={styles.removeButton}>
+            <Feather name="trash-2" size={18} color={Colors.light.softRed} />
+            <ThemedText type="small" style={{ color: Colors.light.softRed, marginLeft: 4 }}>
+              {t.removeDog}
+            </ThemedText>
+          </Pressable>
+        )}
+      </View>
+
+      <View style={styles.photoRow}>
+        <Pressable
+          onPress={() => pickImage(dog.id)}
+          style={[
+            styles.photoContainer,
+            { backgroundColor: theme.backgroundRoot, borderColor: theme.borderLight },
+          ]}
+        >
+          {dog.photo ? (
+            <Image source={{ uri: dog.photo }} style={styles.dogPhoto} />
+          ) : (
+            <View style={styles.photoPlaceholder}>
+              <Feather name="camera" size={28} color={theme.textMuted} />
+              <ThemedText type="small" style={{ color: theme.textMuted, marginTop: 4 }}>
+                {t.addPhoto}
+              </ThemedText>
+            </View>
+          )}
+        </Pressable>
+
+        <View style={styles.photoFieldsColumn}>
+          <View style={styles.compactField}>
+            <ThemedText type="small" style={styles.label}>
+              {t.dogName} *
+            </ThemedText>
+            <TextInput
+              style={[inputStyle, styles.compactInput]}
+              value={dog.name}
+              onChangeText={(value) => updateDogField(dog.id, "name", value)}
+              placeholder={t.dogNamePlaceholder}
+              placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+              autoCapitalize="words"
+            />
+          </View>
+          <View style={styles.compactField}>
+            <ThemedText type="small" style={styles.label}>
+              {t.nickname}
+            </ThemedText>
+            <TextInput
+              style={[inputStyle, styles.compactInput]}
+              value={dog.nickname}
+              onChangeText={(value) => updateDogField(dog.id, "nickname", value)}
+              placeholder={t.nicknamePlaceholder}
+              placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+              autoCapitalize="words"
+            />
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.dogFieldsRow}>
+        <View style={[styles.fieldContainer, { flex: 2 }]}>
+          <ThemedText type="small" style={styles.label}>
+            {t.breed} *
+          </ThemedText>
+          <DogBreedDropdown
+            value={dog.breed}
+            onSelect={(breed) => updateDogField(dog.id, "breed", breed)}
+            isDark={isDark}
+          />
+        </View>
+        <View style={[styles.fieldContainer, { flex: 1 }]}>
+          <ThemedText type="small" style={styles.label}>
+            {t.age} *
+          </ThemedText>
+          <TextInput
+            style={inputStyle}
+            value={dog.age}
+            onChangeText={(value) => updateDogField(dog.id, "age", value)}
+            placeholder={t.agePlaceholder}
+            placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+            keyboardType="decimal-pad"
+          />
+        </View>
+      </View>
+    </View>
+  );
+
+  const ScrollComponent = Platform.OS === "web" ? ScrollView : KeyboardAwareScrollView;
 
   return (
     <ThemedView
@@ -197,278 +426,146 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         </ScrollView>
       )}
 
-      {step === "form" && (
-        Platform.OS === "web" ? (
-          <ScrollView
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollContent}
-          >
-            <View style={styles.stepContainer}>
-              <ThemedText type="h2" style={styles.stepTitle}>
-                {t.formTitle}
+      {step === "owner" && (
+        <ScrollComponent
+          style={[styles.scrollView, { backgroundColor: theme.backgroundRoot }]}
+          contentContainerStyle={styles.scrollContent}
+        >
+          <View style={styles.stepContainer}>
+            <ThemedText type="h2" style={styles.stepTitle}>
+              {t.ownerFormTitle}
+            </ThemedText>
+            <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
+              {t.ownerFormSubtitle}
+            </ThemedText>
+
+            <View style={styles.fieldContainer}>
+              <ThemedText type="small" style={styles.label}>
+                {t.yourName}
               </ThemedText>
-              <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
-                {t.formSubtitle}
-              </ThemedText>
-
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  {t.yourName}
-                </ThemedText>
-                <TextInput
-                  style={inputStyle}
-                  value={formData.ownerName}
-                  onChangeText={(value) => updateField("ownerName", value)}
-                  placeholder={t.namePlaceholder}
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  autoCapitalize="words"
-                  returnKeyType="next"
-                />
-              </View>
-
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  {t.emailLabel}
-                </ThemedText>
-                <TextInput
-                  style={inputStyle}
-                  value={formData.email}
-                  onChangeText={(value) => updateField("email", value)}
-                  placeholder={t.emailPlaceholder}
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  returnKeyType="next"
-                />
-              </View>
-
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  {t.dogName}
-                </ThemedText>
-                <TextInput
-                  style={inputStyle}
-                  value={formData.dogName}
-                  onChangeText={(value) => updateField("dogName", value)}
-                  placeholder={t.dogNamePlaceholder}
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  autoCapitalize="words"
-                  returnKeyType="next"
-                />
-              </View>
-
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  {t.breed}
-                </ThemedText>
-                <DogBreedDropdown
-                  value={formData.dogBreed}
-                  onSelect={(breed) => updateField("dogBreed", breed)}
-                  isDark={isDark}
-                />
-              </View>
-
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  {t.age}
-                </ThemedText>
-                <TextInput
-                  style={inputStyle}
-                  value={formData.dogAge}
-                  onChangeText={(value) => updateField("dogAge", value)}
-                  placeholder={t.agePlaceholder}
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  keyboardType="decimal-pad"
-                  returnKeyType="done"
-                />
-              </View>
-
-              <View style={styles.linksContainer}>
-                <Pressable onPress={handleTermsPress}>
-                  <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
-                    {t.termsLink}
-                  </ThemedText>
-                </Pressable>
-                <ThemedText type="small" style={{ color: theme.textMuted }}>
-                  {" • "}
-                </ThemedText>
-                <Pressable onPress={handlePrivacyPress}>
-                  <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
-                    {t.privacyLink}
-                  </ThemedText>
-                </Pressable>
-              </View>
-
-              <View style={styles.disclaimerContainer}>
-                <ThemedText type="small" style={{ color: theme.textMuted, textAlign: "center", lineHeight: 18 }}>
-                  {t.disclaimer}
-                </ThemedText>
-              </View>
+              <TextInput
+                style={inputStyle}
+                value={ownerData.name}
+                onChangeText={(value) => updateOwnerField("name", value)}
+                placeholder={t.namePlaceholder}
+                placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                autoCapitalize="words"
+                returnKeyType="next"
+              />
             </View>
 
-            <View style={styles.buttonRow}>
-              <Button
-                onPress={handleGoBack}
-                style={[
-                  styles.secondaryButton,
-                  { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
-                ]}
-              >
-                <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
-                  {t.back}
-                </ThemedText>
-              </Button>
-              <Button
-                onPress={handleFormSubmit}
-                disabled={
-                  !formData.ownerName.trim() ||
-                  !formData.email.trim() ||
-                  !formData.dogName.trim() ||
-                  !formData.dogBreed.trim() ||
-                  !formData.dogAge.trim()
-                }
-                style={styles.flexButton}
-              >
-                {t.continue}
-              </Button>
-            </View>
-          </ScrollView>
-        ) : (
-          <KeyboardAwareScrollView
-            style={[styles.scrollView, { backgroundColor: theme.backgroundRoot }]}
-            contentContainerStyle={styles.scrollContent}
-          >
-            <View style={styles.stepContainer}>
-              <ThemedText type="h2" style={styles.stepTitle}>
-                {t.formTitle}
+            <View style={styles.fieldContainer}>
+              <ThemedText type="small" style={styles.label}>
+                {t.emailLabel}
               </ThemedText>
-              <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
-                {t.formSubtitle}
+              <TextInput
+                style={inputStyle}
+                value={ownerData.email}
+                onChangeText={(value) => updateOwnerField("email", value)}
+                placeholder={t.emailPlaceholder}
+                placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                returnKeyType="done"
+              />
+            </View>
+          </View>
+
+          <View style={styles.buttonRow}>
+            <Button
+              onPress={handleGoBack}
+              style={[
+                styles.secondaryButton,
+                { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
+              ]}
+            >
+              <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
+                {t.back}
               </ThemedText>
+            </Button>
+            <Button
+              onPress={handleOwnerNext}
+              disabled={!isOwnerFormValid}
+              style={styles.flexButton}
+            >
+              {t.continue}
+            </Button>
+          </View>
+        </ScrollComponent>
+      )}
 
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  {t.yourName}
-                </ThemedText>
-                <TextInput
-                  style={inputStyle}
-                  value={formData.ownerName}
-                  onChangeText={(value) => updateField("ownerName", value)}
-                  placeholder={t.namePlaceholder}
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  autoCapitalize="words"
-                  returnKeyType="next"
-                />
-              </View>
+      {step === "dogs" && (
+        <ScrollComponent
+          style={[styles.scrollView, { backgroundColor: theme.backgroundRoot }]}
+          contentContainerStyle={styles.scrollContent}
+        >
+          <View style={styles.stepContainer}>
+            <ThemedText type="h2" style={styles.stepTitle}>
+              {t.dogsFormTitle}
+            </ThemedText>
+            <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
+              {t.dogsFormSubtitle}
+            </ThemedText>
 
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  {t.emailLabel}
-                </ThemedText>
-                <TextInput
-                  style={inputStyle}
-                  value={formData.email}
-                  onChangeText={(value) => updateField("email", value)}
-                  placeholder={t.emailPlaceholder}
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  returnKeyType="next"
-                />
-              </View>
+            {dogs.map((dog, index) => renderDogCard(dog, index))}
 
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  {t.dogName}
-                </ThemedText>
-                <TextInput
-                  style={inputStyle}
-                  value={formData.dogName}
-                  onChangeText={(value) => updateField("dogName", value)}
-                  placeholder={t.dogNamePlaceholder}
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  autoCapitalize="words"
-                  returnKeyType="next"
-                />
-              </View>
+            <Pressable
+              onPress={addDog}
+              style={[
+                styles.addDogButton,
+                { borderColor: Colors.light.primary },
+              ]}
+            >
+              <Feather name="plus-circle" size={20} color={Colors.light.primary} />
+              <ThemedText type="body" style={{ color: Colors.light.primary, marginLeft: 8, fontWeight: "600" }}>
+                {t.addAnotherDog}
+              </ThemedText>
+            </Pressable>
 
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  {t.breed}
+            <View style={styles.linksContainer}>
+              <Pressable onPress={handleTermsPress}>
+                <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
+                  {t.termsLink}
                 </ThemedText>
-                <DogBreedDropdown
-                  value={formData.dogBreed}
-                  onSelect={(breed) => updateField("dogBreed", breed)}
-                  isDark={isDark}
-                />
-              </View>
-
-              <View style={styles.fieldContainer}>
-                <ThemedText type="small" style={styles.label}>
-                  {t.age}
+              </Pressable>
+              <ThemedText type="small" style={{ color: theme.textMuted }}>
+                {" • "}
+              </ThemedText>
+              <Pressable onPress={handlePrivacyPress}>
+                <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
+                  {t.privacyLink}
                 </ThemedText>
-                <TextInput
-                  style={inputStyle}
-                  value={formData.dogAge}
-                  onChangeText={(value) => updateField("dogAge", value)}
-                  placeholder={t.agePlaceholder}
-                  placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-                  keyboardType="decimal-pad"
-                  returnKeyType="done"
-                />
-              </View>
-
-              <View style={styles.linksContainer}>
-                <Pressable onPress={handleTermsPress}>
-                  <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
-                    {t.termsLink}
-                  </ThemedText>
-                </Pressable>
-                <ThemedText type="small" style={{ color: theme.textMuted }}>
-                  {" • "}
-                </ThemedText>
-                <Pressable onPress={handlePrivacyPress}>
-                  <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
-                    {t.privacyLink}
-                  </ThemedText>
-                </Pressable>
-              </View>
-
-              <View style={styles.disclaimerContainer}>
-                <ThemedText type="small" style={{ color: theme.textMuted, textAlign: "center", lineHeight: 18 }}>
-                  {t.disclaimer}
-                </ThemedText>
-              </View>
+              </Pressable>
             </View>
 
-            <View style={styles.buttonRow}>
-              <Button
-                onPress={handleGoBack}
-                style={[
-                  styles.secondaryButton,
-                  { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
-                ]}
-              >
-                <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
-                  {t.back}
-                </ThemedText>
-              </Button>
-              <Button
-                onPress={handleFormSubmit}
-                disabled={
-                  !formData.ownerName.trim() ||
-                  !formData.email.trim() ||
-                  !formData.dogName.trim() ||
-                  !formData.dogBreed.trim() ||
-                  !formData.dogAge.trim()
-                }
-                style={styles.flexButton}
-              >
-                {t.continue}
-              </Button>
+            <View style={styles.disclaimerContainer}>
+              <ThemedText type="small" style={{ color: theme.textMuted, textAlign: "center", lineHeight: 18 }}>
+                {t.disclaimer}
+              </ThemedText>
             </View>
-          </KeyboardAwareScrollView>
-        )
+          </View>
+
+          <View style={styles.buttonRow}>
+            <Button
+              onPress={handleGoBack}
+              style={[
+                styles.secondaryButton,
+                { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
+              ]}
+            >
+              <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
+                {t.back}
+              </ThemedText>
+            </Button>
+            <Button
+              onPress={handleFormSubmit}
+              disabled={!isDogsFormValid}
+              style={styles.flexButton}
+            >
+              {t.continue}
+            </Button>
+          </View>
+        </ScrollComponent>
       )}
     </ThemedView>
   );
@@ -562,6 +659,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     fontSize: Typography.bodyM.fontSize,
   },
+  compactInput: {
+    height: 44,
+  },
+  compactField: {
+    flex: 1,
+  },
   linksContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -590,5 +693,66 @@ const styles = StyleSheet.create({
   },
   flexButton: {
     flex: 1,
+  },
+  dogCard: {
+    borderWidth: 1,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.md,
+    marginBottom: Spacing.lg,
+  },
+  dogCardHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: Spacing.md,
+  },
+  dogCardTitle: {
+    marginBottom: 0,
+  },
+  removeButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: Spacing.xs,
+  },
+  photoRow: {
+    flexDirection: "row",
+    gap: Spacing.md,
+    marginBottom: Spacing.md,
+  },
+  photoContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: BorderRadius.lg,
+    borderWidth: 2,
+    borderStyle: "dashed",
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dogPhoto: {
+    width: "100%",
+    height: "100%",
+  },
+  photoPlaceholder: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  photoFieldsColumn: {
+    flex: 1,
+    gap: Spacing.sm,
+  },
+  dogFieldsRow: {
+    flexDirection: "row",
+    gap: Spacing.md,
+  },
+  addDogButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: Spacing.md,
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderRadius: BorderRadius.lg,
+    marginBottom: Spacing.xl,
   },
 });
