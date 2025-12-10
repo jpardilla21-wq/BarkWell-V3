@@ -18,11 +18,13 @@ type OnboardingScreenProps = {
 };
 
 type FormStep = "intro" | "form";
+type Language = "eng" | "esp";
 
 export default function OnboardingScreen({ navigation }: OnboardingScreenProps) {
   const insets = useSafeAreaInsets();
   const { theme, isDark } = useTheme();
   const [step, setStep] = useState<FormStep>("intro");
+  const [language, setLanguage] = useState<Language>("eng");
   const [formData, setFormData] = useState({
     ownerName: "",
     email: "",
@@ -84,6 +86,31 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         },
       ]}
     >
+      <View style={styles.languageSelector}>
+        <Pressable
+          onPress={() => setLanguage("eng")}
+          style={[
+            styles.languageButton,
+            language === "eng" && styles.languageButtonActive,
+          ]}
+        >
+          <ThemedText type="small" style={language === "eng" ? styles.languageButtonTextActive : {}}>
+            English
+          </ThemedText>
+        </Pressable>
+        <Pressable
+          onPress={() => setLanguage("esp")}
+          style={[
+            styles.languageButton,
+            language === "esp" && styles.languageButtonActive,
+          ]}
+        >
+          <ThemedText type="small" style={language === "esp" ? styles.languageButtonTextActive : {}}>
+            Español
+          </ThemedText>
+        </Pressable>
+      </View>
+
       {step === "intro" && (
         <ScrollView
           style={styles.scrollView}
@@ -223,6 +250,12 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                   </ThemedText>
                 </Pressable>
               </View>
+
+              <View style={styles.disclaimerContainer}>
+                <ThemedText type="small" style={{ color: theme.textMuted, textAlign: "center", lineHeight: 18 }}>
+                  By clicking Continue, you agree to our Terms of Service and Privacy Policy.
+                </ThemedText>
+              </View>
             </View>
 
             <View style={styles.buttonRow}>
@@ -352,6 +385,12 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                   </ThemedText>
                 </Pressable>
               </View>
+
+              <View style={styles.disclaimerContainer}>
+                <ThemedText type="small" style={{ color: theme.textMuted, textAlign: "center", lineHeight: 18 }}>
+                  By clicking Continue, you agree to our Terms of Service and Privacy Policy.
+                </ThemedText>
+              </View>
             </View>
 
             <View style={styles.buttonRow}>
@@ -391,6 +430,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: Spacing.lg,
+  },
+  languageSelector: {
+    flexDirection: "row",
+    gap: Spacing.sm,
+    paddingTop: Spacing.md,
+  },
+  languageButton: {
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    borderColor: Colors.light.primary + "40",
+  },
+  languageButtonActive: {
+    backgroundColor: Colors.light.primary + "20",
+    borderColor: Colors.light.primary,
+  },
+  languageButtonTextActive: {
+    color: Colors.light.primary,
+    fontWeight: "600",
   },
   scrollView: {
     flex: 1,
@@ -464,6 +523,10 @@ const styles = StyleSheet.create({
   },
   link: {
     textDecorationLine: "underline",
+  },
+  disclaimerContainer: {
+    marginTop: Spacing.md,
+    paddingHorizontal: Spacing.sm,
   },
   buttonContainer: {
     width: "100%",
