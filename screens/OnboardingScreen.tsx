@@ -20,6 +20,51 @@ type OnboardingScreenProps = {
 type FormStep = "intro" | "form";
 type Language = "eng" | "esp";
 
+const translations = {
+  eng: {
+    getStarted: "Get Started",
+    title: "AI-powered answers for everyday dog problems",
+    subtitle: "Your all-in-one pet wellness assistant",
+    formTitle: "Tell us about you and your pup",
+    formSubtitle: "We'll use this to personalize your experience",
+    yourName: "Your Name",
+    namePlaceholder: "Enter your name",
+    emailLabel: "Email Address",
+    emailPlaceholder: "your.email@example.com",
+    dogName: "Dog's Name",
+    dogNamePlaceholder: "e.g., Max, Bella, Charlie",
+    breed: "Breed",
+    age: "Age (in years)",
+    agePlaceholder: "e.g., 3",
+    back: "Back",
+    continue: "Continue",
+    termsLink: "Terms of Service",
+    privacyLink: "Privacy Policy",
+    disclaimer: "By clicking Continue, you agree to our Terms of Service and Privacy Policy.",
+  },
+  esp: {
+    getStarted: "Comenzar",
+    title: "Respuestas impulsadas por IA para los problemas cotidianos de tu perro",
+    subtitle: "Tu asistente integral de bienestar para mascotas",
+    formTitle: "Cuéntanos sobre ti y tu perro",
+    formSubtitle: "Usaremos esto para personalizar tu experiencia",
+    yourName: "Tu Nombre",
+    namePlaceholder: "Ingresa tu nombre",
+    emailLabel: "Correo Electrónico",
+    emailPlaceholder: "tu.correo@ejemplo.com",
+    dogName: "Nombre del Perro",
+    dogNamePlaceholder: "Por ej., Max, Bella, Charlie",
+    breed: "Raza",
+    age: "Edad (en años)",
+    agePlaceholder: "Por ej., 3",
+    back: "Atrás",
+    continue: "Continuar",
+    termsLink: "Términos de Servicio",
+    privacyLink: "Política de Privacidad",
+    disclaimer: "Al hacer clic en Continuar, aceptas nuestros Términos de Servicio y Política de Privacidad.",
+  },
+};
+
 export default function OnboardingScreen({ navigation }: OnboardingScreenProps) {
   const insets = useSafeAreaInsets();
   const { theme, isDark } = useTheme();
@@ -32,6 +77,8 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
     dogBreed: "",
     dogAge: "",
   });
+
+  const t = translations[language];
 
   const handleIntroNext = () => {
     setStep("form");
@@ -132,19 +179,19 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
 
             <View style={styles.textContainer}>
               <ThemedText type="h1" style={styles.title}>
-                AI-powered answers for everyday dog problems
+                {t.title}
               </ThemedText>
               <ThemedText
                 type="body"
                 style={[styles.subtitle, { color: theme.textMuted }]}
               >
-                Your all-in-one pet wellness assistant
+                {t.subtitle}
               </ThemedText>
             </View>
           </View>
 
           <View style={styles.buttonContainer}>
-            <Button onPress={handleIntroNext}>Get Started</Button>
+            <Button onPress={handleIntroNext}>{t.getStarted}</Button>
           </View>
         </ScrollView>
       )}
@@ -157,21 +204,21 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           >
             <View style={styles.stepContainer}>
               <ThemedText type="h2" style={styles.stepTitle}>
-                Tell us about you and your pup
+                {t.formTitle}
               </ThemedText>
               <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
-                We'll use this to personalize your experience
+                {t.formSubtitle}
               </ThemedText>
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
-                  Your Name
+                  {t.yourName}
                 </ThemedText>
                 <TextInput
                   style={inputStyle}
                   value={formData.ownerName}
                   onChangeText={(value) => updateField("ownerName", value)}
-                  placeholder="Enter your name"
+                  placeholder={t.namePlaceholder}
                   placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
                   autoCapitalize="words"
                   returnKeyType="next"
@@ -180,13 +227,13 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
-                  Email Address
+                  {t.emailLabel}
                 </ThemedText>
                 <TextInput
                   style={inputStyle}
                   value={formData.email}
                   onChangeText={(value) => updateField("email", value)}
-                  placeholder="your.email@example.com"
+                  placeholder={t.emailPlaceholder}
                   placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
                   keyboardType="email-address"
                   autoCapitalize="none"
@@ -196,13 +243,13 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
-                  Dog's Name
+                  {t.dogName}
                 </ThemedText>
                 <TextInput
                   style={inputStyle}
                   value={formData.dogName}
                   onChangeText={(value) => updateField("dogName", value)}
-                  placeholder="e.g., Max, Bella, Charlie"
+                  placeholder={t.dogNamePlaceholder}
                   placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
                   autoCapitalize="words"
                   returnKeyType="next"
@@ -211,7 +258,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
-                  Breed
+                  {t.breed}
                 </ThemedText>
                 <DogBreedDropdown
                   value={formData.dogBreed}
@@ -222,13 +269,13 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
-                  Age (in years)
+                  {t.age}
                 </ThemedText>
                 <TextInput
                   style={inputStyle}
                   value={formData.dogAge}
                   onChangeText={(value) => updateField("dogAge", value)}
-                  placeholder="e.g., 3"
+                  placeholder={t.agePlaceholder}
                   placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
                   keyboardType="decimal-pad"
                   returnKeyType="done"
@@ -238,7 +285,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
               <View style={styles.linksContainer}>
                 <Pressable onPress={handleTermsPress}>
                   <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
-                    Terms of Service
+                    {t.termsLink}
                   </ThemedText>
                 </Pressable>
                 <ThemedText type="small" style={{ color: theme.textMuted }}>
@@ -246,14 +293,14 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 </ThemedText>
                 <Pressable onPress={handlePrivacyPress}>
                   <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
-                    Privacy Policy
+                    {t.privacyLink}
                   </ThemedText>
                 </Pressable>
               </View>
 
               <View style={styles.disclaimerContainer}>
                 <ThemedText type="small" style={{ color: theme.textMuted, textAlign: "center", lineHeight: 18 }}>
-                  By clicking Continue, you agree to our Terms of Service and Privacy Policy.
+                  {t.disclaimer}
                 </ThemedText>
               </View>
             </View>
@@ -267,7 +314,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 ]}
               >
                 <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
-                  Back
+                  {t.back}
                 </ThemedText>
               </Button>
               <Button
@@ -281,7 +328,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 }
                 style={styles.flexButton}
               >
-                Continue
+                {t.continue}
               </Button>
             </View>
           </ScrollView>
@@ -292,21 +339,21 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           >
             <View style={styles.stepContainer}>
               <ThemedText type="h2" style={styles.stepTitle}>
-                Tell us about you and your pup
+                {t.formTitle}
               </ThemedText>
               <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
-                We'll use this to personalize your experience
+                {t.formSubtitle}
               </ThemedText>
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
-                  Your Name
+                  {t.yourName}
                 </ThemedText>
                 <TextInput
                   style={inputStyle}
                   value={formData.ownerName}
                   onChangeText={(value) => updateField("ownerName", value)}
-                  placeholder="Enter your name"
+                  placeholder={t.namePlaceholder}
                   placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
                   autoCapitalize="words"
                   returnKeyType="next"
@@ -315,13 +362,13 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
-                  Email Address
+                  {t.emailLabel}
                 </ThemedText>
                 <TextInput
                   style={inputStyle}
                   value={formData.email}
                   onChangeText={(value) => updateField("email", value)}
-                  placeholder="your.email@example.com"
+                  placeholder={t.emailPlaceholder}
                   placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
                   keyboardType="email-address"
                   autoCapitalize="none"
@@ -331,13 +378,13 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
-                  Dog's Name
+                  {t.dogName}
                 </ThemedText>
                 <TextInput
                   style={inputStyle}
                   value={formData.dogName}
                   onChangeText={(value) => updateField("dogName", value)}
-                  placeholder="e.g., Max, Bella, Charlie"
+                  placeholder={t.dogNamePlaceholder}
                   placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
                   autoCapitalize="words"
                   returnKeyType="next"
@@ -346,7 +393,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
-                  Breed
+                  {t.breed}
                 </ThemedText>
                 <DogBreedDropdown
                   value={formData.dogBreed}
@@ -357,13 +404,13 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
 
               <View style={styles.fieldContainer}>
                 <ThemedText type="small" style={styles.label}>
-                  Age (in years)
+                  {t.age}
                 </ThemedText>
                 <TextInput
                   style={inputStyle}
                   value={formData.dogAge}
                   onChangeText={(value) => updateField("dogAge", value)}
-                  placeholder="e.g., 3"
+                  placeholder={t.agePlaceholder}
                   placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
                   keyboardType="decimal-pad"
                   returnKeyType="done"
@@ -373,7 +420,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
               <View style={styles.linksContainer}>
                 <Pressable onPress={handleTermsPress}>
                   <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
-                    Terms of Service
+                    {t.termsLink}
                   </ThemedText>
                 </Pressable>
                 <ThemedText type="small" style={{ color: theme.textMuted }}>
@@ -381,14 +428,14 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 </ThemedText>
                 <Pressable onPress={handlePrivacyPress}>
                   <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
-                    Privacy Policy
+                    {t.privacyLink}
                   </ThemedText>
                 </Pressable>
               </View>
 
               <View style={styles.disclaimerContainer}>
                 <ThemedText type="small" style={{ color: theme.textMuted, textAlign: "center", lineHeight: 18 }}>
-                  By clicking Continue, you agree to our Terms of Service and Privacy Policy.
+                  {t.disclaimer}
                 </ThemedText>
               </View>
             </View>
@@ -402,7 +449,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 ]}
               >
                 <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
-                  Back
+                  {t.back}
                 </ThemedText>
               </Button>
               <Button
@@ -416,7 +463,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 }
                 style={styles.flexButton}
               >
-                Continue
+                {t.continue}
               </Button>
             </View>
           </KeyboardAwareScrollView>
