@@ -6,6 +6,7 @@ import {
 } from "react-native-keyboard-controller";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { useCameraPermissions, useMediaLibraryPermissions } from "expo-image-picker";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DogBreedDropdown } from "@/components/DogBreedDropdown";
 import { ThemedText } from "@/components/ThemedText";
@@ -122,6 +123,8 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
     email: "",
   });
   const [dogs, setDogs] = useState<DogProfile[]>([createEmptyDog()]);
+  const [cameraPermission, requestCameraPermission] = useCameraPermissions();
+  const [mediaLibraryPermission, requestMediaLibraryPermission] = useMediaLibraryPermissions();
 
   const t = translations[language];
 
@@ -136,11 +139,15 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   };
 
   const handleFormSubmit = () => {
-    const validDogs = dogs.filter(
+    if (dogs.length === 0) {
+      Alert.alert("", t.atLeastOneDog);
+      return;
+    }
+    const allDogsValid = dogs.every(
       (dog) => dog.name.trim() && dog.breed.trim() && dog.age.trim()
     );
-    if (validDogs.length === 0) {
-      Alert.alert("", t.atLeastOneDog);
+    if (!allDogsValid) {
+      Alert.alert("", t.fillAllFields);
       return;
     }
     navigation.replace("Subscription");
@@ -168,6 +175,16 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
     }
   };
 
+  const openSettings = async () => {
+    if (Platform.OS !== "web") {
+      try {
+        await Linking.openSettings();
+      } catch (error) {
+        // openSettings not supported
+      }
+    }
+  };
+
   const pickImage = async (dogId: string) => {
     if (Platform.OS === "web") {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -181,6 +198,14 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         updateDogField(dogId, "photo", result.assets[0].uri);
       }
     } else {
+      const openSettingsText = language === "eng" ? "Open Settings" : "Abrir Configuración";
+      const cameraPermissionDeniedText = language === "eng" 
+        ? "Camera permission was denied. Please enable it in settings." 
+        : "El permiso de cámara fue denegado. Por favor habilítalo en configuración.";
+      const libraryPermissionDeniedText = language === "eng" 
+        ? "Photo library permission was denied. Please enable it in settings." 
+        : "El permiso de la galería fue denegado. Por favor habilítalo en configuración.";
+      
       Alert.alert(
         "",
         t.addPhoto,
@@ -188,8 +213,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           {
             text: t.takePhoto,
             onPress: async () => {
-              const { status } = await ImagePicker.requestCameraPermissionsAsync();
-              if (status === "granted") {
+              if (cameraPermission?.granted) {
                 const result = await ImagePicker.launchCameraAsync({
                   allowsEditing: true,
                   aspect: [1, 1],
@@ -198,20 +222,65 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 if (!result.canceled && result.assets[0]) {
                   updateDogField(dogId, "photo", result.assets[0].uri);
                 }
+              } else if (cameraPermission?.status === "denied" && !cameraPermission?.canAskAgain) {
+                Alert.alert(
+                  "",
+                  cameraPermissionDeniedText,
+                  [
+                    { text: openSettingsText, onPress: openSettings },
+                    { text: t.cancel, style: "cancel" },
+                  ]
+                );
+              } else {
+                const { granted } = await requestCameraPermission();
+                if (granted) {
+                  const result = await ImagePicker.launchCameraAsync({
+                    allowsEditing: true,
+                    aspect: [1, 1],
+                    quality: 0.8,
+                  });
+                  if (!result.canceled && result.assets[0]) {
+                    updateDogField(dogId, "photo", result.assets[0].uri);
+                  }
+                }
               }
             },
           },
           {
             text: t.chooseFromLibrary,
             onPress: async () => {
-              const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                aspect: [1, 1],
-                quality: 0.8,
-              });
-              if (!result.canceled && result.assets[0]) {
-                updateDogField(dogId, "photo", result.assets[0].uri);
+              if (mediaLibraryPermission?.granted) {
+                const result = await ImagePicker.launchImageLibraryAsync({
+                  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                  allowsEditing: true,
+                  aspect: [1, 1],
+                  quality: 0.8,
+                });
+                if (!result.canceled && result.assets[0]) {
+                  updateDogField(dogId, "photo", result.assets[0].uri);
+                }
+              } else if (mediaLibraryPermission?.status === "denied" && !mediaLibraryPermission?.canAskAgain) {
+                Alert.alert(
+                  "",
+                  libraryPermissionDeniedText,
+                  [
+                    { text: openSettingsText, onPress: openSettings },
+                    { text: t.cancel, style: "cancel" },
+                  ]
+                );
+              } else {
+                const { granted } = await requestMediaLibraryPermission();
+                if (granted) {
+                  const result = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    allowsEditing: true,
+                    aspect: [1, 1],
+                    quality: 0.8,
+                  });
+                  if (!result.canceled && result.assets[0]) {
+                    updateDogField(dogId, "photo", result.assets[0].uri);
+                  }
+                }
               }
             },
           },
@@ -247,7 +316,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   };
 
   const isOwnerFormValid = ownerData.name.trim() && ownerData.email.trim();
-  const isDogsFormValid = dogs.some(
+  const isDogsFormValid = dogs.length > 0 && dogs.every(
     (dog) => dog.name.trim() && dog.breed.trim() && dog.age.trim()
   );
 
