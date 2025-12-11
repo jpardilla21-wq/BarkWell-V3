@@ -52,11 +52,6 @@ export default function HomeScreen() {
   return (
     <ScreenScrollView>
       <View style={styles.headerTop}>
-        <Image
-          source={require("../assets/images/pupsense-logo-full.png")}
-          style={styles.logoFull}
-          resizeMode="contain"
-        />
         <Pressable
           style={({ pressed }) => [
             styles.bellButton,
@@ -70,6 +65,13 @@ export default function HomeScreen() {
       {dogs.length > 0 && (
         <View style={styles.dogsContainer}>
           <View style={styles.dogsScroll}>
+            <View style={[styles.dogCircle, styles.logoCircle]}>
+              <Image
+                source={require("../assets/images/pupsense-logo-full.png")}
+                style={styles.logoImage}
+                resizeMode="contain"
+              />
+            </View>
             {dogs.map((dog) => (
               <Pressable
                 key={dog.id}
@@ -188,13 +190,10 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   headerTop: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     alignItems: "center",
-    marginBottom: Spacing.md,
-  },
-  logoFull: {
-    height: 50,
-    width: 150,
+    marginBottom: Spacing.lg,
+    paddingRight: Spacing.md,
   },
   bellButton: {
     width: 44,
@@ -221,6 +220,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 2,
     borderColor: Colors.light.primary,
+  },
+  logoCircle: {
+    backgroundColor: Colors.light.primary,
+    borderColor: Colors.light.primary,
+  },
+  logoImage: {
+    width: 50,
+    height: 50,
   },
   dogPhoto: {
     width: 66,
