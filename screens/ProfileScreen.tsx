@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable, Image } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScreenScrollView } from "@/components/ScreenScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
+import { useDogs } from "@/contexts/DogContext";
 import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 import type { ProfileStackParamList } from "@/navigation/ProfileStackNavigator";
 
@@ -14,6 +15,32 @@ type ProfileScreenProps = {
 
 export default function ProfileScreen({ navigation }: ProfileScreenProps) {
   const { theme } = useTheme();
+  const { dogs, selectedDogId } = useDogs();
+
+  const selectedDog = dogs.find((dog) => dog.id === selectedDogId);
+
+  if (!selectedDog) {
+    return (
+      <ScreenScrollView>
+        <View style={styles.profileSection}>
+          <View
+            style={[
+              styles.avatar,
+              { backgroundColor: theme.backgroundDefault },
+            ]}
+          >
+            <Feather name="smile" size={48} color={Colors.light.primary} />
+          </View>
+          <ThemedText type="h2" style={styles.dogName}>
+            No Dog Selected
+          </ThemedText>
+          <ThemedText type="body" style={{ color: theme.textMuted }}>
+            Please select a dog from the home screen
+          </ThemedText>
+        </View>
+      </ScreenScrollView>
+    );
+  }
 
   return (
     <ScreenScrollView>
@@ -24,13 +51,22 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
             { backgroundColor: theme.backgroundDefault },
           ]}
         >
-          <Feather name="github" size={48} color={Colors.light.primary} />
+          {selectedDog.photo ? (
+            <Image source={{ uri: selectedDog.photo }} style={styles.avatarImage} />
+          ) : (
+            <Feather name="smile" size={48} color={Colors.light.primary} />
+          )}
         </View>
         <ThemedText type="h2" style={styles.dogName}>
-          Max
+          {selectedDog.name}
         </ThemedText>
+        {selectedDog.nickname ? (
+          <ThemedText type="body" style={{ color: theme.textMuted, marginBottom: Spacing.xs }}>
+            "{selectedDog.nickname}"
+          </ThemedText>
+        ) : null}
         <ThemedText type="body" style={{ color: theme.textMuted }}>
-          3 years old • Golden Retriever
+          {selectedDog.age} {parseInt(selectedDog.age) === 1 ? "year" : "years"} old • {selectedDog.breed}
         </ThemedText>
       </View>
 
@@ -110,6 +146,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: Spacing.md,
+    overflow: "hidden",
+  },
+  avatarImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
   dogName: {
     marginBottom: Spacing.xs,
