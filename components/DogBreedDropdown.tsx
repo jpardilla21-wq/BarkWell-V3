@@ -2163,7 +2163,7 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
         value={value}
         onChangeText={handleInputChange}
         onFocus={() => value.length > 0 && setShowDropdown(true)}
-        onBlur={() => setTimeout(() => setShowDropdown(false), 100)}
+        onBlur={() => setShowDropdown(false)}
         placeholder="Start typing a breed..."
         placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
         autoCapitalize="words"
