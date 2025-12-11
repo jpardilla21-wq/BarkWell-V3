@@ -57,7 +57,7 @@ export default function HomeScreen() {
             <View
               style={[
                 styles.logoBackground,
-                { backgroundColor: theme.backgroundDefault },
+                { backgroundColor: "#f6f6f6" },
               ]}
             >
               <Image
