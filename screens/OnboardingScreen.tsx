@@ -14,6 +14,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useDogs, type DogProfile } from "@/contexts/DogContext";
 import { Colors, Spacing, BorderRadius, Typography } from "@/constants/theme";
 import type { RootStackParamList } from "@/navigation/RootNavigator";
 
@@ -23,15 +24,6 @@ type OnboardingScreenProps = {
 
 type FormStep = "intro" | "owner" | "dogs";
 type Language = "eng" | "esp";
-
-interface DogProfile {
-  id: string;
-  name: string;
-  nickname: string;
-  breed: string;
-  age: string;
-  photo: string | null;
-}
 
 const translations = {
   eng: {
@@ -117,6 +109,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   const insets = useSafeAreaInsets();
   const { theme, isDark } = useTheme();
   const { language } = useLanguage();
+  const { addDogs } = useDogs();
   const [step, setStep] = useState<FormStep>("intro");
   const [ownerData, setOwnerData] = useState({
     name: "",
@@ -138,7 +131,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
     }
   };
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     if (dogs.length === 0) {
       Alert.alert("", t.atLeastOneDog);
       return;
@@ -150,7 +143,12 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
       Alert.alert("", t.fillAllFields);
       return;
     }
-    navigation.replace("Subscription");
+    try {
+      await addDogs(dogs);
+      navigation.replace("Subscription");
+    } catch (error) {
+      Alert.alert("Error", "Failed to save dog profiles");
+    }
   };
 
   const updateOwnerField = (field: keyof typeof ownerData, value: string) => {

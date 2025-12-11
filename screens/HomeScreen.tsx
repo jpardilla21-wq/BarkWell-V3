@@ -7,6 +7,7 @@ import { ScreenScrollView } from "@/components/ScreenScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { FeatureCard } from "@/components/FeatureCard";
 import { useTheme } from "@/hooks/useTheme";
+import { useDogs } from "@/contexts/DogContext";
 import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 import type { HomeStackParamList } from "@/navigation/HomeStackNavigator";
 import type { MainTabParamList } from "@/navigation/MainTabNavigator";
@@ -28,6 +29,7 @@ interface HistoryItem {
 export default function HomeScreen() {
   const { theme } = useTheme();
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const { dogs, selectedDogId, setSelectedDogId } = useDogs();
   const [history] = useState<HistoryItem[]>([
     { id: "1", type: "poop", title: "Poop Check - Healthy", date: "Today, 2:30 PM" },
     { id: "2", type: "food", title: "Food Scanner - Chicken Meal", date: "Yesterday" },
@@ -49,10 +51,10 @@ export default function HomeScreen() {
 
   return (
     <ScreenScrollView>
-      <View style={styles.header}>
+      <View style={styles.headerTop}>
         <Image
-          source={require("../assets/images/pupsense-logo.png")}
-          style={styles.logo}
+          source={require("../assets/images/pupsense-logo-full.png")}
+          style={styles.logoFull}
           resizeMode="contain"
         />
         <Pressable
@@ -64,6 +66,54 @@ export default function HomeScreen() {
           <Feather name="bell" size={22} color={theme.text} />
         </Pressable>
       </View>
+
+      {dogs.length > 0 && (
+        <View style={styles.dogsContainer}>
+          <View style={styles.dogsScroll}>
+            {dogs.map((dog) => (
+              <Pressable
+                key={dog.id}
+                onPress={() => {
+                  setSelectedDogId(dog.id);
+                  navigation.navigate("ProfileTab");
+                }}
+                style={({ pressed }) => [
+                  styles.dogCircle,
+                  {
+                    backgroundColor:
+                      selectedDogId === dog.id
+                        ? Colors.light.primary
+                        : theme.backgroundDefault,
+                    opacity: pressed ? 0.8 : 1,
+                  },
+                ]}
+              >
+                {dog.photo ? (
+                  <Image
+                    source={{ uri: dog.photo }}
+                    style={styles.dogPhoto}
+                  />
+                ) : (
+                  <Feather
+                    name="smile"
+                    size={28}
+                    color={
+                      selectedDogId === dog.id
+                        ? "#FFFFFF"
+                        : Colors.light.primary
+                    }
+                  />
+                )}
+              </Pressable>
+            ))}
+          </View>
+          {dogs.length > 0 && (
+            <ThemedText type="small" style={styles.dogNameLabel}>
+              {dogs.find((d) => d.id === selectedDogId)?.name || ""}
+            </ThemedText>
+          )}
+        </View>
+      )}
 
       <View style={styles.greetingContainer}>
         <ThemedText type="h2">Hi Juan</ThemedText>
@@ -136,15 +186,15 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  header: {
+  headerTop: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.md,
   },
-  logo: {
-    height: 40,
-    width: 120,
+  logoFull: {
+    height: 50,
+    width: 150,
   },
   bellButton: {
     width: 44,
@@ -152,6 +202,34 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.full,
     justifyContent: "center",
     alignItems: "center",
+  },
+  dogsContainer: {
+    alignItems: "center",
+    marginBottom: Spacing.lg,
+    gap: Spacing.sm,
+  },
+  dogsScroll: {
+    flexDirection: "row",
+    gap: Spacing.md,
+    justifyContent: "center",
+  },
+  dogCircle: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: Colors.light.primary,
+  },
+  dogPhoto: {
+    width: 66,
+    height: 66,
+    borderRadius: 33,
+  },
+  dogNameLabel: {
+    marginTop: Spacing.xs,
+    fontWeight: "600",
   },
   greetingContainer: {
     marginBottom: Spacing.lg,
