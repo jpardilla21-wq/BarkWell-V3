@@ -52,50 +52,59 @@ export default function HomeScreen() {
   return (
     <ScreenScrollView>
       {dogs.length > 0 && (
-        <View style={styles.dogsContainer}>
-          <View style={styles.dogsScroll}>
-            {dogs.map((dog) => (
-              <Pressable
-                key={dog.id}
-                onPress={() => {
-                  setSelectedDogId(dog.id);
-                  navigation.navigate("ProfileTab");
-                }}
-                style={({ pressed }) => [
-                  styles.dogCircle,
-                  {
-                    backgroundColor:
-                      selectedDogId === dog.id
-                        ? Colors.light.primary
-                        : theme.backgroundDefault,
-                    opacity: pressed ? 0.8 : 1,
-                  },
-                ]}
-              >
-                {dog.photo ? (
-                  <Image
-                    source={{ uri: dog.photo }}
-                    style={styles.dogPhoto}
-                  />
-                ) : (
-                  <Feather
-                    name="smile"
-                    size={28}
-                    color={
-                      selectedDogId === dog.id
-                        ? "#FFFFFF"
-                        : Colors.light.primary
-                    }
-                  />
-                )}
-              </Pressable>
-            ))}
+        <View style={styles.dogsSection}>
+          <View style={styles.dogsRowContainer}>
+            <Image
+              source={require("../assets/images/pupsense-logo-home.png")}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
+            <View style={styles.dogsContainer}>
+              <View style={styles.dogsScroll}>
+                {dogs.map((dog) => (
+                  <Pressable
+                    key={dog.id}
+                    onPress={() => {
+                      setSelectedDogId(dog.id);
+                      navigation.navigate("ProfileTab");
+                    }}
+                    style={({ pressed }) => [
+                      styles.dogCircle,
+                      {
+                        backgroundColor:
+                          selectedDogId === dog.id
+                            ? Colors.light.primary
+                            : theme.backgroundDefault,
+                        opacity: pressed ? 0.8 : 1,
+                      },
+                    ]}
+                  >
+                    {dog.photo ? (
+                      <Image
+                        source={{ uri: dog.photo }}
+                        style={styles.dogPhoto}
+                      />
+                    ) : (
+                      <Feather
+                        name="smile"
+                        size={28}
+                        color={
+                          selectedDogId === dog.id
+                            ? "#FFFFFF"
+                            : Colors.light.primary
+                        }
+                      />
+                    )}
+                  </Pressable>
+                ))}
+              </View>
+              {dogs.length > 0 && (
+                <ThemedText type="small" style={styles.dogNameLabel}>
+                  {dogs.find((d) => d.id === selectedDogId)?.name || ""}
+                </ThemedText>
+              )}
+            </View>
           </View>
-          {dogs.length > 0 && (
-            <ThemedText type="small" style={styles.dogNameLabel}>
-              {dogs.find((d) => d.id === selectedDogId)?.name || ""}
-            </ThemedText>
-          )}
         </View>
       )}
 
@@ -170,10 +179,22 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  dogsSection: {
+    marginBottom: Spacing.lg,
+  },
+  dogsRowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.md,
+  },
+  logoImage: {
+    width: 60,
+    height: 60,
+  },
   dogsContainer: {
     alignItems: "center",
-    marginBottom: Spacing.lg,
     gap: Spacing.sm,
+    flex: 1,
   },
   dogsScroll: {
     flexDirection: "row",
