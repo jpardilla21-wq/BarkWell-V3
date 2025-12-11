@@ -54,66 +54,63 @@ export default function HomeScreen() {
       {dogs.length > 0 && (
         <View style={styles.dogsSection}>
           <View style={styles.dogsRowContainer}>
-            <View style={styles.dogsContainer}>
-              <View style={styles.dogsScroll}>
-                {dogs.map((dog) => (
-                  <Pressable
-                    key={dog.id}
-                    onPress={() => {
-                      setSelectedDogId(dog.id);
-                      navigation.navigate("ProfileTab");
-                    }}
-                    style={({ pressed }) => [
-                      styles.dogCircle,
-                      {
-                        backgroundColor:
-                          selectedDogId === dog.id
-                            ? Colors.light.primary
-                            : theme.backgroundDefault,
-                        opacity: pressed ? 0.8 : 1,
-                      },
-                    ]}
-                  >
-                    {dog.photo ? (
-                      <Image
-                        source={{ uri: dog.photo }}
-                        style={styles.dogPhoto}
-                      />
-                    ) : (
-                      <Feather
-                        name="smile"
-                        size={28}
-                        color={
-                          selectedDogId === dog.id
-                            ? "#FFFFFF"
-                            : Colors.light.primary
-                        }
-                      />
-                    )}
-                  </Pressable>
-                ))}
+            {dogs.map((dog) => (
+              <View key={dog.id} style={styles.dogItem}>
                 <Pressable
-                  onPress={() => navigation.navigate("AddDog")}
+                  onPress={() => {
+                    setSelectedDogId(dog.id);
+                    navigation.navigate("ProfileTab");
+                  }}
                   style={({ pressed }) => [
-                    styles.addDogCircle,
+                    styles.dogCircle,
                     {
-                      backgroundColor: theme.backgroundDefault,
+                      backgroundColor:
+                        selectedDogId === dog.id
+                          ? Colors.light.primary
+                          : theme.backgroundDefault,
                       opacity: pressed ? 0.8 : 1,
                     },
                   ]}
                 >
-                  <Feather
-                    name="plus"
-                    size={32}
-                    color={Colors.light.primary}
-                  />
+                  {dog.photo ? (
+                    <Image
+                      source={{ uri: dog.photo }}
+                      style={styles.dogPhoto}
+                    />
+                  ) : (
+                    <Feather
+                      name="smile"
+                      size={28}
+                      color={
+                        selectedDogId === dog.id
+                          ? "#FFFFFF"
+                          : Colors.light.primary
+                      }
+                    />
+                  )}
                 </Pressable>
-              </View>
-              {dogs.length > 0 && (
                 <ThemedText type="small" style={styles.dogNameLabel}>
-                  {dogs.find((d) => d.id === selectedDogId)?.name || ""}
+                  {dog.name}
                 </ThemedText>
-              )}
+              </View>
+            ))}
+            <View style={styles.dogItem}>
+              <Pressable
+                onPress={() => navigation.navigate("AddDog")}
+                style={({ pressed }) => [
+                  styles.addDogCircle,
+                  {
+                    backgroundColor: theme.backgroundDefault,
+                    opacity: pressed ? 0.8 : 1,
+                  },
+                ]}
+              >
+                <Feather
+                  name="plus"
+                  size={32}
+                  color={Colors.light.primary}
+                />
+              </Pressable>
             </View>
           </View>
         </View>
@@ -195,18 +192,12 @@ const styles = StyleSheet.create({
   },
   dogsRowContainer: {
     flexDirection: "row",
-    alignItems: "center",
     gap: Spacing.md,
+    alignItems: "flex-start",
   },
-  dogsContainer: {
+  dogItem: {
     alignItems: "center",
-    gap: Spacing.sm,
-    flex: 1,
-  },
-  dogsScroll: {
-    flexDirection: "row",
-    gap: Spacing.md,
-    justifyContent: "center",
+    gap: Spacing.xs,
   },
   dogCircle: {
     width: 70,
@@ -232,8 +223,9 @@ const styles = StyleSheet.create({
     borderColor: Colors.light.primary,
   },
   dogNameLabel: {
-    marginTop: Spacing.xs,
     fontWeight: "600",
+    maxWidth: 80,
+    textAlign: "center",
   },
   greetingContainer: {
     marginBottom: Spacing.lg,
