@@ -54,11 +54,6 @@ export default function HomeScreen() {
       {dogs.length > 0 && (
         <View style={styles.dogsSection}>
           <View style={styles.dogsRowContainer}>
-            <Image
-              source={require("../assets/images/pupsense-logo-home.png")}
-              style={styles.logoImage}
-              resizeMode="contain"
-            />
             <View style={styles.dogsContainer}>
               <View style={styles.dogsScroll}>
                 {dogs.map((dog) => (
@@ -97,6 +92,22 @@ export default function HomeScreen() {
                     )}
                   </Pressable>
                 ))}
+                <Pressable
+                  onPress={() => navigation.navigate("AddDog")}
+                  style={({ pressed }) => [
+                    styles.addDogCircle,
+                    {
+                      backgroundColor: theme.backgroundDefault,
+                      opacity: pressed ? 0.8 : 1,
+                    },
+                  ]}
+                >
+                  <Feather
+                    name="plus"
+                    size={32}
+                    color={Colors.light.primary}
+                  />
+                </Pressable>
               </View>
               {dogs.length > 0 && (
                 <ThemedText type="small" style={styles.dogNameLabel}>
@@ -187,10 +198,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: Spacing.md,
   },
-  logoImage: {
-    width: 140,
-    height: 140,
-  },
   dogsContainer: {
     alignItems: "center",
     gap: Spacing.sm,
@@ -214,6 +221,15 @@ const styles = StyleSheet.create({
     width: 66,
     height: 66,
     borderRadius: 33,
+  },
+  addDogCircle: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: Colors.light.primary,
   },
   dogNameLabel: {
     marginTop: Spacing.xs,
