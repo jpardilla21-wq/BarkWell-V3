@@ -24,7 +24,7 @@ import {
   Typography,
   Colors,
 } from "@/constants/theme";
-import { analyzePoopWithOpenAI, APIKeyError } from "@/utils/apiClient";
+import { analyzePoopWithGemini, APIKeyError } from "@/utils/apiClient";
 
 type RiskLevel = "Low" | "Medium" | "High";
 
@@ -117,7 +117,7 @@ export default function PoopCheckScreen() {
     setResult(null);
 
     try {
-      const result = await analyzePoopWithOpenAI(photoUri, description);
+      const result = await analyzePoopWithGemini(photoUri, description);
       setResult(result);
     } catch (error) {
       if (error instanceof APIKeyError) {

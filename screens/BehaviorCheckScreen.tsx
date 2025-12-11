@@ -23,7 +23,7 @@ import {
   BorderRadius,
   Typography,
 } from "@/constants/theme";
-import { analyzeBehaviorWithOpenAI, APIKeyError } from "@/utils/apiClient";
+import { analyzeBehaviorWithGemini, APIKeyError } from "@/utils/apiClient";
 
 type BehaviorState =
   | "Relaxed"
@@ -197,7 +197,7 @@ export default function BehaviorCheckScreen() {
     setResult(null);
 
     try {
-      const result = await analyzeBehaviorWithOpenAI(videoUri);
+      const result = await analyzeBehaviorWithGemini(videoUri);
       setResult(result);
     } catch (error) {
       if (error instanceof APIKeyError) {
