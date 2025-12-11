@@ -52,6 +52,9 @@ export default function HomeScreen() {
   return (
     <ScreenScrollView>
       <View style={styles.headerTop}>
+        <ThemedText type="h3" style={styles.headerTitle}>
+          PupSense
+        </ThemedText>
         <Pressable
           style={({ pressed }) => [
             styles.bellButton,
@@ -190,10 +193,14 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   headerTop: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
     marginBottom: Spacing.lg,
-    paddingRight: Spacing.md,
+    paddingHorizontal: Spacing.md,
+  },
+  headerTitle: {
+    flex: 1,
+    textAlign: "center",
   },
   bellButton: {
     width: 44,
