@@ -54,11 +54,18 @@ export default function HomeScreen() {
       {dogs.length > 0 && (
         <View style={styles.dogsSection}>
           <View style={styles.dogsRowContainer}>
-            <Image
-              source={require("../assets/images/pupsense-logo-home.png")}
-              style={styles.logoImage}
-              resizeMode="contain"
-            />
+            <View
+              style={[
+                styles.logoBackground,
+                { backgroundColor: theme.backgroundDefault },
+              ]}
+            >
+              <Image
+                source={require("../assets/images/pupsense-logo-home.png")}
+                style={styles.logoImage}
+                resizeMode="contain"
+              />
+            </View>
             <View style={styles.dogsContainer}>
               <View style={styles.dogsScroll}>
                 {dogs.map((dog) => (
@@ -186,6 +193,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.md,
+  },
+  logoBackground: {
+    width: 140,
+    height: 140,
+    borderRadius: BorderRadius.lg,
+    justifyContent: "center",
+    alignItems: "center",
   },
   logoImage: {
     width: 120,
