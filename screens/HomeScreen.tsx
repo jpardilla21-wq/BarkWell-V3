@@ -188,8 +188,8 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
   },
   logoImage: {
-    width: 60,
-    height: 60,
+    width: 120,
+    height: 120,
   },
   dogsContainer: {
     alignItems: "center",
