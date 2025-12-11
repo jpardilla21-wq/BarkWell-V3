@@ -29,7 +29,7 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
       <View style={styles.content}>
         <View style={styles.logoContainer}>
           <Image
-            source={require("../assets/images/pupsense-logo.png")}
+            source={require("../assets/images/pupsense-logo-splash.png")}
             style={styles.logoImage}
             resizeMode="contain"
           />
