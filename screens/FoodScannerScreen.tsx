@@ -26,7 +26,7 @@ import {
   BorderRadius,
   Typography,
 } from "@/constants/theme";
-import { analyzeIngredientWithGemini } from "@/utils/apiClient";
+import { analyzeIngredientWithGemini, APIKeyError } from "@/utils/apiClient";
 
 interface FoodAnalysisResult {
   score: number;
@@ -154,7 +154,11 @@ export default function FoodScannerScreen() {
       const result = await analyzeIngredientWithGemini(photoUri, ingredients);
       setResult(result);
     } catch (error) {
-      Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
+      if (error instanceof APIKeyError) {
+        Alert.alert("API Configuration Required", error.message);
+      } else {
+        Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
+      }
       console.error(error);
     } finally {
       setIsAnalyzing(false);

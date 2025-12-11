@@ -3,6 +3,15 @@ import * as FileSystem from "expo-file-system";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
+export class APIKeyError extends Error {
+  constructor(service: string) {
+    super(
+      `${service} API key not configured. For the best experience, please use the web version of PupSense.`
+    );
+    this.name = "APIKeyError";
+  }
+}
+
 export async function analyzePoopWithOpenAI(
   photoUri: string | null,
   description: string
@@ -12,7 +21,7 @@ export async function analyzePoopWithOpenAI(
   tips: string[];
 }> {
   try {
-    if (!OPENAI_API_KEY) throw new Error("OpenAI API key not found");
+    if (!OPENAI_API_KEY) throw new APIKeyError("OpenAI");
 
     let content: Array<{ type: string; text?: string; image_url?: { url: string } }> = [];
 
@@ -85,7 +94,7 @@ export async function analyzeIngredientWithGemini(
   recommendations: Array<{ name: string; reason: string; affiliateLink: string }>;
 }> {
   try {
-    if (!GEMINI_API_KEY) throw new Error("Gemini API key not found");
+    if (!GEMINI_API_KEY) throw new APIKeyError("Gemini");
 
     let imageData = null;
     if (photoUri) {
@@ -187,7 +196,7 @@ export async function analyzeBehaviorWithOpenAI(
   tips: string[];
 }> {
   try {
-    if (!OPENAI_API_KEY) throw new Error("OpenAI API key not found");
+    if (!OPENAI_API_KEY) throw new APIKeyError("OpenAI");
 
     // For video, we'll try to extract frame or use the video URI
     const base64 = await FileSystem.readAsStringAsync(videoUri, {

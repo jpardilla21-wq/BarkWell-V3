@@ -23,7 +23,7 @@ import {
   BorderRadius,
   Typography,
 } from "@/constants/theme";
-import { analyzeBehaviorWithOpenAI } from "@/utils/apiClient";
+import { analyzeBehaviorWithOpenAI, APIKeyError } from "@/utils/apiClient";
 
 type BehaviorState =
   | "Relaxed"
@@ -200,7 +200,11 @@ export default function BehaviorCheckScreen() {
       const result = await analyzeBehaviorWithOpenAI(videoUri);
       setResult(result);
     } catch (error) {
-      Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
+      if (error instanceof APIKeyError) {
+        Alert.alert("API Configuration Required", error.message);
+      } else {
+        Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
+      }
       console.error(error);
     } finally {
       setIsAnalyzing(false);

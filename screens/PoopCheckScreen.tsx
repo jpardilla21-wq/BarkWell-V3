@@ -24,7 +24,7 @@ import {
   Typography,
   Colors,
 } from "@/constants/theme";
-import { analyzePoopWithOpenAI } from "@/utils/apiClient";
+import { analyzePoopWithOpenAI, APIKeyError } from "@/utils/apiClient";
 
 type RiskLevel = "Low" | "Medium" | "High";
 
@@ -120,7 +120,11 @@ export default function PoopCheckScreen() {
       const result = await analyzePoopWithOpenAI(photoUri, description);
       setResult(result);
     } catch (error) {
-      Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
+      if (error instanceof APIKeyError) {
+        Alert.alert("API Configuration Required", error.message);
+      } else {
+        Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
+      }
       console.error(error);
     } finally {
       setIsAnalyzing(false);
