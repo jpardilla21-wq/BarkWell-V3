@@ -26,6 +26,7 @@ import {
   BorderRadius,
   Typography,
 } from "@/constants/theme";
+import { analyzeIngredientWithGemini } from "@/utils/apiClient";
 
 interface FoodAnalysisResult {
   score: number;
@@ -143,111 +144,21 @@ export default function FoodScannerScreen() {
     }
   };
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!photoUri && !ingredients.trim()) return;
 
     setIsAnalyzing(true);
     setResult(null);
 
-    // Simulate OCR and ingredient analysis
-    setTimeout(() => {
-      const toxicIngredients = [
-        "chocolate",
-        "xylitol",
-        "onion",
-        "garlic",
-        "grapes",
-        "raisins",
-      ];
-      const concernIngredients = [
-        "corn",
-        "soy",
-        "artificial colors",
-        "artificial flavors",
-        "BHA",
-        "BHT",
-        "ethoxyquin",
-        "by-products",
-        "meal",
-      ];
-
-      const ingredientList = ingredients
-        .toLowerCase()
-        .split(",")
-        .map((i) => i.trim());
-
-      const foundToxins = toxicIngredients.filter(
-        (t) =>
-          ingredients.toLowerCase().includes(t) ||
-          ingredientList.some((i) => i.includes(t))
-      );
-
-      const foundConcerns = concernIngredients.filter(
-        (c) =>
-          ingredients.toLowerCase().includes(c) ||
-          ingredientList.some((i) => i.includes(c))
-      );
-
-      const hasProtein =
-        ingredients.toLowerCase().includes("chicken") ||
-        ingredients.toLowerCase().includes("beef") ||
-        ingredients.toLowerCase().includes("fish");
-
-      const hasOmega =
-        ingredients.toLowerCase().includes("fish") ||
-        ingredients.toLowerCase().includes("salmon") ||
-        ingredients.toLowerCase().includes("omega");
-
-      const scoreBase = 100;
-      const toxinPenalty = foundToxins.length * 25;
-      const concernPenalty = foundConcerns.length * 8;
-      const proteinBonus = hasProtein ? 5 : 0;
-      const omegaBonus = hasOmega ? 5 : 0;
-
-      const score = Math.max(
-        0,
-        scoreBase - toxinPenalty - concernPenalty + proteinBonus + omegaBonus
-      );
-
-      const dummyResult: FoodAnalysisResult = {
-        score: Math.min(100, score),
-        summary:
-          foundToxins.length > 0
-            ? "⚠️ This food contains ingredients that are toxic to dogs. Please avoid or consult your vet."
-            : foundConcerns.length > 0
-              ? "This food has some questionable ingredients. Consider switching to a higher-quality option."
-              : "This food appears to be safe with good nutritional value for your dog.",
-        good: [
-          ...(hasProtein ? ["Good protein source from meat"] : []),
-          ...(hasOmega ? ["Contains omega fatty acids for coat health"] : []),
-          ...(ingredientList.some(
-            (i) =>
-              i.includes("vegetable") ||
-              i.includes("fruit") ||
-              i.includes("sweet potato")
-          )
-            ? ["Includes vegetables and natural carbohydrates"]
-            : []),
-        ].slice(0, 3),
-        bad: foundConcerns.slice(0, 3),
-        toxins: foundToxins.map((t) => {
-          const warnings: { [key: string]: string } = {
-            chocolate: "Chocolate - Toxic, can cause seizures and heart problems",
-            xylitol:
-              "Xylitol - Highly toxic, can cause rapid insulin release and liver failure",
-            onion: "Onion - Toxic, damages red blood cells causing anemia",
-            garlic: "Garlic - Toxic, can damage red blood cells",
-            grapes: "Grapes - Toxic, can cause kidney failure",
-            raisins: "Raisins - Toxic, can cause kidney failure",
-          };
-          return warnings[t] || `${t} - Toxic to dogs`;
-        }),
-        recommendations: RECOMMENDED_FOODS.slice(0, 3),
-      };
-
-      setResult(dummyResult);
+    try {
+      const result = await analyzeIngredientWithGemini(photoUri, ingredients);
+      setResult(result);
+    } catch (error) {
+      Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
+      console.error(error);
+    } finally {
       setIsAnalyzing(false);
-    }, 2000);
+    }
   };
 
   const handleClearPhoto = () => {

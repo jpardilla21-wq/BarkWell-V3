@@ -23,6 +23,7 @@ import {
   BorderRadius,
   Typography,
 } from "@/constants/theme";
+import { analyzeBehaviorWithOpenAI } from "@/utils/apiClient";
 
 type BehaviorState =
   | "Relaxed"
@@ -189,105 +190,21 @@ export default function BehaviorCheckScreen() {
     }
   };
 
-  const analyzeVideo = () => {
+  const analyzeVideo = async () => {
     if (!videoUri) return;
 
     setIsAnalyzing(true);
     setResult(null);
 
-    // Simulate video analysis - in reality, this would send to an AI service
-    setTimeout(() => {
-      const states: BehaviorState[] = [
-        "Relaxed",
-        "Happy & Engaged",
-        "Anxious",
-        "Overstimulated",
-        "Defensive",
-      ];
-
-      // Random behavior analysis for demo
-      const randomState = states[Math.floor(Math.random() * states.length)];
-
-      const analysisResults: {
-        [key in BehaviorState]: BehaviorAnalysisResult;
-      } = {
-        Relaxed: {
-          state: "Relaxed",
-          explanation:
-            "Your dog shows calm body language with relaxed posture. The tail is in a neutral position, ears are in a normal state, and overall demeanor suggests contentment. This is a healthy emotional state.",
-          observations: {
-            tail: "Neutral position, occasional gentle wags",
-            body: "Relaxed posture, normal muscle tension, comfortable stance",
-            face: "Soft eyes, ears in normal position, relaxed mouth",
-            mouth: "Closed or slightly open, no tension in jaw",
-          },
-          tips: BEHAVIOR_GUIDELINES.Relaxed.tips,
-        },
-        "Happy & Engaged": {
-          state: "Happy & Engaged",
-          explanation:
-            "Your dog is displaying positive, engaged behavior! The tail is actively wagging, body language is open and playful, and your dog appears interested and happy. This indicates a great emotional state.",
-          observations: {
-            tail: "Active wagging, high or medium position",
-            body: "Play bow position, bouncy movements, forward-facing posture",
-            face: "Bright eyes, forward-facing ears, mouth open in play",
-            mouth: "Open mouth smile, playful expression, relaxed jaw",
-          },
-          tips: BEHAVIOR_GUIDELINES["Happy & Engaged"].tips,
-        },
-        Anxious: {
-          state: "Anxious",
-          explanation:
-            "Your dog is showing signs of anxiety. The body language suggests tension - tail position is low or tucked, ears are back, and overall posture appears defensive or withdrawn. Your dog may be experiencing stress from the environment or situation.",
-          observations: {
-            tail: "Tucked or lowered position, minimal movement",
-            body: "Lowered posture, tension visible, withdrawn stance",
-            face: "Tension around eyes, ears back or pinned, worried expression",
-            mouth: "Closed or panting, tension in jaw, possible lip licking",
-          },
-          tips: BEHAVIOR_GUIDELINES.Anxious.tips,
-        },
-        Overstimulated: {
-          state: "Overstimulated",
-          explanation:
-            "Your dog appears overstimulated and might need a break. Signs include excessive energy, rapid movements, and heightened arousal. This state can lead to poor decisions if not managed - giving your dog time to calm down is important.",
-          observations: {
-            tail: "Rapid wagging, high position, stiff movements",
-            body: "Tense muscles, rapid pacing or jumping, jerky movements",
-            face: "Wide eyes, forward ears, intense stare, possible growling",
-            mouth: "Open, rapid panting, possible nipping or play biting",
-          },
-          tips: BEHAVIOR_GUIDELINES.Overstimulated.tips,
-        },
-        Defensive: {
-          state: "Defensive",
-          explanation:
-            "Your dog is displaying defensive behaviors and should not be approached right now. This emotional state requires professional intervention and careful management to prevent escalation.",
-          observations: {
-            tail: "Lowered or tucked, stiff, minimal movement",
-            body: "Stiff posture, lowered body, backing away or holding ground",
-            face: "Tense jaw, ears back or pinned, intense eye contact or averted",
-            mouth: "Closed, possible growling or snarling, bared teeth",
-          },
-          tips: BEHAVIOR_GUIDELINES.Defensive.tips,
-        },
-        "Possibly in Pain": {
-          state: "Possibly in Pain",
-          explanation:
-            "Your dog may be in pain or discomfort. Behavioral indicators include reluctance to move, abnormal posture, and signs of distress. Veterinary attention is recommended.",
-          observations: {
-            tail: "Tucked, immobile, or held stiffly",
-            body: "Hunched posture, reluctance to move, limping or stiffness",
-            face: "Tensed facial muscles, worried expression, possible panting",
-            mouth: "Tense jaw, possible drooling, signs of discomfort",
-          },
-          tips: BEHAVIOR_GUIDELINES["Possibly in Pain"].tips,
-        },
-      };
-
-      setResult(analysisResults[randomState]);
+    try {
+      const result = await analyzeBehaviorWithOpenAI(videoUri);
+      setResult(result);
+    } catch (error) {
+      Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
+      console.error(error);
+    } finally {
       setIsAnalyzing(false);
-    }, 2500);
+    }
   };
 
   const handleClearVideo = () => {

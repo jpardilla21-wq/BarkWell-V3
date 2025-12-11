@@ -24,6 +24,7 @@ import {
   Typography,
   Colors,
 } from "@/constants/theme";
+import { analyzePoopWithOpenAI } from "@/utils/apiClient";
 
 type RiskLevel = "Low" | "Medium" | "High";
 
@@ -109,28 +110,21 @@ export default function PoopCheckScreen() {
     }
   };
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!photoUri && !description.trim()) return;
 
     setIsAnalyzing(true);
     setResult(null);
 
-    setTimeout(() => {
-      const dummyResult: AnalysisResult = {
-        riskLevel: "Low",
-        summary: photoUri
-          ? "Based on the photo analysis, your dog's stool appears to be within normal range. The consistency and color look typical for a healthy dog."
-          : "Based on your description, your dog's stool appears to be within normal range. The consistency and color you described are typical for a healthy dog.",
-        tips: [
-          "Continue monitoring for any changes in frequency or consistency",
-          "Ensure your dog stays hydrated throughout the day",
-          "Maintain a consistent feeding schedule",
-          "If symptoms persist for more than 48 hours, consult your vet",
-        ],
-      };
-      setResult(dummyResult);
+    try {
+      const result = await analyzePoopWithOpenAI(photoUri, description);
+      setResult(result);
+    } catch (error) {
+      Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
+      console.error(error);
+    } finally {
       setIsAnalyzing(false);
-    }, 1500);
+    }
   };
 
   const handleClearPhoto = () => {
