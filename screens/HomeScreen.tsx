@@ -51,30 +51,9 @@ export default function HomeScreen() {
 
   return (
     <ScreenScrollView>
-      <View style={styles.headerTop}>
-        <ThemedText type="h3" style={styles.headerTitle}>
-          PupSense
-        </ThemedText>
-        <Pressable
-          style={({ pressed }) => [
-            styles.bellButton,
-            { backgroundColor: theme.backgroundDefault, opacity: pressed ? 0.7 : 1 },
-          ]}
-        >
-          <Feather name="bell" size={22} color={theme.text} />
-        </Pressable>
-      </View>
-
       {dogs.length > 0 && (
         <View style={styles.dogsContainer}>
           <View style={styles.dogsScroll}>
-            <View style={[styles.dogCircle, styles.logoCircle]}>
-              <Image
-                source={require("../assets/images/pupsense-logo-full.png")}
-                style={styles.logoImage}
-                resizeMode="contain"
-              />
-            </View>
             {dogs.map((dog) => (
               <Pressable
                 key={dog.id}
@@ -191,24 +170,6 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  headerTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: Spacing.lg,
-    paddingHorizontal: Spacing.md,
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: "center",
-  },
-  bellButton: {
-    width: 44,
-    height: 44,
-    borderRadius: BorderRadius.full,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   dogsContainer: {
     alignItems: "center",
     marginBottom: Spacing.lg,
@@ -227,14 +188,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 2,
     borderColor: Colors.light.primary,
-  },
-  logoCircle: {
-    backgroundColor: Colors.light.primary,
-    borderColor: Colors.light.primary,
-  },
-  logoImage: {
-    width: 50,
-    height: 50,
   },
   dogPhoto: {
     width: 66,
