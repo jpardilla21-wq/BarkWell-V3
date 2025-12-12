@@ -201,7 +201,24 @@ export default function BehaviorCheckScreen() {
       setResult(result);
     } catch (error) {
       if (error instanceof APIKeyError) {
-        Alert.alert("API Configuration Required", error.message);
+        Alert.alert(
+          "API Configuration Required",
+          "This feature requires API configuration that isn't available in Expo Go. Use the web version instead.",
+          [
+            { text: "Cancel", style: "cancel" },
+            {
+              text: "Open Web Version",
+              onPress: () => {
+                Linking.openURL("http://localhost:8081").catch(() => {
+                  Alert.alert(
+                    "Link Information",
+                    "Open this link in your browser:\nhttp://localhost:8081"
+                  );
+                });
+              },
+            },
+          ]
+        );
       } else {
         Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
       }
