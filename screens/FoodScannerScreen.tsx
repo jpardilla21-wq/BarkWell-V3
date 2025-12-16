@@ -33,6 +33,8 @@ interface FoodAnalysisResult {
   summary: string;
   good: string[];
   bad: string[];
+  neither: string[];
+  allergens: string[];
   toxins: string[];
   recommendations: {
     name: string;
@@ -346,6 +348,31 @@ export default function FoodScannerScreen() {
             </View>
           ) : null}
 
+          {result.allergens.length > 0 ? (
+            <View
+              style={[
+                styles.allergenWarning,
+                { backgroundColor: Colors.light.warningYellow + "20" },
+              ]}
+            >
+              <ThemedText
+                type="h4"
+                style={{ color: Colors.light.warningYellow, marginBottom: Spacing.sm }}
+              >
+                Potential Allergens
+              </ThemedText>
+              {result.allergens.map((allergen, index) => (
+                <ThemedText
+                  key={index}
+                  type="body"
+                  style={{ color: Colors.light.warningYellow, marginBottom: Spacing.xs }}
+                >
+                  ⚠ {allergen}
+                </ThemedText>
+              ))}
+            </View>
+          ) : null}
+
           {result.good.length > 0 ? (
             <View style={styles.listSection}>
               <ThemedText
@@ -379,6 +406,27 @@ export default function FoodScannerScreen() {
                 <View key={index} style={styles.listRow}>
                   <ThemedText type="body" style={styles.bullet}>
                     -
+                  </ThemedText>
+                  <ThemedText type="body" style={styles.listText}>
+                    {item}
+                  </ThemedText>
+                </View>
+              ))}
+            </View>
+          ) : null}
+
+          {result.neither.length > 0 ? (
+            <View style={styles.listSection}>
+              <ThemedText
+                type="h4"
+                style={{ color: theme.textMuted, marginBottom: Spacing.sm }}
+              >
+                Neutral
+              </ThemedText>
+              {result.neither.map((item, index) => (
+                <View key={index} style={styles.listRow}>
+                  <ThemedText type="body" style={styles.bullet}>
+                    •
                   </ThemedText>
                   <ThemedText type="body" style={styles.listText}>
                     {item}
@@ -540,6 +588,11 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.lg,
   },
   toxinWarning: {
+    padding: Spacing.md,
+    borderRadius: BorderRadius.md,
+    marginBottom: Spacing.lg,
+  },
+  allergenWarning: {
     padding: Spacing.md,
     borderRadius: BorderRadius.md,
     marginBottom: Spacing.lg,

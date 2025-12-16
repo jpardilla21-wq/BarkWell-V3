@@ -99,6 +99,8 @@ export async function analyzeIngredientWithGemini(
   summary: string;
   good: string[];
   bad: string[];
+  neither: string[];
+  allergens: string[];
   toxins: string[];
   recommendations: Array<{ name: string; reason: string; affiliateLink: string }>;
 }> {
@@ -113,7 +115,7 @@ export async function analyzeIngredientWithGemini(
       imageData = base64;
     }
 
-    const prompt = `You are a dog nutrition expert. Analyze dog food ingredients for safety and quality.
+    const prompt = `You are a dog nutrition expert. Analyze dog food ingredients for safety, quality, and allergens.
     ${imageData ? "The image shows a pet food label. Extract and analyze the ingredients." : ""}
     ${ingredients ? `Ingredients provided: ${ingredients}` : ""}
     
@@ -123,6 +125,8 @@ export async function analyzeIngredientWithGemini(
       "summary": "Overall assessment",
       "good": ["beneficial ingredient 1", "beneficial ingredient 2"],
       "bad": ["concerning ingredient 1"],
+      "neither": ["neutral ingredient 1", "neutral ingredient 2"],
+      "allergens": ["common allergen 1", "common allergen 2"],
       "toxins": ["toxic ingredient if any"],
       "recommendations": [
         {
@@ -133,7 +137,11 @@ export async function analyzeIngredientWithGemini(
       ]
     }
     
-    Focus on dog health. Identify toxic ingredients (chocolate, xylitol, onions, grapes). Score based on ingredient quality.`;
+    Focus on dog health. 
+    - Identify toxic ingredients (chocolate, xylitol, onions, grapes, macadamia nuts).
+    - Identify common dog allergens (beef, chicken, dairy, wheat, soy, corn).
+    - Categorize ingredients as good (high-quality proteins, vegetables), bad (artificial additives, low-quality fillers), neither (neutral fillers), or allergens.
+    - Score based on ingredient quality and allergen safety (0-100).`;
 
     const body: any = {
       contents: [
