@@ -96,6 +96,7 @@ export async function analyzeIngredientWithGemini(
   ingredients: string
 ): Promise<{
   score: number;
+  rating: "Elite" | "Excellent" | "Good" | "Fair" | "Borderline" | "Poor";
   summary: string;
   good: string[];
   bad: string[];
@@ -115,33 +116,54 @@ export async function analyzeIngredientWithGemini(
       imageData = base64;
     }
 
-    const prompt = `You are a dog nutrition expert. Analyze dog food ingredients for safety, quality, and allergens.
+    const prompt = `You are a PupSense dog nutrition expert. Analyze dog food ingredients using the PupSense scoring system.
     ${imageData ? "The image shows a pet food label. Extract and analyze the ingredients." : ""}
     ${ingredients ? `Ingredients provided: ${ingredients}` : ""}
     
-    Respond in JSON format with:
+    SCORING CRITERIA (be strict):
+    
+    1. FIRST 5 INGREDIENTS (most important - 80% of food comes from these):
+       - Named proteins (Chicken, Beef, Salmon, Turkey meal) = +points
+       - Vague proteins (meat by-products, animal fat, poultry digest) = -points
+    
+    2. CARBOHYDRATES:
+       - Good: sweet potatoes, oats, brown rice
+       - Bad: excessive peas, lentils, or corn (cost-cutting signals)
+    
+    3. FATS:
+       - Good: chicken fat, salmon oil (named sources)
+       - Bad: generic "animal fat" 
+    
+    4. PRESERVATIVES & ADDITIVES:
+       - Good: natural preservatives (vitamin E/tocopherols)
+       - Bad: artificial colors, flavors, chemical preservatives
+    
+    SCORE RANGES:
+    - 90-100 (Elite): Outstanding ingredients, almost no red flags
+    - 80-89 (Excellent): High-quality proteins and fats, minor compromises only
+    - 70-79 (Good): Solid nutrition but not perfect, acceptable for most dogs
+    - 60-69 (Fair): Noticeable fillers or vague ingredients, better options exist
+    - 50-59 (Borderline): Too many trade-offs to confidently recommend
+    - 0-49 (Poor): Low-quality ingredients or major red flags, best avoided
+    
+    Respond in JSON format:
     {
       "score": number (0-100),
-      "summary": "Overall assessment",
-      "good": ["beneficial ingredient 1", "beneficial ingredient 2"],
-      "bad": ["concerning ingredient 1"],
-      "neither": ["neutral ingredient 1", "neutral ingredient 2"],
-      "allergens": ["common allergen 1", "common allergen 2"],
+      "rating": "Elite" | "Excellent" | "Good" | "Fair" | "Borderline" | "Poor",
+      "summary": "Brief assessment explaining the score",
+      "good": ["beneficial ingredient with reason"],
+      "bad": ["concerning ingredient with reason"],
+      "neither": ["neutral ingredient"],
+      "allergens": ["common dog allergen found"],
       "toxins": ["toxic ingredient if any"],
-      "recommendations": [
-        {
-          "name": "Food name",
-          "reason": "Why it's recommended",
-          "affiliateLink": "amazon or brand link"
-        }
-      ]
+      "recommendations": [{"name": "Better food option", "reason": "Why recommended", "affiliateLink": "amazon link"}]
     }
     
-    Focus on dog health. 
-    - Identify toxic ingredients (chocolate, xylitol, onions, grapes, macadamia nuts).
-    - Identify common dog allergens (beef, chicken, dairy, wheat, soy, corn).
-    - Categorize ingredients as good (high-quality proteins, vegetables), bad (artificial additives, low-quality fillers), neither (neutral fillers), or allergens.
-    - Score based on ingredient quality and allergen safety (0-100).`;
+    Also check for:
+    - Toxic ingredients (chocolate, xylitol, onions, grapes, macadamia nuts)
+    - Common dog allergens (beef, chicken, dairy, wheat, soy, corn)
+    
+    Be intentionally strict. Not every food above 50 deserves recommendation. Aim to help dogs get 70+ quality food.`;
 
     const body: any = {
       contents: [

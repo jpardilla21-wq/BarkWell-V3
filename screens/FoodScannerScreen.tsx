@@ -30,6 +30,7 @@ import { analyzeIngredientWithGemini, APIKeyError } from "@/utils/apiClient";
 
 interface FoodAnalysisResult {
   score: number;
+  rating: "Elite" | "Excellent" | "Good" | "Fair" | "Borderline" | "Poor";
   summary: string;
   good: string[];
   bad: string[];
@@ -42,6 +43,44 @@ interface FoodAnalysisResult {
     affiliateLink: string;
   }[];
 }
+
+const getRatingColor = (rating: FoodAnalysisResult["rating"]) => {
+  switch (rating) {
+    case "Elite":
+      return "#22C55E";
+    case "Excellent":
+      return "#4ADE80";
+    case "Good":
+      return "#84CC16";
+    case "Fair":
+      return "#EAB308";
+    case "Borderline":
+      return "#F97316";
+    case "Poor":
+      return "#EF4444";
+    default:
+      return "#6B7280";
+  }
+};
+
+const getRatingDescription = (rating: FoodAnalysisResult["rating"]) => {
+  switch (rating) {
+    case "Elite":
+      return "Outstanding ingredients with almost no red flags";
+    case "Excellent":
+      return "High-quality proteins and fats with minor compromises";
+    case "Good":
+      return "Solid nutrition, acceptable for most dogs";
+    case "Fair":
+      return "Noticeable fillers or vague ingredients";
+    case "Borderline":
+      return "Too many trade-offs to confidently recommend";
+    case "Poor":
+      return "Low-quality ingredients or major red flags";
+    default:
+      return "";
+  }
+};
 
 const RECOMMENDED_FOODS = [
   {
@@ -211,7 +250,7 @@ export default function FoodScannerScreen() {
             ]}
           >
             <Feather
-              name="barcode"
+              name="tag"
               size={48}
               color={Colors.light.primary}
               style={{ marginBottom: Spacing.md }}
@@ -313,8 +352,24 @@ export default function FoodScannerScreen() {
           <View style={styles.resultHeader}>
             <View style={styles.scoreSection}>
               <ScoreBadge score={result.score} />
-              <ThemedText type="h4" style={styles.scoreLabel}>
-                Safety Score
+              <View
+                style={[
+                  styles.ratingBadge,
+                  { backgroundColor: getRatingColor(result.rating) + "20" },
+                ]}
+              >
+                <ThemedText
+                  type="h4"
+                  style={{ color: getRatingColor(result.rating), fontWeight: "700" }}
+                >
+                  {result.rating}
+                </ThemedText>
+              </View>
+              <ThemedText
+                type="small"
+                style={{ color: theme.textMuted, textAlign: "center", marginTop: Spacing.xs }}
+              >
+                {getRatingDescription(result.rating)}
               </ThemedText>
             </View>
           </View>
@@ -583,6 +638,12 @@ const styles = StyleSheet.create({
   },
   scoreLabel: {
     opacity: 0.7,
+  },
+  ratingBadge: {
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    borderRadius: BorderRadius.md,
+    marginTop: Spacing.sm,
   },
   summary: {
     marginBottom: Spacing.lg,
