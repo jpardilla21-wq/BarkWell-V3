@@ -687,14 +687,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.xs,
     gap: Spacing.xs,
   },
   link: {
     textDecorationLine: "underline",
   },
   disclaimerContainer: {
-    marginTop: Spacing.md,
+    marginTop: Spacing.xs,
     paddingHorizontal: Spacing.sm,
   },
   buttonContainer: {
