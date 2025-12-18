@@ -111,7 +111,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   const { language } = useLanguage();
   const { addDogs } = useDogs();
   const { width: screenWidth } = useWindowDimensions();
-  const isMobile = screenWidth < 400;
+  const isWideScreen = screenWidth >= 500;
   const [step, setStep] = useState<FormStep>("intro");
   const [ownerData, setOwnerData] = useState({
     name: "",
@@ -342,12 +342,11 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         )}
       </View>
 
-      <View style={[styles.photoRow, isMobile && styles.photoRowMobile]}>
+      <View style={[styles.photoRow, isWideScreen && styles.photoRowWide]}>
         <Pressable
           onPress={() => pickImage(dog.id)}
           style={[
             styles.photoContainer,
-            isMobile && styles.photoContainerMobile,
             { backgroundColor: theme.backgroundRoot, borderColor: theme.borderLight },
           ]}
         >
@@ -363,13 +362,13 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           )}
         </Pressable>
 
-        <View style={[styles.photoFieldsColumn, isMobile && styles.photoFieldsColumnMobile]}>
-          <View style={styles.compactField}>
+        <View style={[styles.photoFieldsColumn, isWideScreen && styles.photoFieldsColumnWide]}>
+          <View style={styles.fieldFullWidth}>
             <ThemedText type="small" style={styles.label}>
               {t.dogName} *
             </ThemedText>
             <TextInput
-              style={[inputStyle, styles.compactInput]}
+              style={inputStyle}
               value={dog.name}
               onChangeText={(value) => updateDogField(dog.id, "name", value)}
               placeholder={t.dogNamePlaceholder}
@@ -377,12 +376,12 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
               autoCapitalize="words"
             />
           </View>
-          <View style={styles.compactField}>
+          <View style={styles.fieldFullWidth}>
             <ThemedText type="small" style={styles.label}>
               {t.nickname}
             </ThemedText>
             <TextInput
-              style={[inputStyle, styles.compactInput]}
+              style={inputStyle}
               value={dog.nickname}
               onChangeText={(value) => updateDogField(dog.id, "nickname", value)}
               placeholder={t.nicknamePlaceholder}
@@ -393,8 +392,8 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         </View>
       </View>
 
-      <View style={[styles.dogFieldsRow, isMobile && styles.dogFieldsRowMobile]}>
-        <View style={[styles.fieldContainer, { flex: 2 }]}>
+      <View style={[styles.dogFieldsRow, isWideScreen && styles.dogFieldsRowWide]}>
+        <View style={styles.fieldFullWidth}>
           <ThemedText type="small" style={styles.label}>
             {t.breed} *
           </ThemedText>
@@ -404,7 +403,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
             isDark={isDark}
           />
         </View>
-        <View style={[styles.fieldContainer, { flex: 1 }]}>
+        <View style={styles.fieldFullWidth}>
           <ThemedText type="small" style={styles.label}>
             {t.age} *
           </ThemedText>
@@ -684,12 +683,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     fontSize: Typography.bodyM.fontSize,
   },
-  compactInput: {
-    height: 44,
-  },
-  compactField: {
-    flex: 1,
-  },
   linksContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -740,17 +733,18 @@ const styles = StyleSheet.create({
     padding: Spacing.xs,
   },
   photoRow: {
-    flexDirection: "row",
-    gap: Spacing.lg,
-    marginBottom: Spacing.xl,
-  },
-  photoRowMobile: {
     flexDirection: "column",
     alignItems: "center",
+    gap: Spacing.lg,
+    marginBottom: Spacing.lg,
+  },
+  photoRowWide: {
+    flexDirection: "row",
+    alignItems: "flex-start",
   },
   photoContainer: {
-    width: 110,
-    height: 110,
+    width: 100,
+    height: 100,
     borderRadius: BorderRadius.lg,
     borderWidth: 2,
     borderStyle: "dashed",
@@ -758,11 +752,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexShrink: 0,
-  },
-  photoContainerMobile: {
-    width: 100,
-    height: 100,
-    marginBottom: Spacing.md,
   },
   dogPhoto: {
     width: "100%",
@@ -773,21 +762,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   photoFieldsColumn: {
-    flex: 1,
-    gap: Spacing.md,
-  },
-  photoFieldsColumnMobile: {
     width: "100%",
-    flex: undefined,
+    gap: Spacing.lg,
+  },
+  photoFieldsColumnWide: {
+    flex: 1,
+    width: undefined,
+  },
+  fieldFullWidth: {
+    width: "100%",
   },
   dogFieldsRow: {
-    flexDirection: "row",
-    gap: Spacing.md,
-    marginTop: Spacing.lg,
-  },
-  dogFieldsRowMobile: {
     flexDirection: "column",
     gap: Spacing.lg,
+  },
+  dogFieldsRowWide: {
+    flexDirection: "row",
+    gap: Spacing.md,
   },
   addDogButton: {
     flexDirection: "row",
