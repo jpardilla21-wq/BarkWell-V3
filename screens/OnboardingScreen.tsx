@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Image, TextInput, ScrollView, Platform, Linking, Pressable, Alert } from "react-native";
+import { StyleSheet, View, Image, TextInput, ScrollView, Platform, Linking, Pressable, Alert, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   KeyboardAwareScrollView,
@@ -110,6 +110,8 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   const { theme, isDark } = useTheme();
   const { language } = useLanguage();
   const { addDogs } = useDogs();
+  const { width: screenWidth } = useWindowDimensions();
+  const isMobile = screenWidth < 400;
   const [step, setStep] = useState<FormStep>("intro");
   const [ownerData, setOwnerData] = useState({
     name: "",
@@ -340,11 +342,12 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         )}
       </View>
 
-      <View style={styles.photoRow}>
+      <View style={[styles.photoRow, isMobile && styles.photoRowMobile]}>
         <Pressable
           onPress={() => pickImage(dog.id)}
           style={[
             styles.photoContainer,
+            isMobile && styles.photoContainerMobile,
             { backgroundColor: theme.backgroundRoot, borderColor: theme.borderLight },
           ]}
         >
@@ -360,7 +363,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           )}
         </Pressable>
 
-        <View style={styles.photoFieldsColumn}>
+        <View style={[styles.photoFieldsColumn, isMobile && styles.photoFieldsColumnMobile]}>
           <View style={styles.compactField}>
             <ThemedText type="small" style={styles.label}>
               {t.dogName} *
@@ -390,7 +393,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         </View>
       </View>
 
-      <View style={styles.dogFieldsRow}>
+      <View style={[styles.dogFieldsRow, isMobile && styles.dogFieldsRowMobile]}>
         <View style={[styles.fieldContainer, { flex: 2 }]}>
           <ThemedText type="small" style={styles.label}>
             {t.breed} *
@@ -741,6 +744,10 @@ const styles = StyleSheet.create({
     gap: Spacing.lg,
     marginBottom: Spacing.xl,
   },
+  photoRowMobile: {
+    flexDirection: "column",
+    alignItems: "center",
+  },
   photoContainer: {
     width: 110,
     height: 110,
@@ -751,6 +758,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexShrink: 0,
+  },
+  photoContainerMobile: {
+    width: 100,
+    height: 100,
+    marginBottom: Spacing.md,
   },
   dogPhoto: {
     width: "100%",
@@ -764,10 +776,18 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: Spacing.md,
   },
+  photoFieldsColumnMobile: {
+    width: "100%",
+    flex: undefined,
+  },
   dogFieldsRow: {
     flexDirection: "row",
     gap: Spacing.md,
     marginTop: Spacing.lg,
+  },
+  dogFieldsRowMobile: {
+    flexDirection: "column",
+    gap: Spacing.lg,
   },
   addDogButton: {
     flexDirection: "row",
