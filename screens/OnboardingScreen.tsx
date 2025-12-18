@@ -735,8 +735,8 @@ const styles = StyleSheet.create({
   photoRow: {
     flexDirection: "column",
     alignItems: "center",
-    gap: Spacing.lg,
-    marginBottom: Spacing.lg,
+    gap: Spacing.md,
+    marginBottom: Spacing.md,
   },
   photoRowWide: {
     flexDirection: "row",
@@ -763,7 +763,7 @@ const styles = StyleSheet.create({
   },
   photoFieldsColumn: {
     width: "100%",
-    gap: Spacing.lg,
+    gap: Spacing.md,
   },
   photoFieldsColumnWide: {
     flex: 1,
