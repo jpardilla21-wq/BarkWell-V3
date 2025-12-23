@@ -23,7 +23,7 @@ export function DogProvider({ children }: { children: React.ReactNode }) {
   const [selectedDogId, setSelectedDogId] = useState<string | null>(null);
 
   const addDogs = async (newDogs: DogProfile[]) => {
-    setDogs(newDogs);
+    setDogs((prevDogs) => [...prevDogs, ...newDogs]);
     if (newDogs.length > 0) {
       setSelectedDogId(newDogs[0].id);
     }
