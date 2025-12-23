@@ -1,0 +1,96 @@
+You are building PupSense (Expo + React Native) in Replit. Implement a NEW feature: a weekly, shareable card called “Dog Name Weekly Snapshot”.
+
+GOAL
+- Users can view a weekly summary card for a selected dog and share it as an image (PNG) via the native iOS/Android share sheet.
+- The share output must be ONLY the card (no phone frame, no app header, no bottom tabs).
+
+AESTHETIC (match current app)
+- Clean, minimal, white background.
+- Soft shadows on cards, rounded corners, light gray dividers.
+- Blue accent used similarly to the current UI (icons, highlights, buttons).
+- Use the same general spacing/typography style as the existing Home screen cards.
+
+FEATURE SCOPE (MVP)
+1) Data (mock first, wire later)
+- Create a function getWeeklySnapshot(dogId) that returns mock data:
+  - dogName (string)
+  - weekStart, weekEnd (strings)
+  - digestiveTrend: "Improving" | "Stable" | "Needs Attention"
+  - avgPoopScore (number 0–100)
+  - topSuspects (string[]) e.g., ["Chicken", "Dairy"]
+  - consistencyPct (number 0–100) e.g., 86
+  - dailyScores (array of 7 numbers) e.g., [62, 70, 70, 68, 78, 78, 85]
+  - behaviorTags (string[]) e.g., ["Itchy", "Low Energy", "Gassy"]
+- Keep the types/interfaces so later we can replace mock data with API data.
+
+2) UI Components
+A) WeeklySnapshotCard (shareable card component)
+- Props: snapshot data above.
+- Layout (single card):
+  - Header row: circular dog avatar (use existing dog photo if available; otherwise a placeholder circle), then:
+    - Title: “{dogName} Weekly Snapshot”
+    - Subtitle: “{weekStart}–{weekEnd}”
+  - KPI row with 3 blocks:
+    - Digestive Trend (label + value with small icon)
+    - Poop Score Avg (big number)
+    - Top Suspects + Consistency (stacked)
+  - Chart section:
+    - Title: “Poop Score This Week”
+    - Simple sparkline line chart for 7 days (S M T W T F S)
+    - No external chart libs required—SVG line is fine (react-native-svg) OR a simple custom drawing.
+  - Behavior Notes:
+    - Label “Behavior Notes”
+    - Show tags as chips (rounded pill, light gray background)
+  - Footer:
+    - Left: PupSense wordmark text (simple)
+    - Right: “Not veterinary advice.”
+- Styling: rounded corners, subtle shadow, internal padding, consistent with existing UI.
+
+B) WeeklySnapshotScreen
+- Shows:
+  - Screen title: “Weekly Snapshot”
+  - The WeeklySnapshotCard preview
+  - Buttons:
+    - Primary: “Share Weekly Snapshot”
+    - Secondary: “Save to Photos”
+- Add a back button and ensure it fits with current navigation.
+
+3) Sharing (Must work)
+- Add dependencies and implement:
+  - react-native-view-shot (capture the WeeklySnapshotCard as a PNG)
+  - expo-sharing (open native share sheet)
+  - expo-file-system (store temp image)
+  - expo-media-library (save image to camera roll)
+- Requirements:
+  - Capture must be high quality: output at least 1080px wide (Instagram-friendly).
+  - Provide user feedback: loading state while generating image, success toast/alert after share/save.
+  - Handle permissions for saving to photos (ask once, show friendly error if denied).
+
+4) Navigation hook
+- Add a “Weekly Snapshot” entry point:
+  - On Home screen, insert a new card/button under the existing feature cards:
+    - Title: “Weekly Snapshot”
+    - Subtitle: “Share your dog’s week at a glance”
+  - When tapped, navigate to WeeklySnapshotScreen for the currently selected dog.
+
+5) Implementation details
+- Use TypeScript where possible.
+- Keep code organized:
+  - /src/screens/WeeklySnapshotScreen.tsx
+  - /src/components/WeeklySnapshotCard.tsx
+  - /src/services/weeklySnapshot.ts (mock data + types)
+  - /src/utils/shareCard.ts (capture/share/save helpers)
+- Ensure the captured image excludes UI chrome:
+  - Only wrap WeeklySnapshotCard in the view-shot ref, not the whole screen.
+- Add a small safe margin/padding around the card within the capture so it doesn’t clip.
+
+DELIVERABLES
+- Working WeeklySnapshotScreen reachable from Home
+- Share button opens native share sheet with a PNG of the card
+- Save button saves PNG to Photos (with permissions)
+- Code compiles and runs in Expo
+
+DO NOT
+- Do not include a phone frame in the share image.
+- Do not include “Hi Juan” or the bottom tab bar in the captured output.
+- Do not make medical/diagnostic claims; always show “Not veterinary advice.” on the card.
