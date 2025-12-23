@@ -148,6 +148,14 @@ export default function HomeScreen() {
           onPress={() => navigation.navigate("BehaviorTab")}
           style={styles.cardFull}
         />
+        <FeatureCard
+          title="Weekly Snapshot"
+          subtitle="Share your dog's week at a glance"
+          iconName="share"
+          iconColor={Colors.light.primary}
+          onPress={() => navigation.navigate("WeeklySnapshot")}
+          style={styles.cardFull}
+        />
       </View>
 
       <View style={styles.historySection}>
