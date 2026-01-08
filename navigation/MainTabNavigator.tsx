@@ -5,6 +5,7 @@ import { BlurView } from "expo-blur";
 import { Platform, StyleSheet } from "react-native";
 import HomeStackNavigator from "@/navigation/HomeStackNavigator";
 import PoopStackNavigator from "@/navigation/PoopStackNavigator";
+import FoodStackNavigator from "@/navigation/FoodStackNavigator";
 import BehaviorStackNavigator from "@/navigation/BehaviorStackNavigator";
 import ProfileStackNavigator from "@/navigation/ProfileStackNavigator";
 import { useTheme } from "@/hooks/useTheme";
@@ -12,6 +13,7 @@ import { useTheme } from "@/hooks/useTheme";
 export type MainTabParamList = {
   HomeTab: undefined;
   PoopTab: undefined;
+  FoodTab: undefined;
   BehaviorTab: undefined;
   ProfileTab: undefined;
 };
@@ -64,6 +66,16 @@ export default function MainTabNavigator() {
           title: "Poop",
           tabBarIcon: ({ color, size }) => (
             <Feather name="target" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="FoodTab"
+        component={FoodStackNavigator}
+        options={{
+          title: "Food",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="package" size={size} color={color} />
           ),
         }}
       />
