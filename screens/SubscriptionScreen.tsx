@@ -6,9 +6,10 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme as useOldTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/design-system";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Colors, Spacing, BorderRadius } from "@/constants/theme";
+import { Spacing, BorderRadius } from "@/constants/theme";
 import type { RootStackParamList } from "@/navigation/RootNavigator";
 
 const translations = {
@@ -118,7 +119,8 @@ export default function SubscriptionScreen({
   navigation,
 }: SubscriptionScreenProps) {
   const insets = useSafeAreaInsets();
-  const { theme } = useTheme();
+  const { theme } = useOldTheme();
+  const { colors } = useTheme();
   const { language } = useLanguage();
   const t = translations[language];
   const [selectedPlan, setSelectedPlan] = useState<PlanType>("weekly");
@@ -176,10 +178,10 @@ export default function SubscriptionScreen({
                   styles.planCard,
                   {
                     backgroundColor: isSelected
-                      ? Colors.light.primary + "15"
+                      ? colors.primary[500] + "15"
                       : theme.backgroundDefault,
                     borderColor: isSelected
-                      ? Colors.light.primary
+                      ? colors.primary[500]
                       : theme.borderLight,
                     borderWidth: 2,
                   },
@@ -189,7 +191,7 @@ export default function SubscriptionScreen({
                   <View
                     style={[
                       styles.badge,
-                      { backgroundColor: Colors.light.primary },
+                      { backgroundColor: colors.primary[500] },
                     ]}
                   >
                     <ThemedText
@@ -208,7 +210,7 @@ export default function SubscriptionScreen({
                   <View
                     style={[
                       styles.trialBadge,
-                      { backgroundColor: Colors.light.softGreen },
+                      { backgroundColor: colors.secondary[500] },
                     ]}
                   >
                     <ThemedText
@@ -260,7 +262,7 @@ export default function SubscriptionScreen({
                       <Feather
                         name="check-circle"
                         size={16}
-                        color={Colors.light.softGreen}
+                        color={colors.secondary[500]}
                         style={styles.featureIcon}
                       />
                       <ThemedText type="small" style={styles.featureText}>
@@ -361,13 +363,13 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: Colors.light.primary,
+    backgroundColor: colors.primary[500],
     justifyContent: "center",
     alignItems: "center",
   },
   price: {
     marginBottom: Spacing.sm,
-    color: Colors.light.primary,
+    color: colors.primary[500],
   },
   description: {
     marginBottom: Spacing.md,
