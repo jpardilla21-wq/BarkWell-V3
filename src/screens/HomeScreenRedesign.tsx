@@ -86,6 +86,10 @@ export default function HomeScreenRedesign() {
     navigation.navigate('PetProfileNew' as never);
   };
 
+  const handleAddPet = () => {
+    console.log('Add pet pressed');
+  };
+
   return (
     <SafeAreaView style={CommonStyles.container} edges={['top']}>
       {/* Decorative Background Blob */}
