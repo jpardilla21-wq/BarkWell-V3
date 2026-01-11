@@ -8,79 +8,80 @@
 // ============================================================================
 
 export const Colors = {
-  // Primary Color: Vibrant Green
+  // Primary Color: Statistics and Data Green
   primary: {
-    50: '#F1F8E9',
-    100: '#DCEDC8',
-    200: '#C5E1A5',
-    300: '#AED581',
-    400: '#9CCC65',
-    500: '#8BC34A', // Main primary color
-    600: '#7CB342',
-    700: '#689F38',
-    800: '#558B2F',
-    900: '#33691E',
+    50: '#EDF9D4', // UI Accent light green
+    100: '#BEEC7E', // UI Accent medium green
+    200: '#A8D96E',
+    300: '#99B34D', // Main data/statistics color
+    400: '#8AA344',
+    500: '#99B34D', // Main primary color - for statistics
+    600: '#7B933D',
+    700: '#6A7F35',
+    800: '#5A6B2D',
+    900: '#4A5725',
   },
 
-  // Secondary Color: Deep Olive
+  // Secondary Color: UI Accents
   secondary: {
-    50: '#F4F6F0',
-    100: '#E3E9D9',
-    200: '#D0DABF',
-    300: '#BDCBA5',
-    400: '#AEC092',
-    500: '#6B9B37', // Main secondary color
-    600: '#5F8B31',
-    700: '#53792A',
-    800: '#476823',
-    900: '#354F17',
+    50: '#F3ECFE', // Light purple accent
+    100: '#EDF9D4', // Light green accent
+    200: '#E5F3C8',
+    300: '#D8EEBB',
+    400: '#CBDEA0',
+    500: '#BEEC7E', // Medium green accent
+    600: '#A8D96E',
+    700: '#92C65E',
+    800: '#7CB34E',
+    900: '#669F3E',
   },
 
-  // Accent Color: Orange for warnings/attention
+  // Accent Color: Keep for warnings/attention
   accent: {
     50: '#FFF3E0',
     100: '#FFE0B2',
     200: '#FFCC80',
     300: '#FFB74D',
     400: '#FFA726',
-    500: '#FF9800', // Main accent color
+    500: '#FF9800',
     600: '#FB8C00',
     700: '#F57C00',
     800: '#EF6C00',
     900: '#E65100',
   },
 
-  // Neutral Colors: Warm cream and gray scale
+  // Neutral Colors: Updated with new background and font
   neutral: {
-    cream: '#F5F5DC',
-    creamDark: '#EEEECD',
+    background: '#FDFDFD', // Main background color
+    cream: '#FDFDFD', // Using background color
+    creamDark: '#F8F8F8',
     white: '#FFFFFF',
-    50: '#FAFAFA',
-    100: '#F5F5F5',
-    200: '#EEEEEE',
+    50: '#FDFDFD',
+    100: '#F8F8F8',
+    200: '#F0F0F0',
     300: '#E0E0E0',
     400: '#BDBDBD',
     500: '#9E9E9E',
     600: '#757575',
     700: '#616161',
     800: '#424242',
-    900: '#212121',
-    black: '#000000',
+    900: '#1B1C1B', // Main font color
+    black: '#1B1C1B', // Font color
   },
 
   // Status Colors for Health Metrics
   status: {
     excellent: {
-      background: '#E8F5E9',
-      border: '#66BB6A',
-      text: '#2E7D32',
-      icon: '#4CAF50',
+      background: '#EDF9D4',
+      border: '#BEEC7E',
+      text: '#99B34D',
+      icon: '#99B34D',
     },
     good: {
-      background: '#F1F8E9',
-      border: '#9CCC65',
-      text: '#558B2F',
-      icon: '#8BC34A',
+      background: '#EDF9D4',
+      border: '#BEEC7E',
+      text: '#99B34D',
+      icon: '#99B34D',
     },
     attention: {
       background: '#FFF9C4',

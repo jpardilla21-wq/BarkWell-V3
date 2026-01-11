@@ -118,8 +118,8 @@ export default function PetProfileScreenRedesign() {
         style={[
           styles.decorativeBlobTop,
           {
-            backgroundColor: colors.primary[100],
-            opacity: 0.1,
+            backgroundColor: colors.secondary[100], // Light green accent
+            opacity: 0.3,
           },
         ]}
       />
@@ -127,8 +127,8 @@ export default function PetProfileScreenRedesign() {
         style={[
           styles.decorativeBlobBottom,
           {
-            backgroundColor: colors.accent[100],
-            opacity: 0.1,
+            backgroundColor: colors.secondary[100], // Light green accent
+            opacity: 0.3,
           },
         ]}
       />
@@ -328,7 +328,7 @@ export default function PetProfileScreenRedesign() {
           style={[
             styles.profileCompletionBanner,
             {
-              backgroundColor: colors.primary[50],
+              backgroundColor: colors.secondary[100], // Light green accent
               borderRadius: borderRadius.xl,
               padding: spacing.md,
               gap: spacing.md,
@@ -346,7 +346,7 @@ export default function PetProfileScreenRedesign() {
             style={[
               styles.bannerIconCircle,
               {
-                backgroundColor: colors.primary[900],
+                backgroundColor: colors.primary[500], // Statistics green
                 borderRadius: borderRadius.full,
               },
             ]}
@@ -359,7 +359,7 @@ export default function PetProfileScreenRedesign() {
             style={[
               TextStyles.bodySmall,
               {
-                color: colors.primary[800],
+                color: colors.neutral[900], // Font color
                 flex: 1,
               },
             ]}
@@ -372,7 +372,7 @@ export default function PetProfileScreenRedesign() {
             style={[
               styles.bannerArrow,
               {
-                color: colors.primary[600],
+                color: colors.primary[500], // Statistics green
                 fontSize: typography.fontSize.xl,
               },
             ]}

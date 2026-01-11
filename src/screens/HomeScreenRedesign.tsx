@@ -92,8 +92,8 @@ export default function HomeScreenRedesign() {
         style={[
           styles.decorativeBlob,
           {
-            backgroundColor: colors.primary[100],
-            opacity: 0.1,
+            backgroundColor: colors.secondary[100], // Light green accent
+            opacity: 0.3,
           },
         ]}
       />
@@ -253,7 +253,7 @@ export default function HomeScreenRedesign() {
             style={[
               styles.quickActionCard,
               {
-                backgroundColor: colors.primary[100],
+                backgroundColor: colors.secondary[100], // EDF9D4 - light green
                 borderRadius: borderRadius.xl,
                 padding: spacing.lg,
               },
@@ -269,7 +269,7 @@ export default function HomeScreenRedesign() {
               style={[
                 TextStyles.h4,
                 {
-                  color: colors.primary[700],
+                  color: colors.neutral[900], // Font color
                   marginTop: spacing.sm,
                 },
               ]}
@@ -280,7 +280,7 @@ export default function HomeScreenRedesign() {
               style={[
                 TextStyles.bodySmall,
                 {
-                  color: colors.primary[600],
+                  color: colors.primary[500], // Statistics color
                   marginTop: spacing.xs,
                 },
               ]}
@@ -294,7 +294,7 @@ export default function HomeScreenRedesign() {
             style={[
               styles.quickActionCard,
               {
-                backgroundColor: colors.secondary[50],
+                backgroundColor: colors.secondary[100], // EDF9D4 - light green
                 borderRadius: borderRadius.xl,
                 padding: spacing.lg,
               },
@@ -310,7 +310,7 @@ export default function HomeScreenRedesign() {
               style={[
                 TextStyles.h4,
                 {
-                  color: colors.secondary[700],
+                  color: colors.neutral[900], // Font color
                   marginTop: spacing.sm,
                 },
               ]}
@@ -321,7 +321,7 @@ export default function HomeScreenRedesign() {
               style={[
                 TextStyles.bodySmall,
                 {
-                  color: colors.secondary[600],
+                  color: colors.primary[500], // Statistics color
                   marginTop: spacing.xs,
                 },
               ]}
