@@ -12,10 +12,11 @@ import { DogBreedDropdown } from "@/components/DogBreedDropdown";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme as useOldTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/design-system";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useDogs, type DogProfile } from "@/contexts/DogContext";
-import { Colors, Spacing, BorderRadius, Typography } from "@/constants/theme";
+import { Spacing, BorderRadius, Typography } from "@/constants/theme";
 import type { RootStackParamList } from "@/navigation/RootNavigator";
 
 type OnboardingScreenProps = {
@@ -107,7 +108,8 @@ const createEmptyDog = (): DogProfile => ({
 
 export default function OnboardingScreen({ navigation }: OnboardingScreenProps) {
   const insets = useSafeAreaInsets();
-  const { theme, isDark } = useTheme();
+  const { theme, isDark } = useOldTheme();
+  const { colors } = useTheme();
   const { language } = useLanguage();
   const { addDogs } = useDogs();
   const { width: screenWidth } = useWindowDimensions();
@@ -334,8 +336,8 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         </ThemedText>
         {dogs.length > 1 && (
           <Pressable onPress={() => removeDog(dog.id)} style={styles.removeButton}>
-            <Feather name="trash-2" size={18} color={Colors.light.urgentRed} />
-            <ThemedText type="small" style={{ color: Colors.light.urgentRed, marginLeft: 4 }}>
+            <Feather name="trash-2" size={18} color={colors.semantic.error} />
+            <ThemedText type="small" style={{ color: colors.semantic.error, marginLeft: 4 }}>
               {t.removeDog}
             </ThemedText>
           </Pressable>
@@ -557,18 +559,18 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
               onPress={addDog}
               style={[
                 styles.addDogButton,
-                { borderColor: Colors.light.primary },
+                { borderColor: colors.primary[500] },
               ]}
             >
-              <Feather name="plus-circle" size={20} color={Colors.light.primary} />
-              <ThemedText type="body" style={{ color: Colors.light.primary, marginLeft: 8, fontWeight: "600" }}>
+              <Feather name="plus-circle" size={20} color={colors.primary[500]} />
+              <ThemedText type="body" style={{ color: colors.primary[500], marginLeft: 8, fontWeight: "600" }}>
                 {t.addAnotherDog}
               </ThemedText>
             </Pressable>
 
             <View style={styles.linksContainer}>
               <Pressable onPress={handleTermsPress}>
-                <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
+                <ThemedText type="small" style={[styles.link, { color: colors.primary[500] }]}>
                   {t.termsLink}
                 </ThemedText>
               </Pressable>
@@ -576,7 +578,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 {" • "}
               </ThemedText>
               <Pressable onPress={handlePrivacyPress}>
-                <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
+                <ThemedText type="small" style={[styles.link, { color: colors.primary[500] }]}>
                   {t.privacyLink}
                 </ThemedText>
               </Pressable>
