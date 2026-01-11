@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
 import { useTheme, CommonStyles, TextStyles } from '@/design-system';
 import {
   Card,
@@ -124,7 +125,7 @@ export default function HomeScreenRedesign() {
               style={[
                 TextStyles.body,
                 {
-                  color: colors.neutral[500],
+                  color: colors.neutral[900], // All text same color
                   marginTop: spacing.xs,
                 },
               ]}
@@ -146,7 +147,7 @@ export default function HomeScreenRedesign() {
             accessibilityRole="button"
             accessibilityLabel="Notifications"
           >
-            <Text style={styles.bellIcon}>🔔</Text>
+            <Feather name="bell" size={24} color={colors.neutral[900]} />
             {/* Red dot indicator */}
             <View
               style={[
@@ -190,10 +191,8 @@ export default function HomeScreenRedesign() {
                     TextStyles.label,
                     {
                       marginTop: spacing.sm,
-                      color:
-                        selectedPetId === pet.id
-                          ? colors.primary[600]
-                          : colors.neutral[700],
+                      color: colors.neutral[900], // All text same color
+                      fontWeight: selectedPetId === pet.id ? '600' : '400',
                     },
                   ]}
                 >
@@ -228,7 +227,7 @@ export default function HomeScreenRedesign() {
                   TextStyles.label,
                   {
                     marginTop: spacing.sm,
-                    color: colors.neutral[500],
+                    color: colors.neutral[900], // All text same color
                   },
                 ]}
               >
@@ -280,7 +279,7 @@ export default function HomeScreenRedesign() {
               style={[
                 TextStyles.bodySmall,
                 {
-                  color: colors.primary[500], // Statistics color
+                  color: colors.neutral[900], // All text same color
                   marginTop: spacing.xs,
                 },
               ]}
@@ -294,7 +293,7 @@ export default function HomeScreenRedesign() {
             style={[
               styles.quickActionCard,
               {
-                backgroundColor: colors.secondary[100], // EDF9D4 - light green
+                backgroundColor: colors.secondary[50], // F3ECFE - light purple
                 borderRadius: borderRadius.xl,
                 padding: spacing.lg,
               },
@@ -321,7 +320,7 @@ export default function HomeScreenRedesign() {
               style={[
                 TextStyles.bodySmall,
                 {
-                  color: colors.primary[500], // Statistics color
+                  color: colors.neutral[900], // All text same color
                   marginTop: spacing.xs,
                 },
               ]}
@@ -347,7 +346,7 @@ export default function HomeScreenRedesign() {
                 style={[
                   TextStyles.label,
                   {
-                    color: colors.primary[500],
+                    color: colors.neutral[900], // All text same color
                   },
                 ]}
               >
@@ -376,7 +375,7 @@ export default function HomeScreenRedesign() {
                     {selectedPet.name}
                   </Text>
                   <Text
-                    style={[TextStyles.bodySmall, { color: colors.neutral[500] }]}
+                    style={[TextStyles.bodySmall, { color: colors.neutral[900] }]} // All text same color
                   >
                     Today, 09:30 AM
                   </Text>
