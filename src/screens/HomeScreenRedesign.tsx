@@ -67,23 +67,23 @@ export default function HomeScreenRedesign() {
   // Get selected pet
   const selectedPet = MOCK_PETS.find((pet) => pet.id === selectedPetId);
 
+  // Quick action buttons data
+  const quickActions = [
+    { id: 1, icon: '📷', title: 'Scan my pet', subtitle: 'Quick health check', onPress: () => console.log('Scan') },
+    { id: 2, icon: '📅', title: 'Add appointment', subtitle: 'Schedule vet visit', onPress: () => console.log('Appointment') },
+    { id: 3, icon: '🎥', title: 'Record video', subtitle: 'Track behavior', onPress: () => console.log('Video') },
+    { id: 4, icon: '🍖', title: 'Food scanner', subtitle: 'Check ingredients', onPress: () => console.log('Food') },
+    { id: 5, icon: '💊', title: 'Medications', subtitle: 'Track meds', onPress: () => console.log('Meds') },
+    { id: 6, icon: '💉', title: 'Vaccines', subtitle: 'Schedule shots', onPress: () => console.log('Vaccines') },
+    { id: 7, icon: '📊', title: 'Weekly report', subtitle: 'View insights', onPress: () => console.log('Report') },
+    { id: 8, icon: '🐕', title: 'Add pet', subtitle: 'New companion', onPress: () => console.log('Add pet') },
+  ];
+
   // Handler functions
-  const handleScan = () => {
-    console.log('Scan my pet pressed');
-  };
-
-  const handleAppointment = () => {
-    console.log('Add appointment pressed');
-  };
-
   const handleViewDetails = () => {
     console.log('View details pressed for pet:', selectedPetId);
     // Navigate to Pet Profile screen for testing
     navigation.navigate('PetProfileNew' as never);
-  };
-
-  const handleAddPet = () => {
-    console.log('Add pet pressed');
   };
 
   return (
@@ -237,97 +237,59 @@ export default function HomeScreenRedesign() {
           </ScrollView>
         </View>
 
-        {/* Quick Action Cards */}
-        <View
-          style={[
-            styles.quickActions,
-            {
-              gap: spacing.md,
-              marginBottom: spacing.xl,
-            },
-          ]}
-        >
-          {/* Scan My Pet Button */}
-          <TouchableOpacity
-            style={[
-              styles.quickActionCard,
-              {
-                backgroundColor: colors.secondary[100], // EDF9D4 - light green
-                borderRadius: borderRadius.xl,
-                padding: spacing.lg,
-              },
-            ]}
-            onPress={handleScan}
-            activeOpacity={0.7}
-            accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel="Scan my pet"
+        {/* Quick Action Cards - Horizontal Scroll */}
+        <View style={[styles.quickActionsContainer, { marginBottom: spacing.xl }]}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.quickActionsContent}
           >
-            <Text style={styles.actionIcon}>📷</Text>
-            <Text
-              style={[
-                TextStyles.h4,
-                {
-                  color: colors.neutral[900], // Font color
-                  marginTop: spacing.sm,
-                },
-              ]}
-            >
-              Scan my pet
-            </Text>
-            <Text
-              style={[
-                TextStyles.bodySmall,
-                {
-                  color: colors.neutral[900], // All text same color
-                  marginTop: spacing.xs,
-                },
-              ]}
-            >
-              Quick health check
-            </Text>
-          </TouchableOpacity>
-
-          {/* Add Appointment Button */}
-          <TouchableOpacity
-            style={[
-              styles.quickActionCard,
-              {
-                backgroundColor: colors.secondary[50], // F3ECFE - light purple
-                borderRadius: borderRadius.xl,
-                padding: spacing.lg,
-              },
-            ]}
-            onPress={handleAppointment}
-            activeOpacity={0.7}
-            accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel="Add appointment"
-          >
-            <Text style={styles.actionIcon}>📅</Text>
-            <Text
-              style={[
-                TextStyles.h4,
-                {
-                  color: colors.neutral[900], // Font color
-                  marginTop: spacing.sm,
-                },
-              ]}
-            >
-              Add appointment
-            </Text>
-            <Text
-              style={[
-                TextStyles.bodySmall,
-                {
-                  color: colors.neutral[900], // All text same color
-                  marginTop: spacing.xs,
-                },
-              ]}
-            >
-              Schedule vet visit
-            </Text>
-          </TouchableOpacity>
+            {quickActions.map((action, index) => (
+              <TouchableOpacity
+                key={action.id}
+                style={[
+                  styles.quickActionCard,
+                  {
+                    backgroundColor: index % 2 === 0
+                      ? colors.secondary[100] // EDF9D4 - light green (even index)
+                      : colors.secondary[50],  // F3ECFE - light purple (odd index)
+                    borderRadius: borderRadius.xl,
+                    padding: spacing.lg,
+                    marginRight: spacing.md,
+                  },
+                ]}
+                onPress={action.onPress}
+                activeOpacity={0.7}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel={action.title}
+              >
+                <Text style={styles.actionIcon}>{action.icon}</Text>
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    {
+                      color: colors.neutral[900],
+                      marginTop: spacing.sm,
+                    },
+                  ]}
+                >
+                  {action.title}
+                </Text>
+                <Text
+                  style={[
+                    TextStyles.bodySmall,
+                    {
+                      color: colors.neutral[900],
+                      marginTop: spacing.xs,
+                    },
+                  ]}
+                >
+                  {action.subtitle}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
 
         {/* Latest Scan Section */}
@@ -471,12 +433,13 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: '300',
   },
-  quickActions: {
-    flexDirection: 'row',
+  quickActionsContainer: {},
+  quickActionsContent: {
+    paddingRight: 24,
   },
   quickActionCard: {
-    flex: 1,
-    minHeight: 100,
+    width: 180,
+    minHeight: 120,
   },
   actionIcon: {
     fontSize: 32,
