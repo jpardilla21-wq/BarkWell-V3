@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { useTheme, CommonStyles, TextStyles } from '@/design-system';
 import {
   PetAvatar,
@@ -77,11 +78,13 @@ type TabType = 'General' | 'Appointments' | 'Vaccines' | 'Meds';
 
 export default function PetProfileScreenRedesign() {
   const { colors, spacing, borderRadius, typography } = useTheme();
+  const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState<TabType>('General');
 
   // Handler functions
   const handleBack = () => {
     console.log('Back pressed');
+    navigation.goBack();
   };
 
   const handleEdit = () => {

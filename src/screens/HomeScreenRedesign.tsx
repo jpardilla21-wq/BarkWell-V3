@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { useTheme, CommonStyles, TextStyles } from '@/design-system';
 import {
   Card,
@@ -59,6 +60,7 @@ const MOCK_PETS: Pet[] = [
 
 export default function HomeScreenRedesign() {
   const { colors, spacing, borderRadius } = useTheme();
+  const navigation = useNavigation();
   const [selectedPetId, setSelectedPetId] = useState<string>(MOCK_PETS[0].id);
 
   // Get selected pet
@@ -75,6 +77,8 @@ export default function HomeScreenRedesign() {
 
   const handleViewDetails = () => {
     console.log('View details pressed for pet:', selectedPetId);
+    // Navigate to Pet Profile screen for testing
+    navigation.navigate('PetProfileNew' as never);
   };
 
   const handleAddPet = () => {

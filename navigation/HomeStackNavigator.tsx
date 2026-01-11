@@ -28,6 +28,7 @@ export default function HomeStackNavigator() {
 
   return (
     <Stack.Navigator
+      initialRouteName="HomeNew" // TESTING: Set to "HomeNew" to test redesigned screens on mobile
       screenOptions={{
         ...getCommonScreenOptions({ theme, isDark }),
       }}
