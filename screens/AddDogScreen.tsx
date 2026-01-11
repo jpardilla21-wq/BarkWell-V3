@@ -16,10 +16,11 @@ import { useCameraPermissions, useMediaLibraryPermissions } from "expo-image-pic
 import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { Button } from "@/components/Button";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme as useOldTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/design-system";
 import { useDogs, type DogProfile } from "@/contexts/DogContext";
 import { DogBreedDropdown } from "@/components/DogBreedDropdown";
-import { Colors, Spacing, BorderRadius, Typography } from "@/constants/theme";
+import { Spacing, BorderRadius, Typography } from "@/constants/theme";
 import type { HomeStackParamList } from "@/navigation/HomeStackNavigator";
 
 type AddDogScreenNavigationProp = NativeStackNavigationProp<
@@ -32,7 +33,8 @@ type AddDogScreenProps = {
 };
 
 export default function AddDogScreen({ navigation }: AddDogScreenProps) {
-  const { theme, isDark } = useTheme();
+  const { theme, isDark } = useOldTheme();
+  const { colors } = useTheme();
   const { addDogs } = useDogs();
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [name, setName] = useState("");

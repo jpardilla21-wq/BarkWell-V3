@@ -16,9 +16,9 @@ import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
 import { StatePill } from "@/components/StatePill";
 import { ResultCard } from "@/components/ResultCard";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme as useOldTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/design-system";
 import {
-  Colors,
   Spacing,
   BorderRadius,
   Typography,
@@ -107,7 +107,8 @@ const BEHAVIOR_GUIDELINES = {
 };
 
 export default function BehaviorCheckScreen() {
-  const { theme, isDark } = useTheme();
+  const { theme, isDark } = useOldTheme();
+  const { colors } = useTheme();
   const [videoUri, setVideoUri] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<BehaviorAnalysisResult | null>(null);
@@ -245,13 +246,13 @@ export default function BehaviorCheckScreen() {
           <ThemedView
             style={[
               styles.videoPlaceholder,
-              { borderColor: Colors.light.primary },
+              { borderColor: colors.primary[500] },
             ]}
           >
             <Feather
               name="video"
               size={48}
-              color={Colors.light.primary}
+              color={colors.primary[500]}
               style={{ marginBottom: Spacing.md }}
             />
             <ThemedText type="body" style={{ textAlign: "center" }}>
@@ -276,7 +277,7 @@ export default function BehaviorCheckScreen() {
                 styles.halfButton,
                 {
                   backgroundColor: theme.backgroundDefault,
-                  borderColor: Colors.light.primary,
+                  borderColor: colors.primary[500],
                   borderWidth: 1,
                 },
               ]}
@@ -285,7 +286,7 @@ export default function BehaviorCheckScreen() {
                 <Feather
                   name="video"
                   size={18}
-                  color={Colors.light.primary}
+                  color={colors.primary[500]}
                 />
                 <Text style={styles.buttonText}>Record</Text>
               </View>
@@ -297,7 +298,7 @@ export default function BehaviorCheckScreen() {
                 styles.halfButton,
                 {
                   backgroundColor: theme.backgroundDefault,
-                  borderColor: Colors.light.primary,
+                  borderColor: colors.primary[500],
                   borderWidth: 1,
                 },
               ]}
@@ -306,7 +307,7 @@ export default function BehaviorCheckScreen() {
                 <Feather
                   name="film"
                   size={18}
-                  color={Colors.light.primary}
+                  color={colors.primary[500]}
                 />
                 <Text style={styles.buttonText}>Browse</Text>
               </View>
@@ -328,7 +329,7 @@ export default function BehaviorCheckScreen() {
           </ThemedView>
           <Pressable
             onPress={handleClearVideo}
-            style={[styles.clearButton, { backgroundColor: Colors.light.primary }]}
+            style={[styles.clearButton, { backgroundColor: colors.primary[500] }]}
           >
             <Feather name="x" size={20} color="white" />
           </Pressable>
@@ -370,7 +371,7 @@ export default function BehaviorCheckScreen() {
               <Feather
                 name="move"
                 size={18}
-                color={Colors.light.primary}
+                color={colors.primary[500]}
                 style={{ marginRight: Spacing.sm }}
               />
               <View style={styles.observationContent}>
@@ -387,7 +388,7 @@ export default function BehaviorCheckScreen() {
               <Feather
                 name="square"
                 size={18}
-                color={Colors.light.primary}
+                color={colors.primary[500]}
                 style={{ marginRight: Spacing.sm }}
               />
               <View style={styles.observationContent}>
@@ -404,7 +405,7 @@ export default function BehaviorCheckScreen() {
               <Feather
                 name="eye"
                 size={18}
-                color={Colors.light.primary}
+                color={colors.primary[500]}
                 style={{ marginRight: Spacing.sm }}
               />
               <View style={styles.observationContent}>
@@ -421,7 +422,7 @@ export default function BehaviorCheckScreen() {
               <Feather
                 name="smile"
                 size={18}
-                color={Colors.light.primary}
+                color={colors.primary[500]}
                 style={{ marginRight: Spacing.sm }}
               />
               <View style={styles.observationContent}>
@@ -514,7 +515,7 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
   },
   buttonText: {
-    color: Colors.light.primary,
+    color: colors.primary[500],
     fontSize: Typography.bodyM.fontSize,
     fontWeight: "600",
   },

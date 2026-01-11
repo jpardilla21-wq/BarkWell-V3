@@ -19,9 +19,9 @@ import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
 import { ScoreBadge } from "@/components/ScoreBadge";
 import { ResultCard } from "@/components/ResultCard";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme as useOldTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/design-system";
 import {
-  Colors,
   Spacing,
   BorderRadius,
   Typography,
@@ -111,7 +111,8 @@ const RECOMMENDED_FOODS = [
 ];
 
 export default function FoodScannerScreen() {
-  const { theme, isDark } = useTheme();
+  const { theme, isDark } = useOldTheme();
+  const { colors } = useTheme();
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -246,13 +247,13 @@ export default function FoodScannerScreen() {
           <ThemedView
             style={[
               styles.photoPlaceholder,
-              { borderColor: Colors.light.primary },
+              { borderColor: colors.primary[500] },
             ]}
           >
             <Feather
               name="tag"
               size={48}
-              color={Colors.light.primary}
+              color={colors.primary[500]}
               style={{ marginBottom: Spacing.md }}
             />
             <ThemedText type="body" style={{ textAlign: "center" }}>
@@ -267,13 +268,13 @@ export default function FoodScannerScreen() {
                 styles.halfButton,
                 {
                   backgroundColor: theme.backgroundDefault,
-                  borderColor: Colors.light.primary,
+                  borderColor: colors.primary[500],
                   borderWidth: 1,
                 },
               ]}
             >
               <View style={styles.buttonContent}>
-                <Feather name="camera" size={18} color={Colors.light.primary} />
+                <Feather name="camera" size={18} color={colors.primary[500]} />
                 <Text style={styles.buttonText}>Scan</Text>
               </View>
             </Pressable>
@@ -284,13 +285,13 @@ export default function FoodScannerScreen() {
                 styles.halfButton,
                 {
                   backgroundColor: theme.backgroundDefault,
-                  borderColor: Colors.light.primary,
+                  borderColor: colors.primary[500],
                   borderWidth: 1,
                 },
               ]}
             >
               <View style={styles.buttonContent}>
-                <Feather name="image" size={18} color={Colors.light.primary} />
+                <Feather name="image" size={18} color={colors.primary[500]} />
                 <Text style={styles.buttonText}>Browse</Text>
               </View>
             </Pressable>
@@ -307,7 +308,7 @@ export default function FoodScannerScreen() {
             onPress={handleClearPhoto}
             style={[
               styles.clearButton,
-              { backgroundColor: Colors.light.primary },
+              { backgroundColor: colors.primary[500] },
             ]}
           >
             <Feather name="x" size={20} color="white" />
@@ -495,7 +496,7 @@ export default function FoodScannerScreen() {
             <View style={styles.recommendationSection}>
               <ThemedText
                 type="h4"
-                style={{ marginBottom: Spacing.md, color: Colors.light.primary }}
+                style={{ marginBottom: Spacing.md, color: colors.primary[500] }}
               >
                 Recommended Alternatives
               </ThemedText>
@@ -522,7 +523,7 @@ export default function FoodScannerScreen() {
                   <Feather
                     name="external-link"
                     size={18}
-                    color={Colors.light.primary}
+                    color={colors.primary[500]}
                   />
                 </Pressable>
               ))}
@@ -601,7 +602,7 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
   },
   buttonText: {
-    color: Colors.light.primary,
+    color: colors.primary[500],
     fontSize: Typography.bodyM.fontSize,
     fontWeight: "600",
   },
