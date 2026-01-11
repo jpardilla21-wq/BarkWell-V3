@@ -19,7 +19,7 @@ import {
   Button,
   PetAvatar,
   ProgressRing,
-} from '@/components/redesign';
+} from '@/src/components/redesign';
 
 // Mock data for pets
 interface Pet {

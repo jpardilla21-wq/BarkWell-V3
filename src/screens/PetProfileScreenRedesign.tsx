@@ -17,7 +17,7 @@ import { useTheme, CommonStyles, TextStyles } from '@/design-system';
 import {
   PetAvatar,
   HealthMetricCard,
-} from '@/components/redesign';
+} from '@/src/components/redesign';
 
 // Mock pet data
 interface PetProfile {
