@@ -20,6 +20,7 @@ import {
   Button,
   PetAvatar,
   ProgressRing,
+  ActionDialog,
 } from '@/src/components/redesign';
 
 // Mock data for pets
@@ -63,20 +64,88 @@ export default function HomeScreenRedesign() {
   const { colors, spacing, borderRadius } = useTheme();
   const navigation = useNavigation();
   const [selectedPetId, setSelectedPetId] = useState<string>(MOCK_PETS[0].id);
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogConfig, setDialogConfig] = useState({ title: '', actionType: '' });
 
   // Get selected pet
   const selectedPet = MOCK_PETS.find((pet) => pet.id === selectedPetId);
 
+  // Handler for showing action dialog
+  const showActionDialog = (title: string, actionType: string) => {
+    setDialogConfig({ title, actionType });
+    setDialogVisible(true);
+  };
+
+  // Handler for camera action
+  const handleCamera = () => {
+    console.log(`Opening camera for: ${dialogConfig.actionType}`);
+    // TODO: Implement camera functionality
+  };
+
+  // Handler for gallery action
+  const handleGallery = () => {
+    console.log(`Opening gallery for: ${dialogConfig.actionType}`);
+    // TODO: Implement gallery functionality
+  };
+
   // Quick action buttons data
   const quickActions = [
-    { id: 1, icon: '📷', title: 'Scan my pet', subtitle: 'Quick health check', onPress: () => console.log('Scan') },
-    { id: 2, icon: '📅', title: 'Add appointment', subtitle: 'Schedule vet visit', onPress: () => console.log('Appointment') },
-    { id: 3, icon: '🎥', title: 'Record video', subtitle: 'Track behavior', onPress: () => console.log('Video') },
-    { id: 4, icon: '🍖', title: 'Food scanner', subtitle: 'Check ingredients', onPress: () => console.log('Food') },
-    { id: 5, icon: '💊', title: 'Medications', subtitle: 'Track meds', onPress: () => console.log('Meds') },
-    { id: 6, icon: '💉', title: 'Vaccines', subtitle: 'Schedule shots', onPress: () => console.log('Vaccines') },
-    { id: 7, icon: '📊', title: 'Weekly report', subtitle: 'View insights', onPress: () => console.log('Report') },
-    { id: 8, icon: '🐕', title: 'Add pet', subtitle: 'New companion', onPress: () => console.log('Add pet') },
+    {
+      id: 1,
+      icon: '📷',
+      title: 'Scan my pet',
+      subtitle: 'Quick health check',
+      onPress: () => showActionDialog('Scan my pet', 'scan')
+    },
+    {
+      id: 2,
+      icon: '📅',
+      title: 'Add appointment',
+      subtitle: 'Schedule vet visit',
+      onPress: () => console.log('Appointment')
+    },
+    {
+      id: 3,
+      icon: '🎥',
+      title: 'Record video',
+      subtitle: 'Track behavior',
+      onPress: () => showActionDialog('Record video', 'video')
+    },
+    {
+      id: 4,
+      icon: '🍖',
+      title: 'Food scanner',
+      subtitle: 'Check ingredients',
+      onPress: () => showActionDialog('Food scanner', 'food')
+    },
+    {
+      id: 5,
+      icon: '💊',
+      title: 'Medications',
+      subtitle: 'Track meds',
+      onPress: () => console.log('Meds')
+    },
+    {
+      id: 6,
+      icon: '💉',
+      title: 'Vaccines',
+      subtitle: 'Schedule shots',
+      onPress: () => console.log('Vaccines')
+    },
+    {
+      id: 7,
+      icon: '📊',
+      title: 'Weekly report',
+      subtitle: 'View insights',
+      onPress: () => console.log('Report')
+    },
+    {
+      id: 8,
+      icon: '🐕',
+      title: 'Add pet',
+      subtitle: 'New companion',
+      onPress: () => console.log('Add pet')
+    },
   ];
 
   // Handler functions
@@ -372,6 +441,15 @@ export default function HomeScreenRedesign() {
           )}
         </View>
       </ScrollView>
+
+      {/* Action Dialog for Camera/Photo Selection */}
+      <ActionDialog
+        visible={dialogVisible}
+        onClose={() => setDialogVisible(false)}
+        title={dialogConfig.title}
+        onCamera={handleCamera}
+        onGallery={handleGallery}
+      />
     </SafeAreaView>
   );
 }

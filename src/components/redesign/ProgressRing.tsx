@@ -42,7 +42,8 @@ export default function ProgressRing({
   const config = sizeConfig[size];
   const finalStrokeWidth = strokeWidth ?? config.defaultStrokeWidth;
   const radius = (config.diameter - finalStrokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
+  // Semi-circle: only use 180 degrees (half the circumference)
+  const circumference = Math.PI * radius;
   const center = config.diameter / 2;
 
   // Get health score colors
@@ -62,7 +63,7 @@ export default function ProgressRing({
     }
   }, [progress, animated, animatedProgress]);
 
-  // Calculate stroke dash offset for progress
+  // Calculate stroke dash offset for progress (semi-circle)
   const progressValue = animatedProgress.interpolate({
     inputRange: [0, 100],
     outputRange: [circumference, 0],
@@ -70,14 +71,14 @@ export default function ProgressRing({
 
   return (
     <View
-      style={[styles.container, { width: config.diameter, height: config.diameter }]}
+      style={[styles.container, { width: config.diameter, height: config.diameter / 1.5 }]}
       accessible={true}
       accessibilityRole="progressbar"
       accessibilityValue={{ min: 0, max: 100, now: progress }}
       accessibilityLabel={`Health score: ${progress}${showLabel ? `, ${healthLabel}` : ''}`}
     >
       <Svg width={config.diameter} height={config.diameter}>
-        {/* Background Circle */}
+        {/* Background Semi-Circle */}
         <Circle
           cx={center}
           cy={center}
@@ -85,9 +86,12 @@ export default function ProgressRing({
           stroke={colors.neutral[200]}
           strokeWidth={finalStrokeWidth}
           fill="transparent"
+          strokeDasharray={`${circumference} ${circumference}`}
+          rotation="-90"
+          origin={`${center}, ${center}`}
         />
 
-        {/* Progress Circle */}
+        {/* Progress Semi-Circle */}
         <AnimatedCircle
           cx={center}
           cy={center}
@@ -95,7 +99,7 @@ export default function ProgressRing({
           stroke={healthColors.icon}
           strokeWidth={finalStrokeWidth}
           fill="transparent"
-          strokeDasharray={circumference}
+          strokeDasharray={`${circumference} ${circumference}`}
           strokeDashoffset={progressValue}
           strokeLinecap="round"
           rotation="-90"
