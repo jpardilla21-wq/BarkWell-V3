@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function RootNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName="Splash"
+      initialRouteName="MainTabs" // TESTING: Skip splash/onboarding to see new design
       screenOptions={{
         headerShown: false,
         animation: "fade",
