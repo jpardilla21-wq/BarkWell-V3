@@ -6,8 +6,9 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useTheme } from "@/hooks/useTheme";
-import { Colors, Spacing, BorderRadius } from "@/constants/theme";
+import { useTheme as useOldTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/design-system";
+import { Spacing, BorderRadius } from "@/constants/theme";
 
 type HistoryItemType = "poop" | "food" | "behavior";
 
@@ -64,16 +65,16 @@ const getIconForType = (type: HistoryItemType): keyof typeof Feather.glyphMap =>
   }
 };
 
-const getColorForType = (type: HistoryItemType): string => {
+const getColorForType = (type: HistoryItemType, colors: any): string => {
   switch (type) {
     case "poop":
-      return Colors.light.warningYellow;
+      return colors.accent[500];
     case "food":
-      return Colors.light.softGreen;
+      return colors.secondary[500];
     case "behavior":
-      return Colors.light.primary;
+      return colors.primary[500];
     default:
-      return Colors.light.primary;
+      return colors.primary[500];
   }
 };
 
@@ -91,13 +92,14 @@ const getLabelForType = (type: HistoryItemType): string => {
 };
 
 export default function HistoryScreen() {
-  const { theme } = useTheme();
+  const { theme } = useOldTheme();
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const headerHeight = useHeaderHeight();
   const tabBarHeight = useBottomTabBarHeight();
 
   const renderItem = ({ item }: { item: HistoryItem }) => {
-    const iconColor = getColorForType(item.type);
+    const iconColor = getColorForType(item.type, colors);
     const iconName = getIconForType(item.type);
     const label = getLabelForType(item.type);
 

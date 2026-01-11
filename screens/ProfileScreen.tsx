@@ -4,9 +4,10 @@ import { Feather } from "@expo/vector-icons";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScreenScrollView } from "@/components/ScreenScrollView";
 import { ThemedText } from "@/components/ThemedText";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme as useOldTheme } from "@/hooks/useTheme";
+import { useTheme, CommonStyles } from "@/design-system";
 import { useDogs } from "@/contexts/DogContext";
-import { Colors, Spacing, BorderRadius } from "@/constants/theme";
+import { Spacing, BorderRadius } from "@/constants/theme";
 import type { ProfileStackParamList } from "@/navigation/ProfileStackNavigator";
 
 type ProfileScreenProps = {
@@ -14,7 +15,8 @@ type ProfileScreenProps = {
 };
 
 export default function ProfileScreen({ navigation }: ProfileScreenProps) {
-  const { theme } = useTheme();
+  const { theme } = useOldTheme();
+  const { colors } = useTheme();
   const { dogs, selectedDogId } = useDogs();
 
   const selectedDog = dogs.find((dog) => dog.id === selectedDogId);
@@ -29,7 +31,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
               { backgroundColor: theme.backgroundDefault },
             ]}
           >
-            <Feather name="smile" size={48} color={Colors.light.primary} />
+            <Feather name="smile" size={48} color={colors.primary[500]} />
           </View>
           <ThemedText type="h2" style={styles.dogName}>
             No Dog Selected
@@ -54,7 +56,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           {selectedDog.photo ? (
             <Image source={{ uri: selectedDog.photo }} style={styles.avatarImage} />
           ) : (
-            <Feather name="smile" size={48} color={Colors.light.primary} />
+            <Feather name="smile" size={48} color={colors.primary[500]} />
           )}
         </View>
         <ThemedText type="h2" style={styles.dogName}>
@@ -82,10 +84,10 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
             <View
               style={[
                 styles.menuIcon,
-                { backgroundColor: Colors.light.primary + "20" },
+                { backgroundColor: colors.primary[500] + "20" },
               ]}
             >
-              <Feather name="clock" size={20} color={Colors.light.primary} />
+              <Feather name="clock" size={20} color={colors.primary[500]} />
             </View>
             <ThemedText type="body">View History</ThemedText>
           </View>
@@ -102,10 +104,10 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
             <View
               style={[
                 styles.menuIcon,
-                { backgroundColor: Colors.light.softGreen + "20" },
+                { backgroundColor: colors.secondary[500] + "20" },
               ]}
             >
-              <Feather name="info" size={20} color={Colors.light.softGreen} />
+              <Feather name="info" size={20} color={colors.secondary[500]} />
             </View>
             <ThemedText type="body">App Info</ThemedText>
           </View>

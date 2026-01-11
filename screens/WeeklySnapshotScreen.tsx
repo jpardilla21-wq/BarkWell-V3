@@ -5,11 +5,12 @@ import { ScreenScrollView } from "@/components/ScreenScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { Button } from "@/components/Button";
 import { WeeklySnapshotCard } from "@/components/WeeklySnapshotCard";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme as useOldTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/design-system";
 import { useDogs } from "@/contexts/DogContext";
 import { getWeeklySnapshot } from "@/services/weeklySnapshot";
 import { shareCardImage, saveCardToPhotos } from "@/utils/shareCard";
-import { Colors, Spacing } from "@/constants/theme";
+import { Spacing } from "@/constants/theme";
 import type { HomeStackParamList } from "@/navigation/HomeStackNavigator";
 
 type WeeklySnapshotScreenNavigationProp = NativeStackNavigationProp<
@@ -24,7 +25,8 @@ type WeeklySnapshotScreenProps = {
 export default function WeeklySnapshotScreen({
   navigation,
 }: WeeklySnapshotScreenProps) {
-  const { theme } = useTheme();
+  const { theme } = useOldTheme();
+  const { colors } = useTheme();
   const { dogs, selectedDogId } = useDogs();
   const cardRef = useRef<View>(null);
   const [isSharing, setIsSharing] = useState(false);
@@ -91,18 +93,18 @@ export default function WeeklySnapshotScreen({
             disabled={isSaving}
             style={[
               styles.secondaryButton,
-              { backgroundColor: theme.backgroundDefault, borderColor: Colors.light.primary },
+              { backgroundColor: theme.backgroundDefault, borderColor: colors.primary[500] },
             ]}
           >
             {isSaving ? (
               <View style={styles.loadingButton}>
-                <ActivityIndicator size="small" color={Colors.light.primary} />
-                <ThemedText style={[styles.loadingText, { color: Colors.light.primary }]}>
+                <ActivityIndicator size="small" color={colors.primary[500]} />
+                <ThemedText style={[styles.loadingText, { color: colors.primary[500] }]}>
                   Saving...
                 </ThemedText>
               </View>
             ) : (
-              <ThemedText style={{ color: Colors.light.primary, fontWeight: "600" }}>
+              <ThemedText style={{ color: colors.primary[500], fontWeight: "600" }}>
                 Save to Photos
               </ThemedText>
             )}
