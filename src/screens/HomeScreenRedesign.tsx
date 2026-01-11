@@ -151,8 +151,8 @@ export default function HomeScreenRedesign() {
   // Handler functions
   const handleViewDetails = () => {
     console.log('View details pressed for pet:', selectedPetId);
-    // Navigate to Pet Profile screen for testing
-    navigation.navigate('PetProfileNew' as never);
+    // Navigate to Pet Profile screen
+    navigation.navigate('PetProfile' as never);
   };
 
   const handleAddPet = () => {

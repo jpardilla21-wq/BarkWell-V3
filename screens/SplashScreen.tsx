@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Colors, Spacing } from "@/constants/theme";
+import { useTheme } from "@/design-system";
 import type { RootStackParamList } from "@/navigation/RootNavigator";
 
 type SplashScreenProps = {
@@ -9,6 +9,7 @@ type SplashScreenProps = {
 };
 
 export default function SplashScreen({ navigation }: SplashScreenProps) {
+  const { colors, spacing } = useTheme();
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.neutral.background }]}>
       <View style={styles.content}>
         <Image
           source={require("../assets/images/pupsense-logo-splash.png")}
@@ -35,9 +36,15 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
           resizeMode="contain"
         />
       </View>
-      <View style={styles.loadingBar}>
+      <View style={[styles.loadingBar, {
+        backgroundColor: colors.neutral[200],
+        marginBottom: spacing['6xl']
+      }]}>
         <View
-          style={[styles.progressBar, { width: `${Math.min(progress, 100)}%` }]}
+          style={[styles.progressBar, {
+            width: `${Math.min(progress, 100)}%`,
+            backgroundColor: colors.primary[500]
+          }]}
         />
       </View>
     </View>
@@ -49,7 +56,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFFFFF",
   },
   content: {
     flex: 1,
@@ -63,14 +69,11 @@ const styles = StyleSheet.create({
   loadingBar: {
     width: 200,
     height: 4,
-    backgroundColor: "#E0E0E0",
     borderRadius: 2,
-    marginBottom: Spacing.xl + 20,
     overflow: "hidden",
   },
   progressBar: {
     height: "100%",
-    backgroundColor: Colors.light.primary,
     borderRadius: 2,
   },
 });
