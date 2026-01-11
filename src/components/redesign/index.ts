@@ -12,3 +12,4 @@ export { default as ActionDialog } from './ActionDialog';
 // Advanced Components
 export { default as ProgressRing } from './ProgressRing';
 export { default as HealthMetricCard } from './HealthMetricCard';
+export { default as BarChart } from './BarChart';
