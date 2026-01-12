@@ -1,27 +1,27 @@
 {
   "expo": {
-    "name": "PupSense",
-    "slug": "pupsense",
+    "name": "Barkwell",
+    "slug": "barkwell",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/pupsense-logo.png",
-    "scheme": "pupsense",
+    "scheme": "barkwell",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.pupsense.app"
+      "bundleIdentifier": "com.barkwell.app"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#4A7BFF",
+        "backgroundColor": "#99B34D",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.pupsense.app"
+      "package": "com.barkwell.app"
     },
     "web": {
       "output": "single",
