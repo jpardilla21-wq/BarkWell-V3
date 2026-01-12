@@ -1,3 +1,8 @@
+/**
+ * PoopCheckScreen - Redesigned
+ * Analyze dog stool with AI-powered health assessment
+ */
+
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -5,26 +10,19 @@ import {
   TextInput,
   Image,
   Platform,
-  Pressable,
   Alert,
   Text,
   Linking,
+  TouchableOpacity,
+  ScrollView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { Feather } from "@expo/vector-icons";
-import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Button } from "@/components/Button";
+import { useTheme, CommonStyles, TextStyles } from "@/design-system";
+import { Card, Button } from "@/src/components/redesign";
+import ActionDialog, { ActionOption } from "@/src/components/redesign/ActionDialog";
 import { RiskBadge } from "@/components/RiskBadge";
-import { ResultCard } from "@/components/ResultCard";
-import { useTheme as useOldTheme } from "@/hooks/useTheme";
-import { useTheme } from "@/design-system";
-import {
-  Spacing,
-  BorderRadius,
-  Typography,
-} from "@/constants/theme";
 import { analyzePoopWithGemini, APIKeyError } from "@/utils/apiClient";
 
 type RiskLevel = "Low" | "Medium" | "High";
@@ -36,12 +34,12 @@ interface AnalysisResult {
 }
 
 export default function PoopCheckScreen() {
-  const { theme, isDark } = useOldTheme();
-  const { colors } = useTheme();
+  const { colors, spacing, borderRadius } = useTheme();
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [description, setDescription] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   const requestCameraPermission = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -55,7 +53,6 @@ export default function PoopCheckScreen() {
               {
                 text: "Open Settings",
                 onPress: async () => {
-                  // For web, this won't work, but we handle the error gracefully
                   if (Platform.OS !== "web") {
                     try {
                       await require("expo-linking").default.openSettings();
@@ -156,178 +153,226 @@ export default function PoopCheckScreen() {
     setResult(null);
   };
 
+  const photoOptions: ActionOption[] = [
+    {
+      icon: 'camera',
+      label: 'Open Camera',
+      onPress: handleTakePhoto,
+    },
+    {
+      icon: 'image',
+      label: 'Select from Photos',
+      onPress: handlePickFromLibrary,
+    },
+  ];
+
   return (
-    <ScreenKeyboardAwareScrollView>
-      <ThemedText type="body" style={{ color: theme.textMuted }}>
-        Take a photo or describe your dog's stool to get triage advice.
-      </ThemedText>
-
-      {!photoUri ? (
-        <View style={styles.photoSection}>
-          <ThemedView
-            style={[
-              styles.photoPlaceholder,
-              { borderColor: colors.primary[500] },
-            ]}
-          >
-            <Feather
-              name="camera"
-              size={48}
-              color={colors.primary[500]}
-              style={{ marginBottom: Spacing.md }}
-            />
-            <ThemedText type="body" style={{ textAlign: "center" }}>
-              Take a photo of your dog's poop
-            </ThemedText>
-          </ThemedView>
-
-          <View style={styles.buttonGroup}>
-            <Pressable
-              onPress={handleTakePhoto}
-              style={[
-                styles.halfButton,
-                {
-                  backgroundColor: theme.backgroundDefault,
-                  borderColor: colors.primary[500],
-                  borderWidth: 1,
-                },
-              ]}
-            >
-              <View style={styles.buttonContent}>
-                <Feather name="camera" size={18} color={colors.primary[500]} />
-                <Text style={styles.buttonText}>Take Photo</Text>
-              </View>
-            </Pressable>
-
-            <Pressable
-              onPress={handlePickFromLibrary}
-              style={[
-                styles.halfButton,
-                {
-                  backgroundColor: theme.backgroundDefault,
-                  borderColor: colors.primary[500],
-                  borderWidth: 1,
-                },
-              ]}
-            >
-              <View style={styles.buttonContent}>
-                <Feather name="image" size={18} color={colors.primary[500]} />
-                <Text style={styles.buttonText}>Choose Photo</Text>
-              </View>
-            </Pressable>
-          </View>
-        </View>
-      ) : (
-        <View style={styles.photoContainer}>
-          <Image
-            source={{ uri: photoUri }}
-            style={styles.photoImage}
-            resizeMode="cover"
-          />
-          <Pressable
-            onPress={handleClearPhoto}
-            style={[
-              styles.clearButton,
-              { backgroundColor: colors.primary[500] },
-            ]}
-          >
-            <Feather name="x" size={20} color="white" />
-          </Pressable>
-        </View>
-      )}
-
-      <View style={styles.divider} />
-
-      <View style={styles.inputContainer}>
-        <ThemedText type="small" style={styles.label}>
-          Additional Notes (Optional)
-        </ThemedText>
-        <TextInput
-          style={[
-            styles.textInput,
-            {
-              backgroundColor: theme.backgroundDefault,
-              color: theme.text,
-              borderColor: theme.borderLight,
-            },
-          ]}
-          value={description}
-          onChangeText={setDescription}
-          placeholder="Example: soft, light brown, some mucus, no visible blood"
-          placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-          multiline
-          numberOfLines={4}
-          textAlignVertical="top"
-        />
-      </View>
-
-      <Button
-        onPress={handleAnalyze}
-        disabled={!photoUri && !description.trim() && !isAnalyzing}
+    <SafeAreaView style={CommonStyles.container} edges={['top']}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { padding: spacing.xl, paddingBottom: spacing['6xl'] },
+        ]}
+        showsVerticalScrollIndicator={false}
       >
-        {isAnalyzing ? "Analyzing..." : "Analyze Poop"}
-      </Button>
+        {/* Header */}
+        <Text style={[TextStyles.h1, { color: colors.neutral[900], marginBottom: spacing.md }]}>
+          Poop Check
+        </Text>
+        <Text style={[TextStyles.body, { color: colors.neutral[600], marginBottom: spacing.xl }]}>
+          Take a photo or describe your dog's stool to get triage advice.
+        </Text>
 
-      {result ? (
-        <ResultCard style={styles.resultCard}>
-          <View style={styles.resultHeader}>
-            <ThemedText type="h4">Analysis Result</ThemedText>
-            <RiskBadge level={result.riskLevel} />
-          </View>
-
-          <ThemedText type="body" style={styles.summary}>
-            {result.summary}
-          </ThemedText>
-
-          <View style={styles.tipsContainer}>
-            <ThemedText type="h4" style={styles.tipsTitle}>
-              Tips
-            </ThemedText>
-            {result.tips.map((tip, index) => (
-              <View key={index} style={styles.tipRow}>
-                <ThemedText type="body" style={styles.bullet}>
-                  •
-                </ThemedText>
-                <ThemedText type="body" style={styles.tipText}>
-                  {tip}
-                </ThemedText>
+        {/* Photo Section */}
+        {!photoUri ? (
+          <Card variant="outlined" style={{ marginBottom: spacing.xl }}>
+            <TouchableOpacity
+              style={[
+                styles.photoPlaceholder,
+                {
+                  borderColor: colors.primary[300],
+                  backgroundColor: colors.secondary[100],
+                  borderRadius: borderRadius.lg,
+                  padding: spacing.xl,
+                },
+              ]}
+              onPress={() => setDialogVisible(true)}
+              activeOpacity={0.7}
+            >
+              <View style={styles.placeholderContent}>
+                <Feather
+                  name="camera"
+                  size={48}
+                  color={colors.primary[500]}
+                  style={{ marginBottom: spacing.md }}
+                />
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    { color: colors.neutral[900], textAlign: "center", marginBottom: spacing.sm },
+                  ]}
+                >
+                  Take a Photo
+                </Text>
+                <Text
+                  style={[
+                    TextStyles.bodySmall,
+                    { color: colors.neutral[600], textAlign: "center" },
+                  ]}
+                >
+                  Tap to take a photo or choose from library
+                </Text>
               </View>
-            ))}
-          </View>
-        </ResultCard>
-      ) : null}
-    </ScreenKeyboardAwareScrollView>
+            </TouchableOpacity>
+          </Card>
+        ) : (
+          <Card variant="elevated" style={{ marginBottom: spacing.xl }}>
+            <View style={styles.photoContainer}>
+              <Image
+                source={{ uri: photoUri }}
+                style={[
+                  styles.photoImage,
+                  { borderRadius: borderRadius.lg },
+                ]}
+                resizeMode="cover"
+              />
+              <TouchableOpacity
+                onPress={handleClearPhoto}
+                style={[
+                  styles.clearButton,
+                  { backgroundColor: colors.semantic.error },
+                ]}
+              >
+                <Feather name="x" size={20} color="white" />
+              </TouchableOpacity>
+            </View>
+          </Card>
+        )}
+
+        {/* Description Input */}
+        <Card variant="outlined" style={{ marginBottom: spacing.xl }}>
+          <Text
+            style={[
+              TextStyles.label,
+              { color: colors.neutral[900], marginBottom: spacing.sm, fontWeight: '600' },
+            ]}
+          >
+            Additional Notes (Optional)
+          </Text>
+          <TextInput
+            style={[
+              styles.textInput,
+              {
+                backgroundColor: colors.neutral.white,
+                color: colors.neutral[900],
+                borderColor: colors.neutral[300],
+                borderRadius: borderRadius.md,
+                padding: spacing.md,
+              },
+            ]}
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Example: soft, light brown, some mucus, no visible blood"
+            placeholderTextColor={colors.neutral[400]}
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+          />
+        </Card>
+
+        {/* Analyze Button */}
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth
+          onPress={handleAnalyze}
+          disabled={(!photoUri && !description.trim()) || isAnalyzing}
+          style={{ marginBottom: spacing.xl }}
+        >
+          {isAnalyzing ? "Analyzing..." : "Analyze Poop"}
+        </Button>
+
+        {/* Results */}
+        {result && (
+          <Card variant="elevated">
+            <View style={[styles.resultHeader, { marginBottom: spacing.md }]}>
+              <Text style={[TextStyles.h3, { color: colors.neutral[900] }]}>
+                Analysis Result
+              </Text>
+              <RiskBadge level={result.riskLevel} />
+            </View>
+
+            <Text
+              style={[
+                TextStyles.body,
+                { color: colors.neutral[700], marginBottom: spacing.lg },
+              ]}
+            >
+              {result.summary}
+            </Text>
+
+            <View style={styles.tipsContainer}>
+              <Text
+                style={[
+                  TextStyles.h4,
+                  { color: colors.neutral[900], marginBottom: spacing.sm },
+                ]}
+              >
+                Tips
+              </Text>
+              {result.tips.map((tip, index) => (
+                <View key={index} style={[styles.tipRow, { marginBottom: spacing.sm }]}>
+                  <Text style={[TextStyles.body, { color: colors.primary[500], marginRight: spacing.sm }]}>
+                    •
+                  </Text>
+                  <Text style={[TextStyles.body, { color: colors.neutral[700], flex: 1 }]}>
+                    {tip}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </Card>
+        )}
+      </ScrollView>
+
+      {/* Action Dialog */}
+      <ActionDialog
+        visible={dialogVisible}
+        onClose={() => setDialogVisible(false)}
+        title="Add Photo"
+        options={photoOptions}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  photoSection: {
-    marginTop: Spacing.lg,
-    marginBottom: Spacing.lg,
+  scrollView: {
+    flex: 1,
   },
+  scrollContent: {},
   photoPlaceholder: {
-    height: 220,
+    minHeight: 200,
     borderWidth: 2,
     borderStyle: "dashed",
-    borderRadius: BorderRadius.lg,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: Spacing.lg,
+  },
+  placeholderContent: {
+    alignItems: "center",
   },
   photoContainer: {
     position: "relative",
-    marginTop: Spacing.lg,
-    marginBottom: Spacing.lg,
   },
   photoImage: {
+    width: '100%',
     height: 250,
-    borderRadius: BorderRadius.lg,
-    overflow: "hidden",
   },
   clearButton: {
     position: "absolute",
-    top: Spacing.md,
-    right: Spacing.md,
+    top: 12,
+    right: 12,
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -339,73 +384,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3,
   },
-  buttonGroup: {
-    flexDirection: "row",
-    gap: Spacing.md,
-  },
-  halfButton: {
-    flex: 1,
-    borderRadius: BorderRadius.md,
-    paddingVertical: Spacing.md,
-    justifyContent: "center",
-  },
-  buttonContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Spacing.sm,
-  },
-  buttonText: {
-    color: colors.primary[500],
-    fontSize: Typography.bodyM.fontSize,
-    fontWeight: "600",
-  },
-  divider: {
-    height: 1,
-    backgroundColor: "rgba(0,0,0,0.1)",
-    marginVertical: Spacing.lg,
-  },
-  inputContainer: {
-    marginBottom: Spacing.lg,
-  },
-  label: {
-    marginBottom: Spacing.sm,
-    fontWeight: "600",
-  },
   textInput: {
     minHeight: 100,
     borderWidth: 1,
-    borderRadius: BorderRadius.md,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.md,
-    fontSize: Typography.bodyM.fontSize,
-  },
-  resultCard: {
-    marginTop: Spacing.lg,
+    fontSize: 16,
   },
   resultHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: Spacing.md,
   },
-  summary: {
-    marginBottom: Spacing.lg,
-  },
-  tipsContainer: {
-    gap: Spacing.sm,
-  },
-  tipsTitle: {
-    marginBottom: Spacing.xs,
-  },
+  tipsContainer: {},
   tipRow: {
     flexDirection: "row",
-    gap: Spacing.sm,
-  },
-  bullet: {
-    width: 16,
-  },
-  tipText: {
-    flex: 1,
+    alignItems: "flex-start",
   },
 });

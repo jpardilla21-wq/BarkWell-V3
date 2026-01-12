@@ -1,28 +1,26 @@
-import React, { useState, useRef } from "react";
+/**
+ * BehaviorCheckScreen - Redesigned
+ * Analyze dog behavior with AI-powered emotional state assessment
+ */
+
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
-  Pressable,
   Alert,
   Text,
   Platform,
   Linking,
+  TouchableOpacity,
+  ScrollView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { Feather } from "@expo/vector-icons";
-import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Button } from "@/components/Button";
+import { useTheme, CommonStyles, TextStyles } from "@/design-system";
+import { Card, Button } from "@/src/components/redesign";
+import ActionDialog, { ActionOption } from "@/src/components/redesign/ActionDialog";
 import { StatePill } from "@/components/StatePill";
-import { ResultCard } from "@/components/ResultCard";
-import { useTheme as useOldTheme } from "@/hooks/useTheme";
-import { useTheme } from "@/design-system";
-import {
-  Spacing,
-  BorderRadius,
-  Typography,
-} from "@/constants/theme";
 import { analyzeBehaviorWithGemini, APIKeyError } from "@/utils/apiClient";
 
 type BehaviorState =
@@ -45,74 +43,12 @@ interface BehaviorAnalysisResult {
   tips: string[];
 }
 
-const BEHAVIOR_GUIDELINES = {
-  Relaxed: {
-    emoji: "😌",
-    tips: [
-      "Your dog is calm and content - great! Maintain this peaceful environment",
-      "Keep current routines and activities that promote relaxation",
-      "Good time for training sessions as your dog is receptive",
-      "Monitor for any changes in behavior that might indicate stress",
-    ],
-  },
-  "Happy & Engaged": {
-    emoji: "😊",
-    tips: [
-      "Your dog is happy and enjoying interaction - wonderful!",
-      "Continue positive activities and playtime your dog enjoys",
-      "This is an excellent time to practice commands and training",
-      "Maintain healthy exercise and socialization routines",
-    ],
-  },
-  Anxious: {
-    emoji: "😟",
-    tips: [
-      "Create a quiet, safe space where your dog can retreat",
-      "Maintain a consistent daily routine for feeding and walks",
-      "Use calming aids like anxiety wraps or pheromone diffusers",
-      "Avoid reinforcing anxious behavior with excessive attention",
-      "Consult a veterinary behaviorist if symptoms persist",
-    ],
-  },
-  Overstimulated: {
-    emoji: "😵",
-    tips: [
-      "Give your dog a break and a quiet space to cool down",
-      "Remove triggering stimuli (loud noises, excessive activity)",
-      "Provide calm activities like gentle petting or puzzle toys",
-      "Practice breathing exercises alongside your dog",
-      "Reduce exercise intensity and take more frequent breaks",
-    ],
-  },
-  Defensive: {
-    emoji: "😠",
-    tips: [
-      "Give your dog space and avoid direct interaction right now",
-      "Remove any perceived threats or stressors",
-      "Use positive reinforcement when your dog displays calm behavior",
-      "Never punish defensive behavior - seek professional help",
-      "Contact a certified dog behaviorist immediately",
-    ],
-  },
-  "Possibly in Pain": {
-    emoji: "🤕",
-    tips: [
-      "Your dog may be uncomfortable - contact your vet immediately",
-      "Avoid rough play or activities that might worsen the issue",
-      "Provide a comfortable resting area with supportive bedding",
-      "Monitor for additional symptoms like limping or appetite changes",
-      "Get a professional veterinary evaluation as soon as possible",
-    ],
-  },
-};
-
 export default function BehaviorCheckScreen() {
-  const { theme, isDark } = useOldTheme();
-  const { colors } = useTheme();
+  const { colors, spacing, borderRadius } = useTheme();
   const [videoUri, setVideoUri] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<BehaviorAnalysisResult | null>(null);
-  const [recordingTime, setRecordingTime] = useState(0);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   const requestCameraPermission = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -234,259 +170,315 @@ export default function BehaviorCheckScreen() {
     setResult(null);
   };
 
+  const videoOptions: ActionOption[] = [
+    {
+      icon: 'video',
+      label: 'Record Video',
+      onPress: handleRecordVideo,
+    },
+    {
+      icon: 'film',
+      label: 'Recorded Video from Photos',
+      onPress: handlePickVideo,
+    },
+  ];
+
   return (
-    <ScreenKeyboardAwareScrollView>
-      <ThemedText type="body" style={{ color: theme.textMuted }}>
-        Record a 30-60 second video of your dog's body language and behavior
-        for AI analysis.
-      </ThemedText>
+    <SafeAreaView style={CommonStyles.container} edges={['top']}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { padding: spacing.xl, paddingBottom: spacing['6xl'] },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header */}
+        <Text style={[TextStyles.h1, { color: colors.neutral[900], marginBottom: spacing.md }]}>
+          Behavior Check
+        </Text>
+        <Text style={[TextStyles.body, { color: colors.neutral[600], marginBottom: spacing.xl }]}>
+          Record a 30-60 second video of your dog's body language and behavior for AI analysis.
+        </Text>
 
-      {!videoUri ? (
-        <View style={styles.videoSection}>
-          <ThemedView
-            style={[
-              styles.videoPlaceholder,
-              { borderColor: colors.primary[500] },
-            ]}
-          >
-            <Feather
-              name="video"
-              size={48}
-              color={colors.primary[500]}
-              style={{ marginBottom: Spacing.md }}
-            />
-            <ThemedText type="body" style={{ textAlign: "center" }}>
-              Record your dog's behavior
-            </ThemedText>
-            <ThemedText
-              type="small"
-              style={{
-                color: theme.textMuted,
-                marginTop: Spacing.sm,
-                textAlign: "center",
-              }}
-            >
-              30-60 seconds recommended
-            </ThemedText>
-          </ThemedView>
-
-          <View style={styles.buttonGroup}>
-            <Pressable
-              onPress={handleRecordVideo}
+        {/* Video Section */}
+        {!videoUri ? (
+          <Card variant="outlined" style={{ marginBottom: spacing.xl }}>
+            <TouchableOpacity
               style={[
-                styles.halfButton,
+                styles.videoPlaceholder,
                 {
-                  backgroundColor: theme.backgroundDefault,
-                  borderColor: colors.primary[500],
-                  borderWidth: 1,
+                  borderColor: colors.primary[300],
+                  backgroundColor: colors.secondary[50],
+                  borderRadius: borderRadius.lg,
+                  padding: spacing.xl,
                 },
               ]}
+              onPress={() => setDialogVisible(true)}
+              activeOpacity={0.7}
             >
-              <View style={styles.buttonContent}>
+              <View style={styles.placeholderContent}>
                 <Feather
                   name="video"
-                  size={18}
+                  size={48}
                   color={colors.primary[500]}
+                  style={{ marginBottom: spacing.md }}
                 />
-                <Text style={styles.buttonText}>Record</Text>
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    { color: colors.neutral[900], textAlign: "center", marginBottom: spacing.sm },
+                  ]}
+                >
+                  Record Behavior
+                </Text>
+                <Text
+                  style={[
+                    TextStyles.bodySmall,
+                    { color: colors.neutral[600], textAlign: "center" },
+                  ]}
+                >
+                  Tap to record or choose from library
+                </Text>
+                <Text
+                  style={[
+                    TextStyles.bodySmall,
+                    { color: colors.neutral[500], textAlign: "center", marginTop: spacing.xs },
+                  ]}
+                >
+                  30-60 seconds recommended
+                </Text>
               </View>
-            </Pressable>
+            </TouchableOpacity>
+          </Card>
+        ) : (
+          <Card variant="elevated" style={{ marginBottom: spacing.xl }}>
+            <View style={styles.videoContainer}>
+              <View
+                style={[
+                  styles.videoPreview,
+                  {
+                    backgroundColor: colors.secondary[100],
+                    borderRadius: borderRadius.lg,
+                  },
+                ]}
+              >
+                <Feather name="check-circle" size={48} color={colors.primary[500]} />
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    { color: colors.neutral[900], marginTop: spacing.md },
+                  ]}
+                >
+                  Video Ready
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={handleClearVideo}
+                style={[
+                  styles.clearButton,
+                  { backgroundColor: colors.semantic.error },
+                ]}
+              >
+                <Feather name="x" size={20} color="white" />
+              </TouchableOpacity>
+            </View>
+          </Card>
+        )}
 
-            <Pressable
-              onPress={handlePickVideo}
+        {/* Analyze Button */}
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth
+          onPress={analyzeVideo}
+          disabled={!videoUri || isAnalyzing}
+          style={{ marginBottom: spacing.xl }}
+        >
+          {isAnalyzing ? "Analyzing Behavior..." : "Analyze Behavior"}
+        </Button>
+
+        {/* Results */}
+        {result && (
+          <Card variant="elevated">
+            <View style={[styles.resultHeader, { marginBottom: spacing.md }]}>
+              <View>
+                <Text style={[TextStyles.h3, { color: colors.neutral[900] }]}>
+                  Emotional State
+                </Text>
+                <Text
+                  style={[
+                    TextStyles.bodySmall,
+                    { color: colors.neutral[500], marginTop: spacing.xs },
+                  ]}
+                >
+                  Based on body language analysis
+                </Text>
+              </View>
+              <StatePill state={result.state} />
+            </View>
+
+            <Text
               style={[
-                styles.halfButton,
+                TextStyles.body,
+                { color: colors.neutral[700], marginBottom: spacing.lg },
+              ]}
+            >
+              {result.explanation}
+            </Text>
+
+            <View
+              style={[
+                styles.observationsSection,
                 {
-                  backgroundColor: theme.backgroundDefault,
-                  borderColor: colors.primary[500],
-                  borderWidth: 1,
+                  marginBottom: spacing.lg,
+                  paddingBottom: spacing.lg,
+                  borderBottomWidth: 1,
+                  borderBottomColor: colors.neutral[200],
                 },
               ]}
             >
-              <View style={styles.buttonContent}>
+              <Text
+                style={[
+                  TextStyles.h4,
+                  { color: colors.neutral[900], marginBottom: spacing.md },
+                ]}
+              >
+                Observations
+              </Text>
+
+              <View style={[styles.observationItem, { marginBottom: spacing.md }]}>
                 <Feather
-                  name="film"
+                  name="move"
                   size={18}
                   color={colors.primary[500]}
+                  style={{ marginRight: spacing.sm }}
                 />
-                <Text style={styles.buttonText}>Browse</Text>
+                <View style={styles.observationContent}>
+                  <Text style={[TextStyles.label, { color: colors.neutral[900], fontWeight: "600" }]}>
+                    Tail
+                  </Text>
+                  <Text style={[TextStyles.body, { color: colors.neutral[600] }]}>
+                    {result.observations.tail}
+                  </Text>
+                </View>
               </View>
-            </Pressable>
-          </View>
-        </View>
-      ) : (
-        <View style={styles.videoContainer}>
-          <ThemedView
-            style={[
-              styles.videoPreview,
-              { backgroundColor: Colors.light.backgroundDark },
-            ]}
-          >
-            <Feather name="check-circle" size={48} color={Colors.light.softGreen} />
-            <ThemedText type="body" style={{ marginTop: Spacing.md }}>
-              Video Ready
-            </ThemedText>
-          </ThemedView>
-          <Pressable
-            onPress={handleClearVideo}
-            style={[styles.clearButton, { backgroundColor: colors.primary[500] }]}
-          >
-            <Feather name="x" size={20} color="white" />
-          </Pressable>
-        </View>
-      )}
 
-      <Button
-        onPress={analyzeVideo}
-        disabled={!videoUri || isAnalyzing}
-      >
-        {isAnalyzing ? "Analyzing Behavior..." : "Analyze Behavior"}
-      </Button>
+              <View style={[styles.observationItem, { marginBottom: spacing.md }]}>
+                <Feather
+                  name="square"
+                  size={18}
+                  color={colors.primary[500]}
+                  style={{ marginRight: spacing.sm }}
+                />
+                <View style={styles.observationContent}>
+                  <Text style={[TextStyles.label, { color: colors.neutral[900], fontWeight: "600" }]}>
+                    Body
+                  </Text>
+                  <Text style={[TextStyles.body, { color: colors.neutral[600] }]}>
+                    {result.observations.body}
+                  </Text>
+                </View>
+              </View>
 
-      {result ? (
-        <ResultCard style={styles.resultCard}>
-          <View style={styles.resultHeader}>
-            <View>
-              <ThemedText type="h4">Emotional State</ThemedText>
-              <ThemedText
-                type="small"
-                style={{ color: theme.textMuted, marginTop: Spacing.xs }}
+              <View style={[styles.observationItem, { marginBottom: spacing.md }]}>
+                <Feather
+                  name="eye"
+                  size={18}
+                  color={colors.primary[500]}
+                  style={{ marginRight: spacing.sm }}
+                />
+                <View style={styles.observationContent}>
+                  <Text style={[TextStyles.label, { color: colors.neutral[900], fontWeight: "600" }]}>
+                    Face
+                  </Text>
+                  <Text style={[TextStyles.body, { color: colors.neutral[600] }]}>
+                    {result.observations.face}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={[styles.observationItem, { marginBottom: spacing.md }]}>
+                <Feather
+                  name="smile"
+                  size={18}
+                  color={colors.primary[500]}
+                  style={{ marginRight: spacing.sm }}
+                />
+                <View style={styles.observationContent}>
+                  <Text style={[TextStyles.label, { color: colors.neutral[900], fontWeight: "600" }]}>
+                    Mouth
+                  </Text>
+                  <Text style={[TextStyles.body, { color: colors.neutral[600] }]}>
+                    {result.observations.mouth}
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.tipsContainer}>
+              <Text
+                style={[
+                  TextStyles.h4,
+                  { color: colors.neutral[900], marginBottom: spacing.sm },
+                ]}
               >
-                Based on body language analysis
-              </ThemedText>
+                Recommendations
+              </Text>
+              {result.tips.map((tip, index) => (
+                <View key={index} style={[styles.tipRow, { marginBottom: spacing.sm }]}>
+                  <Text style={[TextStyles.body, { color: colors.primary[500], marginRight: spacing.sm }]}>
+                    •
+                  </Text>
+                  <Text style={[TextStyles.body, { color: colors.neutral[700], flex: 1 }]}>
+                    {tip}
+                  </Text>
+                </View>
+              ))}
             </View>
-            <StatePill state={result.state} />
-          </View>
+          </Card>
+        )}
+      </ScrollView>
 
-          <ThemedText type="body" style={styles.explanation}>
-            {result.explanation}
-          </ThemedText>
-
-          <View style={styles.observationsSection}>
-            <ThemedText type="h4" style={styles.sectionTitle}>
-              Observations
-            </ThemedText>
-
-            <View style={styles.observationItem}>
-              <Feather
-                name="move"
-                size={18}
-                color={colors.primary[500]}
-                style={{ marginRight: Spacing.sm }}
-              />
-              <View style={styles.observationContent}>
-                <ThemedText type="small" style={{ fontWeight: "600" }}>
-                  Tail
-                </ThemedText>
-                <ThemedText type="body" style={{ color: theme.textMuted }}>
-                  {result.observations.tail}
-                </ThemedText>
-              </View>
-            </View>
-
-            <View style={styles.observationItem}>
-              <Feather
-                name="square"
-                size={18}
-                color={colors.primary[500]}
-                style={{ marginRight: Spacing.sm }}
-              />
-              <View style={styles.observationContent}>
-                <ThemedText type="small" style={{ fontWeight: "600" }}>
-                  Body
-                </ThemedText>
-                <ThemedText type="body" style={{ color: theme.textMuted }}>
-                  {result.observations.body}
-                </ThemedText>
-              </View>
-            </View>
-
-            <View style={styles.observationItem}>
-              <Feather
-                name="eye"
-                size={18}
-                color={colors.primary[500]}
-                style={{ marginRight: Spacing.sm }}
-              />
-              <View style={styles.observationContent}>
-                <ThemedText type="small" style={{ fontWeight: "600" }}>
-                  Face
-                </ThemedText>
-                <ThemedText type="body" style={{ color: theme.textMuted }}>
-                  {result.observations.face}
-                </ThemedText>
-              </View>
-            </View>
-
-            <View style={styles.observationItem}>
-              <Feather
-                name="smile"
-                size={18}
-                color={colors.primary[500]}
-                style={{ marginRight: Spacing.sm }}
-              />
-              <View style={styles.observationContent}>
-                <ThemedText type="small" style={{ fontWeight: "600" }}>
-                  Mouth
-                </ThemedText>
-                <ThemedText type="body" style={{ color: theme.textMuted }}>
-                  {result.observations.mouth}
-                </ThemedText>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.tipsContainer}>
-            <ThemedText type="h4" style={styles.tipsTitle}>
-              Recommendations
-            </ThemedText>
-            {result.tips.map((tip, index) => (
-              <View key={index} style={styles.tipRow}>
-                <ThemedText type="body" style={styles.bullet}>
-                  •
-                </ThemedText>
-                <ThemedText type="body" style={styles.tipText}>
-                  {tip}
-                </ThemedText>
-              </View>
-            ))}
-          </View>
-        </ResultCard>
-      ) : null}
-    </ScreenKeyboardAwareScrollView>
+      {/* Action Dialog */}
+      <ActionDialog
+        visible={dialogVisible}
+        onClose={() => setDialogVisible(false)}
+        title="Add Video"
+        options={videoOptions}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  videoSection: {
-    marginTop: Spacing.lg,
-    marginBottom: Spacing.lg,
+  scrollView: {
+    flex: 1,
   },
+  scrollContent: {},
   videoPlaceholder: {
-    height: 220,
+    minHeight: 200,
     borderWidth: 2,
     borderStyle: "dashed",
-    borderRadius: BorderRadius.lg,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: Spacing.lg,
+  },
+  placeholderContent: {
+    alignItems: "center",
   },
   videoContainer: {
     position: "relative",
-    marginTop: Spacing.lg,
-    marginBottom: Spacing.lg,
   },
   videoPreview: {
+    width: '100%',
     height: 250,
-    borderRadius: BorderRadius.lg,
     justifyContent: "center",
     alignItems: "center",
-    overflow: "hidden",
   },
   clearButton: {
     position: "absolute",
-    top: Spacing.md,
-    right: Spacing.md,
+    top: 12,
+    right: 12,
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -498,69 +490,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3,
   },
-  buttonGroup: {
-    flexDirection: "row",
-    gap: Spacing.md,
-  },
-  halfButton: {
-    flex: 1,
-    borderRadius: BorderRadius.md,
-    paddingVertical: Spacing.md,
-    justifyContent: "center",
-  },
-  buttonContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Spacing.sm,
-  },
-  buttonText: {
-    color: colors.primary[500],
-    fontSize: Typography.bodyM.fontSize,
-    fontWeight: "600",
-  },
-  resultCard: {
-    marginTop: Spacing.lg,
-  },
   resultHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: Spacing.lg,
   },
-  explanation: {
-    marginBottom: Spacing.lg,
-  },
-  observationsSection: {
-    marginBottom: Spacing.lg,
-    paddingBottom: Spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(0,0,0,0.1)",
-  },
-  sectionTitle: {
-    marginBottom: Spacing.md,
-  },
+  observationsSection: {},
   observationItem: {
     flexDirection: "row",
-    marginBottom: Spacing.md,
+    alignItems: "flex-start",
   },
   observationContent: {
     flex: 1,
   },
-  tipsContainer: {
-    gap: Spacing.sm,
-  },
-  tipsTitle: {
-    marginBottom: Spacing.md,
-  },
+  tipsContainer: {},
   tipRow: {
     flexDirection: "row",
-    gap: Spacing.sm,
-  },
-  bullet: {
-    width: 16,
-  },
-  tipText: {
-    flex: 1,
+    alignItems: "flex-start",
   },
 });

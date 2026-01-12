@@ -1,31 +1,28 @@
+/**
+ * FoodScannerScreen - Redesigned
+ * Analyze dog food ingredients with AI-powered nutritional assessment
+ */
+
 import React, { useState } from "react";
 import {
   StyleSheet,
   View,
   Image,
   Platform,
-  Pressable,
   Alert,
   Text,
   Linking,
   TextInput,
+  TouchableOpacity,
   ScrollView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { Feather } from "@expo/vector-icons";
-import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Button } from "@/components/Button";
+import { useTheme, CommonStyles, TextStyles } from "@/design-system";
+import { Card, Button } from "@/src/components/redesign";
+import ActionDialog, { ActionOption } from "@/src/components/redesign/ActionDialog";
 import { ScoreBadge } from "@/components/ScoreBadge";
-import { ResultCard } from "@/components/ResultCard";
-import { useTheme as useOldTheme } from "@/hooks/useTheme";
-import { useTheme } from "@/design-system";
-import {
-  Spacing,
-  BorderRadius,
-  Typography,
-} from "@/constants/theme";
 import { analyzeIngredientWithGemini, APIKeyError } from "@/utils/apiClient";
 
 interface FoodAnalysisResult {
@@ -44,22 +41,22 @@ interface FoodAnalysisResult {
   }[];
 }
 
-const getRatingColor = (rating: FoodAnalysisResult["rating"]) => {
+const getRatingColor = (rating: FoodAnalysisResult["rating"], colors: any) => {
   switch (rating) {
     case "Elite":
-      return "#22C55E";
+      return colors.semantic.success;
     case "Excellent":
-      return "#4ADE80";
+      return colors.primary[500];
     case "Good":
-      return "#84CC16";
+      return colors.primary[400];
     case "Fair":
-      return "#EAB308";
+      return colors.semantic.warning;
     case "Borderline":
-      return "#F97316";
+      return colors.semantic.warning;
     case "Poor":
-      return "#EF4444";
+      return colors.semantic.error;
     default:
-      return "#6B7280";
+      return colors.neutral[500];
   }
 };
 
@@ -82,41 +79,14 @@ const getRatingDescription = (rating: FoodAnalysisResult["rating"]) => {
   }
 };
 
-const RECOMMENDED_FOODS = [
-  {
-    name: "Orijen Original Dog Food",
-    reason: "High protein, grain-free, no artificial ingredients",
-    affiliateLink: "https://www.amazon.com/Orijen-Original-Dog-Food/s",
-  },
-  {
-    name: "Acana Heritage Dog Food",
-    reason: "Premium ingredients, limited additives",
-    affiliateLink: "https://www.amazon.com/Acana-Heritage-Dog-Food/s",
-  },
-  {
-    name: "Stella & Chewy's Raw Diet",
-    reason: "Raw, freeze-dried, natural ingredients",
-    affiliateLink: "https://www.amazon.com/Stella-Chewy-Freeze-Dried-Raw/s",
-  },
-  {
-    name: "Merrick Grain-Free Dog Food",
-    reason: "No grains, real meat, no artificial preservatives",
-    affiliateLink: "https://www.amazon.com/Merrick-Grain-Free-Dog-Food/s",
-  },
-  {
-    name: "Primal Raw Dog Food",
-    reason: "USDA certified, raw, balanced nutrition",
-    affiliateLink: "https://www.primalpet.com/products/primal-raw-dog",
-  },
-];
-
 export default function FoodScannerScreen() {
-  const { theme, isDark } = useOldTheme();
-  const { colors } = useTheme();
+  const { colors, spacing, borderRadius } = useTheme();
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<FoodAnalysisResult | null>(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [scanMode, setScanMode] = useState<'barcode' | 'ingredients' | null>(null);
 
   const requestCameraPermission = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -147,7 +117,12 @@ export default function FoodScannerScreen() {
     return true;
   };
 
-  const handleTakePhoto = async () => {
+  const handleScanBarcode = async () => {
+    Alert.alert("Barcode Scanner", "Barcode scanning feature coming soon!");
+    setScanMode('barcode');
+  };
+
+  const handleScanIngredients = async () => {
     const hasPermission = await requestCameraPermission();
     if (!hasPermission) return;
 
@@ -162,28 +137,18 @@ export default function FoodScannerScreen() {
         setPhotoUri(result.assets[0].uri);
         setIngredients("");
         setResult(null);
+        setScanMode('ingredients');
       }
     } catch (error) {
       Alert.alert("Error", "Failed to take photo. Please try again.");
     }
   };
 
-  const handlePickFromLibrary = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 0.8,
-      });
-
-      if (!result.canceled) {
-        setPhotoUri(result.assets[0].uri);
-        setIngredients("");
-        setResult(null);
-      }
-    } catch (error) {
-      Alert.alert("Error", "Failed to pick image. Please try again.");
-    }
+  const handleManualEntry = () => {
+    setScanMode(null);
+    setPhotoUri(null);
+    setResult(null);
+    // Auto-focus on text input would go here
   };
 
   const handleAnalyze = async () => {
@@ -228,6 +193,7 @@ export default function FoodScannerScreen() {
     setPhotoUri(null);
     setIngredients("");
     setResult(null);
+    setScanMode(null);
   };
 
   const handleRecommendationPress = (link: string) => {
@@ -236,344 +202,440 @@ export default function FoodScannerScreen() {
     });
   };
 
+  const foodScannerOptions: ActionOption[] = [
+    {
+      icon: 'maximize',
+      label: 'Scan Barcode',
+      onPress: handleScanBarcode,
+    },
+    {
+      icon: 'camera',
+      label: 'Scan Ingredients',
+      onPress: handleScanIngredients,
+    },
+    {
+      icon: 'edit-3',
+      label: 'Enter Brand and Product',
+      onPress: handleManualEntry,
+    },
+  ];
+
   return (
-    <ScreenKeyboardAwareScrollView>
-      <ThemedText type="body" style={{ color: theme.textMuted }}>
-        Scan your dog food label or manually enter ingredients.
-      </ThemedText>
-
-      {!photoUri ? (
-        <View style={styles.photoSection}>
-          <ThemedView
-            style={[
-              styles.photoPlaceholder,
-              { borderColor: colors.primary[500] },
-            ]}
-          >
-            <Feather
-              name="tag"
-              size={48}
-              color={colors.primary[500]}
-              style={{ marginBottom: Spacing.md }}
-            />
-            <ThemedText type="body" style={{ textAlign: "center" }}>
-              Scan your dog's food label
-            </ThemedText>
-          </ThemedView>
-
-          <View style={styles.buttonGroup}>
-            <Pressable
-              onPress={handleTakePhoto}
-              style={[
-                styles.halfButton,
-                {
-                  backgroundColor: theme.backgroundDefault,
-                  borderColor: colors.primary[500],
-                  borderWidth: 1,
-                },
-              ]}
-            >
-              <View style={styles.buttonContent}>
-                <Feather name="camera" size={18} color={colors.primary[500]} />
-                <Text style={styles.buttonText}>Scan</Text>
-              </View>
-            </Pressable>
-
-            <Pressable
-              onPress={handlePickFromLibrary}
-              style={[
-                styles.halfButton,
-                {
-                  backgroundColor: theme.backgroundDefault,
-                  borderColor: colors.primary[500],
-                  borderWidth: 1,
-                },
-              ]}
-            >
-              <View style={styles.buttonContent}>
-                <Feather name="image" size={18} color={colors.primary[500]} />
-                <Text style={styles.buttonText}>Browse</Text>
-              </View>
-            </Pressable>
-          </View>
-        </View>
-      ) : (
-        <View style={styles.photoContainer}>
-          <Image
-            source={{ uri: photoUri }}
-            style={styles.photoImage}
-            resizeMode="cover"
-          />
-          <Pressable
-            onPress={handleClearPhoto}
-            style={[
-              styles.clearButton,
-              { backgroundColor: colors.primary[500] },
-            ]}
-          >
-            <Feather name="x" size={20} color="white" />
-          </Pressable>
-        </View>
-      )}
-
-      <View style={styles.divider} />
-
-      <View style={styles.inputContainer}>
-        <ThemedText type="small" style={styles.label}>
-          Ingredients {photoUri ? "(Auto-detected)" : "(Manual)"}
-        </ThemedText>
-        <TextInput
-          style={[
-            styles.textInput,
-            {
-              backgroundColor: theme.backgroundDefault,
-              color: theme.text,
-              borderColor: theme.borderLight,
-            },
-          ]}
-          value={ingredients}
-          onChangeText={setIngredients}
-          placeholder="chicken, rice, carrots, chicken broth, salt..."
-          placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
-          multiline
-          numberOfLines={4}
-          textAlignVertical="top"
-        />
-      </View>
-
-      <Button
-        onPress={handleAnalyze}
-        disabled={!photoUri && !ingredients.trim() && !isAnalyzing}
+    <SafeAreaView style={CommonStyles.container} edges={['top']}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { padding: spacing.xl, paddingBottom: spacing['6xl'] },
+        ]}
+        showsVerticalScrollIndicator={false}
       >
-        {isAnalyzing ? "Analyzing..." : "Analyze Ingredients"}
-      </Button>
+        {/* Header */}
+        <Text style={[TextStyles.h1, { color: colors.neutral[900], marginBottom: spacing.md }]}>
+          Food Scanner
+        </Text>
+        <Text style={[TextStyles.body, { color: colors.neutral[600], marginBottom: spacing.xl }]}>
+          Scan your dog food label or manually enter ingredients to analyze nutrition quality.
+        </Text>
 
-      {result ? (
-        <ResultCard style={styles.resultCard}>
-          <View style={styles.resultHeader}>
-            <View style={styles.scoreSection}>
-              <ScoreBadge score={result.score} />
-              <View
-                style={[
-                  styles.ratingBadge,
-                  { backgroundColor: getRatingColor(result.rating) + "20" },
-                ]}
-              >
-                <ThemedText
-                  type="h4"
-                  style={{ color: getRatingColor(result.rating), fontWeight: "700" }}
-                >
-                  {result.rating}
-                </ThemedText>
-              </View>
-              <ThemedText
-                type="small"
-                style={{ color: theme.textMuted, textAlign: "center", marginTop: Spacing.xs }}
-              >
-                {getRatingDescription(result.rating)}
-              </ThemedText>
-            </View>
-          </View>
-
-          <ThemedText type="body" style={styles.summary}>
-            {result.summary}
-          </ThemedText>
-
-          {result.toxins.length > 0 ? (
-            <View
+        {/* Photo Section */}
+        {!photoUri ? (
+          <Card variant="outlined" style={{ marginBottom: spacing.xl }}>
+            <TouchableOpacity
               style={[
-                styles.toxinWarning,
-                { backgroundColor: Colors.light.urgentRed + "20" },
+                styles.photoPlaceholder,
+                {
+                  borderColor: colors.primary[300],
+                  backgroundColor: colors.secondary[100],
+                  borderRadius: borderRadius.lg,
+                  padding: spacing.xl,
+                },
               ]}
+              onPress={() => setDialogVisible(true)}
+              activeOpacity={0.7}
             >
-              <ThemedText
-                type="h4"
-                style={{ color: Colors.light.urgentRed, marginBottom: Spacing.sm }}
-              >
-                Toxic Ingredients Found
-              </ThemedText>
-              {result.toxins.map((toxin, index) => (
-                <ThemedText
-                  key={index}
-                  type="body"
-                  style={{ color: Colors.light.urgentRed, marginBottom: Spacing.xs }}
-                >
-                  • {toxin}
-                </ThemedText>
-              ))}
-            </View>
-          ) : null}
-
-          {result.allergens.length > 0 ? (
-            <View
-              style={[
-                styles.allergenWarning,
-                { backgroundColor: Colors.light.warningYellow + "20" },
-              ]}
-            >
-              <ThemedText
-                type="h4"
-                style={{ color: Colors.light.warningYellow, marginBottom: Spacing.sm }}
-              >
-                Potential Allergens
-              </ThemedText>
-              {result.allergens.map((allergen, index) => (
-                <ThemedText
-                  key={index}
-                  type="body"
-                  style={{ color: Colors.light.warningYellow, marginBottom: Spacing.xs }}
-                >
-                  ⚠ {allergen}
-                </ThemedText>
-              ))}
-            </View>
-          ) : null}
-
-          {result.good.length > 0 ? (
-            <View style={styles.listSection}>
-              <ThemedText
-                type="h4"
-                style={{ color: Colors.light.softGreen, marginBottom: Spacing.sm }}
-              >
-                Positives
-              </ThemedText>
-              {result.good.map((item, index) => (
-                <View key={index} style={styles.listRow}>
-                  <ThemedText type="body" style={styles.bullet}>
-                    +
-                  </ThemedText>
-                  <ThemedText type="body" style={styles.listText}>
-                    {item}
-                  </ThemedText>
-                </View>
-              ))}
-            </View>
-          ) : null}
-
-          {result.bad.length > 0 ? (
-            <View style={styles.listSection}>
-              <ThemedText
-                type="h4"
-                style={{ color: Colors.light.warningYellow, marginBottom: Spacing.sm }}
-              >
-                Concerns
-              </ThemedText>
-              {result.bad.map((item, index) => (
-                <View key={index} style={styles.listRow}>
-                  <ThemedText type="body" style={styles.bullet}>
-                    -
-                  </ThemedText>
-                  <ThemedText type="body" style={styles.listText}>
-                    {item}
-                  </ThemedText>
-                </View>
-              ))}
-            </View>
-          ) : null}
-
-          {result.neither.length > 0 ? (
-            <View style={styles.listSection}>
-              <ThemedText
-                type="h4"
-                style={{ color: theme.textMuted, marginBottom: Spacing.sm }}
-              >
-                Neutral
-              </ThemedText>
-              {result.neither.map((item, index) => (
-                <View key={index} style={styles.listRow}>
-                  <ThemedText type="body" style={styles.bullet}>
-                    •
-                  </ThemedText>
-                  <ThemedText type="body" style={styles.listText}>
-                    {item}
-                  </ThemedText>
-                </View>
-              ))}
-            </View>
-          ) : null}
-
-          {result.recommendations.length > 0 ? (
-            <View style={styles.recommendationSection}>
-              <ThemedText
-                type="h4"
-                style={{ marginBottom: Spacing.md, color: colors.primary[500] }}
-              >
-                Recommended Alternatives
-              </ThemedText>
-              {result.recommendations.map((rec, index) => (
-                <Pressable
-                  key={index}
-                  onPress={() => handleRecommendationPress(rec.affiliateLink)}
+              <View style={styles.placeholderContent}>
+                <Feather
+                  name="tag"
+                  size={48}
+                  color={colors.primary[500]}
+                  style={{ marginBottom: spacing.md }}
+                />
+                <Text
                   style={[
-                    styles.recommendationCard,
-                    { backgroundColor: theme.backgroundDefault },
+                    TextStyles.h4,
+                    { color: colors.neutral[900], textAlign: "center", marginBottom: spacing.sm },
                   ]}
                 >
-                  <View style={styles.recContent}>
-                    <ThemedText type="body" style={{ fontWeight: "600" }}>
-                      {rec.name}
-                    </ThemedText>
-                    <ThemedText
-                      type="body"
-                      style={{ color: theme.textMuted, marginTop: Spacing.xs }}
-                    >
-                      {rec.reason}
-                    </ThemedText>
-                  </View>
-                  <Feather
-                    name="external-link"
-                    size={18}
-                    color={colors.primary[500]}
-                  />
-                </Pressable>
-              ))}
-              <ThemedText
-                type="small"
-                style={{
-                  color: theme.textMuted,
-                  marginTop: Spacing.md,
-                  fontStyle: "italic",
-                }}
+                  Scan Food Label
+                </Text>
+                <Text
+                  style={[
+                    TextStyles.bodySmall,
+                    { color: colors.neutral[600], textAlign: "center" },
+                  ]}
+                >
+                  Tap to scan barcode, ingredients, or enter manually
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </Card>
+        ) : (
+          <Card variant="elevated" style={{ marginBottom: spacing.xl }}>
+            <View style={styles.photoContainer}>
+              <Image
+                source={{ uri: photoUri }}
+                style={[
+                  styles.photoImage,
+                  { borderRadius: borderRadius.lg },
+                ]}
+                resizeMode="cover"
+              />
+              <TouchableOpacity
+                onPress={handleClearPhoto}
+                style={[
+                  styles.clearButton,
+                  { backgroundColor: colors.semantic.error },
+                ]}
               >
-                * Links may contain affiliate partnerships
-              </ThemedText>
+                <Feather name="x" size={20} color="white" />
+              </TouchableOpacity>
             </View>
-          ) : null}
-        </ResultCard>
-      ) : null}
-    </ScreenKeyboardAwareScrollView>
+          </Card>
+        )}
+
+        {/* Ingredients Input */}
+        <Card variant="outlined" style={{ marginBottom: spacing.xl }}>
+          <Text
+            style={[
+              TextStyles.label,
+              { color: colors.neutral[900], marginBottom: spacing.sm, fontWeight: '600' },
+            ]}
+          >
+            Ingredients {photoUri ? "(Auto-detected)" : "(Manual)"}
+          </Text>
+          <TextInput
+            style={[
+              styles.textInput,
+              {
+                backgroundColor: colors.neutral.white,
+                color: colors.neutral[900],
+                borderColor: colors.neutral[300],
+                borderRadius: borderRadius.md,
+                padding: spacing.md,
+              },
+            ]}
+            value={ingredients}
+            onChangeText={setIngredients}
+            placeholder="e.g., chicken, rice, carrots, chicken broth, salt..."
+            placeholderTextColor={colors.neutral[400]}
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+          />
+        </Card>
+
+        {/* Analyze Button */}
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth
+          onPress={handleAnalyze}
+          disabled={(!photoUri && !ingredients.trim()) || isAnalyzing}
+          style={{ marginBottom: spacing.xl }}
+        >
+          {isAnalyzing ? "Analyzing..." : "Analyze Ingredients"}
+        </Button>
+
+        {/* Results */}
+        {result && (
+          <Card variant="elevated">
+            <View style={[styles.resultHeader, { marginBottom: spacing.lg }]}>
+              <View style={styles.scoreSection}>
+                <ScoreBadge score={result.score} />
+                <View
+                  style={[
+                    styles.ratingBadge,
+                    {
+                      backgroundColor: getRatingColor(result.rating, colors),
+                      borderRadius: borderRadius.md,
+                      paddingHorizontal: spacing.md,
+                      paddingVertical: spacing.sm,
+                      marginTop: spacing.sm,
+                    },
+                  ]}
+                >
+                  <Text style={[TextStyles.h4, { color: colors.neutral.white, fontWeight: "700" }]}>
+                    {result.rating}
+                  </Text>
+                </View>
+                <Text
+                  style={[
+                    TextStyles.bodySmall,
+                    { color: colors.neutral[600], textAlign: "center", marginTop: spacing.xs },
+                  ]}
+                >
+                  {getRatingDescription(result.rating)}
+                </Text>
+              </View>
+            </View>
+
+            <Text
+              style={[
+                TextStyles.body,
+                { color: colors.neutral[700], marginBottom: spacing.lg },
+              ]}
+            >
+              {result.summary}
+            </Text>
+
+            {result.toxins.length > 0 && (
+              <View
+                style={[
+                  styles.warningBox,
+                  {
+                    backgroundColor: colors.semantic.error + "20",
+                    borderRadius: borderRadius.md,
+                    padding: spacing.md,
+                    marginBottom: spacing.lg,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    { color: colors.semantic.error, marginBottom: spacing.sm },
+                  ]}
+                >
+                  Toxic Ingredients Found
+                </Text>
+                {result.toxins.map((toxin, index) => (
+                  <Text
+                    key={index}
+                    style={[
+                      TextStyles.body,
+                      { color: colors.semantic.error, marginBottom: spacing.xs },
+                    ]}
+                  >
+                    • {toxin}
+                  </Text>
+                ))}
+              </View>
+            )}
+
+            {result.allergens.length > 0 && (
+              <View
+                style={[
+                  styles.warningBox,
+                  {
+                    backgroundColor: colors.semantic.warning + "20",
+                    borderRadius: borderRadius.md,
+                    padding: spacing.md,
+                    marginBottom: spacing.lg,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    { color: colors.semantic.warning, marginBottom: spacing.sm },
+                  ]}
+                >
+                  Potential Allergens
+                </Text>
+                {result.allergens.map((allergen, index) => (
+                  <Text
+                    key={index}
+                    style={[
+                      TextStyles.body,
+                      { color: colors.semantic.warning, marginBottom: spacing.xs },
+                    ]}
+                  >
+                    ⚠ {allergen}
+                  </Text>
+                ))}
+              </View>
+            )}
+
+            {result.good.length > 0 && (
+              <View style={[styles.listSection, { marginBottom: spacing.lg }]}>
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    { color: colors.semantic.success, marginBottom: spacing.sm },
+                  ]}
+                >
+                  Positives
+                </Text>
+                {result.good.map((item, index) => (
+                  <View key={index} style={[styles.listRow, { marginBottom: spacing.xs }]}>
+                    <Text style={[TextStyles.body, { color: colors.semantic.success, marginRight: spacing.sm, fontWeight: "600" }]}>
+                      +
+                    </Text>
+                    <Text style={[TextStyles.body, { color: colors.neutral[700], flex: 1 }]}>
+                      {item}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {result.bad.length > 0 && (
+              <View style={[styles.listSection, { marginBottom: spacing.lg }]}>
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    { color: colors.semantic.warning, marginBottom: spacing.sm },
+                  ]}
+                >
+                  Concerns
+                </Text>
+                {result.bad.map((item, index) => (
+                  <View key={index} style={[styles.listRow, { marginBottom: spacing.xs }]}>
+                    <Text style={[TextStyles.body, { color: colors.semantic.warning, marginRight: spacing.sm, fontWeight: "600" }]}>
+                      -
+                    </Text>
+                    <Text style={[TextStyles.body, { color: colors.neutral[700], flex: 1 }]}>
+                      {item}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {result.neither.length > 0 && (
+              <View style={[styles.listSection, { marginBottom: spacing.lg }]}>
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    { color: colors.neutral[600], marginBottom: spacing.sm },
+                  ]}
+                >
+                  Neutral
+                </Text>
+                {result.neither.map((item, index) => (
+                  <View key={index} style={[styles.listRow, { marginBottom: spacing.xs }]}>
+                    <Text style={[TextStyles.body, { color: colors.neutral[500], marginRight: spacing.sm }]}>
+                      •
+                    </Text>
+                    <Text style={[TextStyles.body, { color: colors.neutral[700], flex: 1 }]}>
+                      {item}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {result.recommendations.length > 0 && (
+              <View
+                style={[
+                  styles.recommendationSection,
+                  {
+                    marginTop: spacing.lg,
+                    paddingTop: spacing.lg,
+                    borderTopWidth: 1,
+                    borderTopColor: colors.neutral[200],
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    { marginBottom: spacing.md, color: colors.primary[500] },
+                  ]}
+                >
+                  Recommended Alternatives
+                </Text>
+                {result.recommendations.map((rec, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => handleRecommendationPress(rec.affiliateLink)}
+                    style={[
+                      styles.recommendationCard,
+                      {
+                        backgroundColor: colors.secondary[50],
+                        borderRadius: borderRadius.md,
+                        padding: spacing.md,
+                        marginBottom: spacing.md,
+                      },
+                    ]}
+                    activeOpacity={0.7}
+                  >
+                    <View style={styles.recContent}>
+                      <Text style={[TextStyles.h4, { color: colors.neutral[900] }]}>
+                        {rec.name}
+                      </Text>
+                      <Text
+                        style={[
+                          TextStyles.body,
+                          { color: colors.neutral[600], marginTop: spacing.xs },
+                        ]}
+                      >
+                        {rec.reason}
+                      </Text>
+                    </View>
+                    <Feather
+                      name="external-link"
+                      size={18}
+                      color={colors.primary[500]}
+                    />
+                  </TouchableOpacity>
+                ))}
+                <Text
+                  style={[
+                    TextStyles.bodySmall,
+                    {
+                      color: colors.neutral[500],
+                      marginTop: spacing.md,
+                      fontStyle: "italic",
+                    },
+                  ]}
+                >
+                  * Links may contain affiliate partnerships
+                </Text>
+              </View>
+            )}
+          </Card>
+        )}
+      </ScrollView>
+
+      {/* Action Dialog */}
+      <ActionDialog
+        visible={dialogVisible}
+        onClose={() => setDialogVisible(false)}
+        title="Scan Food"
+        options={foodScannerOptions}
+      />
+    </SafeAreaView>
   );
 }
 
-
 const styles = StyleSheet.create({
-  photoSection: {
-    marginTop: Spacing.lg,
-    marginBottom: Spacing.lg,
+  scrollView: {
+    flex: 1,
   },
+  scrollContent: {},
   photoPlaceholder: {
-    height: 220,
+    minHeight: 200,
     borderWidth: 2,
     borderStyle: "dashed",
-    borderRadius: BorderRadius.lg,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: Spacing.lg,
+  },
+  placeholderContent: {
+    alignItems: "center",
   },
   photoContainer: {
     position: "relative",
-    marginTop: Spacing.lg,
-    marginBottom: Spacing.lg,
   },
   photoImage: {
+    width: '100%',
     height: 250,
-    borderRadius: BorderRadius.lg,
-    overflow: "hidden",
   },
   clearButton: {
     position: "absolute",
-    top: Spacing.md,
-    right: Spacing.md,
+    top: 12,
+    right: 12,
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -585,111 +647,29 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3,
   },
-  buttonGroup: {
-    flexDirection: "row",
-    gap: Spacing.md,
-  },
-  halfButton: {
-    flex: 1,
-    borderRadius: BorderRadius.md,
-    paddingVertical: Spacing.md,
-    justifyContent: "center",
-  },
-  buttonContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Spacing.sm,
-  },
-  buttonText: {
-    color: colors.primary[500],
-    fontSize: Typography.bodyM.fontSize,
-    fontWeight: "600",
-  },
-  divider: {
-    height: 1,
-    backgroundColor: "rgba(0,0,0,0.1)",
-    marginVertical: Spacing.lg,
-  },
-  inputContainer: {
-    marginBottom: Spacing.lg,
-  },
-  label: {
-    marginBottom: Spacing.sm,
-    fontWeight: "600",
-  },
   textInput: {
     minHeight: 100,
     borderWidth: 1,
-    borderRadius: BorderRadius.md,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.md,
-    fontSize: Typography.bodyM.fontSize,
-  },
-  resultCard: {
-    marginTop: Spacing.lg,
+    fontSize: 16,
   },
   resultHeader: {
     alignItems: "center",
-    marginBottom: Spacing.lg,
   },
   scoreSection: {
     alignItems: "center",
-    gap: Spacing.sm,
   },
-  scoreLabel: {
-    opacity: 0.7,
-  },
-  ratingBadge: {
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    borderRadius: BorderRadius.md,
-    marginTop: Spacing.sm,
-  },
-  summary: {
-    marginBottom: Spacing.lg,
-  },
-  toxinWarning: {
-    padding: Spacing.md,
-    borderRadius: BorderRadius.md,
-    marginBottom: Spacing.lg,
-  },
-  allergenWarning: {
-    padding: Spacing.md,
-    borderRadius: BorderRadius.md,
-    marginBottom: Spacing.lg,
-  },
-  listSection: {
-    marginBottom: Spacing.md,
-  },
+  ratingBadge: {},
+  warningBox: {},
+  listSection: {},
   listRow: {
     flexDirection: "row",
-    gap: Spacing.sm,
-    marginBottom: Spacing.xs,
+    alignItems: "flex-start",
   },
-  bullet: {
-    width: 16,
-    fontWeight: "600",
-  },
-  listText: {
-    flex: 1,
-  },
-  recommendationSection: {
-    marginTop: Spacing.lg,
-    paddingTop: Spacing.lg,
-    borderTopWidth: 1,
-    borderTopColor: "rgba(0,0,0,0.1)",
-  },
+  recommendationSection: {},
   recommendationCard: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.md,
-    borderRadius: BorderRadius.md,
-    borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.1)",
-    marginBottom: Spacing.md,
   },
   recContent: {
     flex: 1,
