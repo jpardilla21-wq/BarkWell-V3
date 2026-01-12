@@ -4,38 +4,36 @@ import { Feather } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { Platform, StyleSheet } from "react-native";
 import HomeStackNavigator from "@/navigation/HomeStackNavigator";
-import PoopStackNavigator from "@/navigation/PoopStackNavigator";
-import BehaviorStackNavigator from "@/navigation/BehaviorStackNavigator";
+import HistoryStackNavigator from "@/navigation/HistoryStackNavigator";
 import ProfileStackNavigator from "@/navigation/ProfileStackNavigator";
+import SettingsStackNavigator from "@/navigation/SettingsStackNavigator";
 import { useTheme } from "@/hooks/useTheme";
-// New Design System (Phase 2: Uncomment to use new colors)
-// import { useTheme as useDesignTheme } from "@/design-system";
+import { useTheme as useDesignTheme } from "@/design-system";
 
 export type MainTabParamList = {
   HomeTab: undefined;
-  PoopTab: undefined;
-  BehaviorTab: undefined;
+  HistoryTab: undefined;
   ProfileTab: undefined;
+  SettingsTab: undefined;
 };
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 export default function MainTabNavigator() {
   const { theme, isDark } = useTheme();
-  // Phase 2: Uncomment to use new design system colors
-  // const { colors } = useDesignTheme();
+  const { colors } = useDesignTheme();
 
   return (
     <Tab.Navigator
       initialRouteName="HomeTab"
       screenOptions={{
-        tabBarActiveTintColor: theme.tabIconSelected, // Phase 2: Use colors.primary[500]
-        tabBarInactiveTintColor: theme.tabIconDefault, // Phase 2: Use colors.neutral[400]
+        tabBarActiveTintColor: colors.primary[500],
+        tabBarInactiveTintColor: colors.neutral[400],
         tabBarStyle: {
           position: "absolute",
           backgroundColor: Platform.select({
             ios: "transparent",
-            android: theme.backgroundRoot,
+            android: colors.neutral.white,
           }),
           borderTopWidth: 0,
           elevation: 0,
@@ -62,22 +60,12 @@ export default function MainTabNavigator() {
         }}
       />
       <Tab.Screen
-        name="PoopTab"
-        component={PoopStackNavigator}
+        name="HistoryTab"
+        component={HistoryStackNavigator}
         options={{
-          title: "Poop",
+          title: "History",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="target" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="BehaviorTab"
-        component={BehaviorStackNavigator}
-        options={{
-          title: "Behavior",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="activity" size={size} color={color} />
+            <Feather name="clock" size={size} color={color} />
           ),
         }}
       />
@@ -88,6 +76,16 @@ export default function MainTabNavigator() {
           title: "Profile",
           tabBarIcon: ({ color, size }) => (
             <Feather name="user" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="SettingsTab"
+        component={SettingsStackNavigator}
+        options={{
+          title: "Settings",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="settings" size={size} color={color} />
           ),
         }}
       />
