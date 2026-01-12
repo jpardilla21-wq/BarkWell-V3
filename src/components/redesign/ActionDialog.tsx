@@ -1,6 +1,6 @@
 /**
  * ActionDialog Component
- * Modal dialog for camera/photo selection
+ * Flexible modal dialog for action selection
  */
 
 import React from 'react';
@@ -15,22 +15,31 @@ import {
 import { Feather } from '@expo/vector-icons';
 import { useTheme, TextStyles } from '@/design-system';
 
+export interface ActionOption {
+  icon: string;
+  label: string;
+  onPress: () => void;
+}
+
 interface ActionDialogProps {
   visible: boolean;
   onClose: () => void;
   title: string;
-  onCamera: () => void;
-  onGallery: () => void;
+  options: ActionOption[];
 }
 
 export default function ActionDialog({
   visible,
   onClose,
   title,
-  onCamera,
-  onGallery,
+  options,
 }: ActionDialogProps) {
   const { colors, spacing, borderRadius } = useTheme();
+
+  const getBackgroundColor = (index: number) => {
+    // Alternate between light green and light purple
+    return index % 2 === 0 ? colors.secondary[100] : colors.secondary[50];
+  };
 
   return (
     <Modal
@@ -66,87 +75,49 @@ export default function ActionDialog({
               {title}
             </Text>
 
-            {/* Camera Option */}
-            <TouchableOpacity
-              style={[
-                styles.option,
-                {
-                  backgroundColor: colors.secondary[100], // Light green
-                  borderRadius: borderRadius.xl,
-                  padding: spacing.lg,
-                  marginBottom: spacing.md,
-                },
-              ]}
-              onPress={() => {
-                onCamera();
-                onClose();
-              }}
-              activeOpacity={0.7}
-            >
-              <Feather
-                name="camera"
-                size={24}
-                color={colors.neutral[900]}
-                style={{ marginRight: spacing.md }}
-              />
-              <Text
+            {/* Options */}
+            {options.map((option, index) => (
+              <TouchableOpacity
+                key={index}
                 style={[
-                  TextStyles.h4,
+                  styles.option,
                   {
-                    color: colors.neutral[900],
-                    flex: 1,
+                    backgroundColor: getBackgroundColor(index),
+                    borderRadius: borderRadius.xl,
+                    padding: spacing.lg,
+                    marginBottom: index < options.length - 1 ? spacing.md : spacing.lg,
                   },
                 ]}
+                onPress={() => {
+                  option.onPress();
+                  onClose();
+                }}
+                activeOpacity={0.7}
               >
-                Open Camera
-              </Text>
-              <Feather
-                name="chevron-right"
-                size={24}
-                color={colors.neutral[400]}
-              />
-            </TouchableOpacity>
-
-            {/* Gallery Option */}
-            <TouchableOpacity
-              style={[
-                styles.option,
-                {
-                  backgroundColor: colors.secondary[50], // Light purple
-                  borderRadius: borderRadius.xl,
-                  padding: spacing.lg,
-                  marginBottom: spacing.lg,
-                },
-              ]}
-              onPress={() => {
-                onGallery();
-                onClose();
-              }}
-              activeOpacity={0.7}
-            >
-              <Feather
-                name="image"
-                size={24}
-                color={colors.neutral[900]}
-                style={{ marginRight: spacing.md }}
-              />
-              <Text
-                style={[
-                  TextStyles.h4,
-                  {
-                    color: colors.neutral[900],
-                    flex: 1,
-                  },
-                ]}
-              >
-                Select from Photos
-              </Text>
-              <Feather
-                name="chevron-right"
-                size={24}
-                color={colors.neutral[400]}
-              />
-            </TouchableOpacity>
+                <Feather
+                  name={option.icon as any}
+                  size={24}
+                  color={colors.neutral[900]}
+                  style={{ marginRight: spacing.md }}
+                />
+                <Text
+                  style={[
+                    TextStyles.h4,
+                    {
+                      color: colors.neutral[900],
+                      flex: 1,
+                    },
+                  ]}
+                >
+                  {option.label}
+                </Text>
+                <Feather
+                  name="chevron-right"
+                  size={24}
+                  color={colors.neutral[400]}
+                />
+              </TouchableOpacity>
+            ))}
 
             {/* Cancel Button */}
             <TouchableOpacity

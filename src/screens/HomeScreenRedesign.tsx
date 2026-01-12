@@ -20,8 +20,8 @@ import {
   Button,
   PetAvatar,
   ProgressRing,
-  ActionDialog,
 } from '@/src/components/redesign';
+import ActionDialog, { ActionOption } from '@/src/components/redesign/ActionDialog';
 
 // Mock data for pets
 interface Pet {
@@ -65,27 +65,77 @@ export default function HomeScreenRedesign() {
   const navigation = useNavigation();
   const [selectedPetId, setSelectedPetId] = useState<string>(MOCK_PETS[0].id);
   const [dialogVisible, setDialogVisible] = useState(false);
-  const [dialogConfig, setDialogConfig] = useState({ title: '', actionType: '' });
+  const [dialogConfig, setDialogConfig] = useState<{ title: string; options: ActionOption[] }>({
+    title: '',
+    options: [],
+  });
 
   // Get selected pet
   const selectedPet = MOCK_PETS.find((pet) => pet.id === selectedPetId);
 
+  // Get options for different action types
+  const getScanOptions = (): ActionOption[] => [
+    {
+      icon: 'camera',
+      label: 'Open Camera',
+      onPress: () => console.log('Opening camera for scan'),
+    },
+    {
+      icon: 'image',
+      label: 'Select from Photos',
+      onPress: () => console.log('Opening gallery for scan'),
+    },
+  ];
+
+  const getVideoOptions = (): ActionOption[] => [
+    {
+      icon: 'video',
+      label: 'Record Video',
+      onPress: () => console.log('Starting video recording'),
+    },
+    {
+      icon: 'film',
+      label: 'Recorded Video from Photos',
+      onPress: () => console.log('Selecting video from photos'),
+    },
+  ];
+
+  const getFoodScannerOptions = (): ActionOption[] => [
+    {
+      icon: 'maximize',
+      label: 'Scan Barcode',
+      onPress: () => console.log('Opening barcode scanner'),
+    },
+    {
+      icon: 'camera',
+      label: 'Scan Ingredients',
+      onPress: () => console.log('Opening camera to scan ingredients'),
+    },
+    {
+      icon: 'edit-3',
+      label: 'Enter Brand and Product',
+      onPress: () => console.log('Opening manual entry form'),
+    },
+  ];
+
   // Handler for showing action dialog
-  const showActionDialog = (title: string, actionType: string) => {
-    setDialogConfig({ title, actionType });
+  const showActionDialog = (title: string, actionType: 'scan' | 'video' | 'food') => {
+    let options: ActionOption[] = [];
+
+    switch (actionType) {
+      case 'scan':
+        options = getScanOptions();
+        break;
+      case 'video':
+        options = getVideoOptions();
+        break;
+      case 'food':
+        options = getFoodScannerOptions();
+        break;
+    }
+
+    setDialogConfig({ title, options });
     setDialogVisible(true);
-  };
-
-  // Handler for camera action
-  const handleCamera = () => {
-    console.log(`Opening camera for: ${dialogConfig.actionType}`);
-    // TODO: Implement camera functionality
-  };
-
-  // Handler for gallery action
-  const handleGallery = () => {
-    console.log(`Opening gallery for: ${dialogConfig.actionType}`);
-    // TODO: Implement gallery functionality
   };
 
   // Quick action buttons data
@@ -442,13 +492,12 @@ export default function HomeScreenRedesign() {
         </View>
       </ScrollView>
 
-      {/* Action Dialog for Camera/Photo Selection */}
+      {/* Action Dialog for Custom Options */}
       <ActionDialog
         visible={dialogVisible}
         onClose={() => setDialogVisible(false)}
         title={dialogConfig.title}
-        onCamera={handleCamera}
-        onGallery={handleGallery}
+        options={dialogConfig.options}
       />
     </SafeAreaView>
   );
