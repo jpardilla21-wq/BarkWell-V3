@@ -1,13 +1,11 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ProfileScreen from "@/screens/ProfileScreen";
-import HistoryScreen from "@/screens/HistoryScreen";
+import PetProfileScreenRedesign from "@/src/screens/PetProfileScreenRedesign";
 import { useTheme } from "@/hooks/useTheme";
 import { getCommonScreenOptions } from "@/navigation/screenOptions";
 
 export type ProfileStackParamList = {
   Profile: undefined;
-  History: undefined;
 };
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
@@ -19,16 +17,9 @@ export default function ProfileStackNavigator() {
     <Stack.Navigator screenOptions={getCommonScreenOptions({ theme, isDark })}>
       <Stack.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={PetProfileScreenRedesign}
         options={{
-          title: "Profile",
-        }}
-      />
-      <Stack.Screen
-        name="History"
-        component={HistoryScreen}
-        options={{
-          title: "History",
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
