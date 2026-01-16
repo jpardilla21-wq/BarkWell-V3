@@ -8,7 +8,8 @@ type BehaviorState =
   | "Anxious"
   | "Overstimulated"
   | "Defensive"
-  | "Possibly in Pain";
+  | "Possibly in Pain"
+  | "Happy & Engaged";
 
 interface StatePillProps {
   state: BehaviorState;
@@ -26,6 +27,8 @@ const getStateColor = (state: BehaviorState): string => {
       return Colors.light.urgentRed;
     case "Possibly in Pain":
       return Colors.light.urgentRed;
+    case "Happy & Engaged":
+      return Colors.light.softGreen;
     default:
       return Colors.light.primary;
   }
