@@ -182,6 +182,83 @@ export default function BehaviorCheckScreenRedesign() {
     }
   };
 
+  // Dynamic styles that use theme values
+  const dynamicStyles = {
+    headerTitle: {
+      fontSize: typography.h2.fontSize,
+      fontFamily: typography.display.fontFamily,
+      fontWeight: "700" as const,
+      color: colors.neutral[900],
+      marginTop: spacing.md,
+    },
+    headerSubtitle: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[600],
+      textAlign: "center" as const,
+      marginTop: spacing.xs,
+    },
+    placeholderText: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[700],
+      marginTop: spacing.md,
+      textAlign: "center" as const,
+    },
+    placeholderSubtext: {
+      fontSize: typography.bodyS.fontSize,
+      color: colors.neutral[500],
+      marginTop: spacing.xs,
+      textAlign: "center" as const,
+    },
+    videoReadyText: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[700],
+      marginTop: spacing.md,
+    },
+    resultTitle: {
+      fontSize: typography.h3.fontSize,
+      fontWeight: "700" as const,
+      color: colors.neutral[900],
+    },
+    resultSubtext: {
+      fontSize: typography.bodyS.fontSize,
+      color: colors.neutral[500],
+      marginTop: spacing.xs,
+    },
+    stateBadgeText: {
+      fontSize: typography.bodyS.fontSize,
+      fontWeight: "700" as const,
+      color: colors.neutral.white,
+    },
+    resultExplanation: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[700],
+      marginTop: spacing.md,
+      lineHeight: typography.bodyM.lineHeight,
+    },
+    sectionTitle: {
+      fontSize: typography.h4.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+      marginBottom: spacing.md,
+    },
+    observationLabel: {
+      fontSize: typography.bodyS.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+    },
+    observationText: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[600],
+      marginTop: 2,
+    },
+    tipText: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[700],
+      flex: 1,
+      lineHeight: typography.bodyM.lineHeight,
+    },
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.neutral.cream }]} edges={["top"]}>
       <ScrollView
@@ -194,10 +271,10 @@ export default function BehaviorCheckScreenRedesign() {
           <View style={[styles.iconCircle, { backgroundColor: colors.primary[100] }]}>
             <Feather name="activity" size={32} color={colors.primary[500]} />
           </View>
-          <Text style={{ fontSize: typography.h2.fontSize, fontFamily: typography.display.fontFamily, fontWeight: "700", color: colors.neutral[900], marginTop: spacing.md }}>
+          <Text style={dynamicStyles.headerTitle}>
             Behavior Check
           </Text>
-          <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[600], textAlign: "center", marginTop: spacing.xs }}>
+          <Text style={dynamicStyles.headerSubtitle}>
             Record a 30-60 second video of your dog's body language and behavior
           </Text>
         </View>
@@ -207,10 +284,10 @@ export default function BehaviorCheckScreenRedesign() {
           <Card variant="elevated" style={styles.videoCard}>
             <View style={[styles.videoPlaceholder, { borderColor: colors.primary[300] }]}>
               <Feather name="video" size={48} color={colors.primary[500]} />
-              <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[700], marginTop: spacing.md, textAlign: "center" }}>
+              <Text style={dynamicStyles.placeholderText}>
                 Record your dog's behavior
               </Text>
-              <Text style={{ fontSize: typography.bodyS.fontSize, color: colors.neutral[500], marginTop: spacing.xs, textAlign: "center" }}>
+              <Text style={dynamicStyles.placeholderSubtext}>
                 30-60 seconds recommended
               </Text>
             </View>
@@ -240,7 +317,7 @@ export default function BehaviorCheckScreenRedesign() {
           <Card variant="elevated" style={styles.videoCard}>
             <View style={[styles.videoPreview, { backgroundColor: colors.primary[50] }]}>
               <Feather name="check-circle" size={48} color={colors.primary[500]} />
-              <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[700], marginTop: spacing.md }}>
+              <Text style={dynamicStyles.videoReadyText}>
                 Video Ready
               </Text>
             </View>
@@ -270,10 +347,10 @@ export default function BehaviorCheckScreenRedesign() {
           <Card variant="elevated" style={styles.resultCard}>
             <View style={styles.resultHeader}>
               <View>
-                <Text style={{ fontSize: typography.h3.fontSize, fontWeight: "700", color: colors.neutral[900] }}>
+                <Text style={dynamicStyles.resultTitle}>
                   Emotional State
                 </Text>
-                <Text style={{ fontSize: typography.bodyS.fontSize, color: colors.neutral[500], marginTop: spacing.xs }}>
+                <Text style={dynamicStyles.resultSubtext}>
                   Based on body language analysis
                 </Text>
               </View>
@@ -283,20 +360,20 @@ export default function BehaviorCheckScreenRedesign() {
                   { backgroundColor: getStateColor(result.state) }
                 ]}
               >
-                <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "700", color: colors.neutral.white }}>
+                <Text style={dynamicStyles.stateBadgeText}>
                   {result.state}
                 </Text>
               </View>
             </View>
 
-            <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[700], marginTop: spacing.md, lineHeight: typography.bodyM.lineHeight }}>
+            <Text style={dynamicStyles.resultExplanation}>
               {result.explanation}
             </Text>
 
             <View style={[styles.divider, { backgroundColor: colors.neutral[200] }]} />
 
             {/* Observations */}
-            <Text style={{ fontSize: typography.h4.fontSize, fontWeight: "600", color: colors.neutral[900], marginBottom: spacing.md }}>
+            <Text style={dynamicStyles.sectionTitle}>
               Observations
             </Text>
 
@@ -305,10 +382,10 @@ export default function BehaviorCheckScreenRedesign() {
                 <Feather name="move" size={18} color={colors.primary[500]} />
               </View>
               <View style={styles.observationContent}>
-                <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+                <Text style={dynamicStyles.observationLabel}>
                   Tail
                 </Text>
-                <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[600], marginTop: 2 }}>
+                <Text style={dynamicStyles.observationText}>
                   {result.observations.tail}
                 </Text>
               </View>
@@ -319,10 +396,10 @@ export default function BehaviorCheckScreenRedesign() {
                 <Feather name="square" size={18} color={colors.primary[500]} />
               </View>
               <View style={styles.observationContent}>
-                <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+                <Text style={dynamicStyles.observationLabel}>
                   Body
                 </Text>
-                <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[600], marginTop: 2 }}>
+                <Text style={dynamicStyles.observationText}>
                   {result.observations.body}
                 </Text>
               </View>
@@ -333,10 +410,10 @@ export default function BehaviorCheckScreenRedesign() {
                 <Feather name="eye" size={18} color={colors.primary[500]} />
               </View>
               <View style={styles.observationContent}>
-                <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+                <Text style={dynamicStyles.observationLabel}>
                   Face
                 </Text>
-                <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[600], marginTop: 2 }}>
+                <Text style={dynamicStyles.observationText}>
                   {result.observations.face}
                 </Text>
               </View>
@@ -347,10 +424,10 @@ export default function BehaviorCheckScreenRedesign() {
                 <Feather name="smile" size={18} color={colors.primary[500]} />
               </View>
               <View style={styles.observationContent}>
-                <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+                <Text style={dynamicStyles.observationLabel}>
                   Mouth
                 </Text>
-                <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[600], marginTop: 2 }}>
+                <Text style={dynamicStyles.observationText}>
                   {result.observations.mouth}
                 </Text>
               </View>
@@ -359,13 +436,13 @@ export default function BehaviorCheckScreenRedesign() {
             <View style={[styles.divider, { backgroundColor: colors.neutral[200] }]} />
 
             {/* Recommendations */}
-            <Text style={{ fontSize: typography.h4.fontSize, fontWeight: "600", color: colors.neutral[900], marginBottom: spacing.sm }}>
+            <Text style={dynamicStyles.sectionTitle}>
               Recommendations
             </Text>
             {result.tips.map((tip, index) => (
               <View key={index} style={styles.tipRow}>
                 <View style={[styles.bulletPoint, { backgroundColor: colors.primary[500] }]} />
-                <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[700], flex: 1, lineHeight: typography.bodyM.lineHeight }}>
+                <Text style={dynamicStyles.tipText}>
                   {tip}
                 </Text>
               </View>

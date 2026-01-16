@@ -159,6 +159,63 @@ export default function PoopCheckScreenRedesign() {
     }
   };
 
+  // Dynamic styles that use theme values
+  const dynamicStyles = {
+    headerTitle: {
+      fontSize: typography.h2.fontSize,
+      fontFamily: typography.display.fontFamily,
+      fontWeight: "700" as const,
+      color: colors.neutral[900],
+      marginTop: spacing.md,
+    },
+    headerSubtitle: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[600],
+      textAlign: "center" as const,
+      marginTop: spacing.xs,
+    },
+    placeholderText: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[700],
+      marginTop: spacing.md,
+      textAlign: "center" as const,
+    },
+    sectionLabel: {
+      fontSize: typography.bodyS.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+      marginBottom: spacing.sm,
+    },
+    resultTitle: {
+      fontSize: typography.h3.fontSize,
+      fontWeight: "700" as const,
+      color: colors.neutral[900],
+    },
+    riskBadgeText: {
+      fontSize: typography.bodyS.fontSize,
+      fontWeight: "700" as const,
+      color: colors.neutral.white,
+    },
+    resultSummary: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[700],
+      marginTop: spacing.md,
+      lineHeight: typography.bodyM.lineHeight,
+    },
+    recommendationTitle: {
+      fontSize: typography.h4.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+      marginBottom: spacing.sm,
+    },
+    tipText: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[700],
+      flex: 1,
+      lineHeight: typography.bodyM.lineHeight,
+    },
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.neutral.cream }]} edges={["top"]}>
       <ScrollView
@@ -171,10 +228,10 @@ export default function PoopCheckScreenRedesign() {
           <View style={[styles.iconCircle, { backgroundColor: colors.primary[100] }]}>
             <Feather name="target" size={32} color={colors.primary[500]} />
           </View>
-          <Text style={{ fontSize: typography.h2.fontSize, fontFamily: typography.display.fontFamily, fontWeight: "700", color: colors.neutral[900], marginTop: spacing.md }}>
+          <Text style={dynamicStyles.headerTitle}>
             Poop Check
           </Text>
-          <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[600], textAlign: "center", marginTop: spacing.xs }}>
+          <Text style={dynamicStyles.headerSubtitle}>
             Take a photo or describe your dog's stool to get triage advice
           </Text>
         </View>
@@ -184,7 +241,7 @@ export default function PoopCheckScreenRedesign() {
           <Card variant="elevated" style={styles.photoCard}>
             <View style={[styles.photoPlaceholder, { borderColor: colors.primary[300] }]}>
               <Feather name="camera" size={48} color={colors.primary[500]} />
-              <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[700], marginTop: spacing.md, textAlign: "center" }}>
+              <Text style={dynamicStyles.placeholderText}>
                 Take a photo of your dog's poop
               </Text>
             </View>
@@ -230,7 +287,7 @@ export default function PoopCheckScreenRedesign() {
 
         {/* Description Input */}
         <Card variant="flat" style={styles.inputCard}>
-          <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "600", color: colors.neutral[900], marginBottom: spacing.sm }}>
+          <Text style={dynamicStyles.sectionLabel}>
             Additional Notes (Optional)
           </Text>
           <TextInput
@@ -270,7 +327,7 @@ export default function PoopCheckScreenRedesign() {
         {result && (
           <Card variant="elevated" style={styles.resultCard}>
             <View style={styles.resultHeader}>
-              <Text style={{ fontSize: typography.h3.fontSize, fontWeight: "700", color: colors.neutral[900] }}>
+              <Text style={dynamicStyles.resultTitle}>
                 Analysis Result
               </Text>
               <View
@@ -279,25 +336,25 @@ export default function PoopCheckScreenRedesign() {
                   { backgroundColor: getRiskColor(result.riskLevel) }
                 ]}
               >
-                <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "700", color: colors.neutral.white }}>
+                <Text style={dynamicStyles.riskBadgeText}>
                   {result.riskLevel} Risk
                 </Text>
               </View>
             </View>
 
-            <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[700], marginTop: spacing.md, lineHeight: typography.bodyM.lineHeight }}>
+            <Text style={dynamicStyles.resultSummary}>
               {result.summary}
             </Text>
 
             <View style={[styles.divider, { backgroundColor: colors.neutral[200] }]} />
 
-            <Text style={{ fontSize: typography.h4.fontSize, fontWeight: "600", color: colors.neutral[900], marginBottom: spacing.sm }}>
+            <Text style={dynamicStyles.recommendationTitle}>
               Recommendations
             </Text>
             {result.tips.map((tip, index) => (
               <View key={index} style={styles.tipRow}>
                 <View style={[styles.bulletPoint, { backgroundColor: colors.primary[500] }]} />
-                <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[700], flex: 1, lineHeight: typography.bodyM.lineHeight }}>
+                <Text style={dynamicStyles.tipText}>
                   {tip}
                 </Text>
               </View>

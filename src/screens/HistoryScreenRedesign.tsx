@@ -89,6 +89,46 @@ export default function HistoryScreenRedesign() {
     }
   };
 
+  // Dynamic styles that use theme values
+  const dynamicStyles = {
+    headerTitle: {
+      fontSize: typography.h2.fontSize,
+      fontFamily: typography.display.fontFamily,
+      fontWeight: "700" as const,
+      color: colors.neutral[900],
+    },
+    headerSubtitle: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[600],
+      marginTop: spacing.xs,
+    },
+    itemLabel: {
+      fontSize: typography.bodyM.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+    },
+    itemDate: {
+      fontSize: typography.bodyS.fontSize,
+      color: colors.neutral[500],
+    },
+    itemSummary: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[600],
+      marginTop: 4,
+    },
+    emptyTitle: {
+      fontSize: typography.bodyL.fontSize,
+      color: colors.neutral[600],
+      marginTop: spacing.md,
+    },
+    emptySubtitle: {
+      fontSize: typography.bodyM.fontSize,
+      color: colors.neutral[500],
+      marginTop: spacing.xs,
+      textAlign: "center" as const,
+    },
+  };
+
   const renderItem = ({ item }: { item: HistoryItem }) => {
     const iconColor = getColorForType(item.type);
     const iconName = getIconForType(item.type);
@@ -101,14 +141,14 @@ export default function HistoryScreenRedesign() {
         </View>
         <View style={styles.cardContent}>
           <View style={styles.cardHeader}>
-            <Text style={{ fontSize: typography.bodyM.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+            <Text style={dynamicStyles.itemLabel}>
               {label}
             </Text>
-            <Text style={{ fontSize: typography.bodyS.fontSize, color: colors.neutral[500] }}>
+            <Text style={dynamicStyles.itemDate}>
               {item.date}
             </Text>
           </View>
-          <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[600], marginTop: 4 }}>
+          <Text style={dynamicStyles.itemSummary}>
             {item.summary}
           </Text>
         </View>
@@ -119,10 +159,10 @@ export default function HistoryScreenRedesign() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.neutral.cream }]} edges={["top"]}>
       <View style={styles.header}>
-        <Text style={{ fontSize: typography.h2.fontSize, fontFamily: typography.display.fontFamily, fontWeight: "700", color: colors.neutral[900] }}>
+        <Text style={dynamicStyles.headerTitle}>
           History
         </Text>
-        <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[600], marginTop: spacing.xs }}>
+        <Text style={dynamicStyles.headerSubtitle}>
           Your recent scans and checks
         </Text>
       </View>
@@ -138,10 +178,10 @@ export default function HistoryScreenRedesign() {
             <View style={[styles.emptyIcon, { backgroundColor: colors.neutral[200] }]}>
               <Feather name="inbox" size={48} color={colors.neutral[400]} />
             </View>
-            <Text style={{ fontSize: typography.bodyL.fontSize, color: colors.neutral[600], marginTop: spacing.md }}>
+            <Text style={dynamicStyles.emptyTitle}>
               No history yet
             </Text>
-            <Text style={{ fontSize: typography.bodyM.fontSize, color: colors.neutral[500], marginTop: spacing.xs, textAlign: "center" }}>
+            <Text style={dynamicStyles.emptySubtitle}>
               Your scans and checks will appear here
             </Text>
           </View>
