@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, View, Text, FlatList } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -90,7 +90,7 @@ export default function HistoryScreenRedesign() {
   };
 
   // Dynamic styles that use theme values
-  const dynamicStyles = {
+  const dynamicStyles = useMemo(() => ({
     headerTitle: {
       fontSize: typography.h2.fontSize,
       fontFamily: typography.display.fontFamily,
@@ -127,7 +127,7 @@ export default function HistoryScreenRedesign() {
       marginTop: spacing.xs,
       textAlign: "center" as const,
     },
-  };
+  }), [colors, spacing, typography]);
 
   const renderItem = ({ item }: { item: HistoryItem }) => {
     const iconColor = getColorForType(item.type);

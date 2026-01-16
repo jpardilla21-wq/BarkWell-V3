@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   StyleSheet,
   View,
@@ -160,7 +160,7 @@ export default function PoopCheckScreenRedesign() {
   };
 
   // Dynamic styles that use theme values
-  const dynamicStyles = {
+  const dynamicStyles = useMemo(() => ({
     headerTitle: {
       fontSize: typography.h2.fontSize,
       fontFamily: typography.display.fontFamily,
@@ -214,7 +214,7 @@ export default function PoopCheckScreenRedesign() {
       flex: 1,
       lineHeight: typography.bodyM.lineHeight,
     },
-  };
+  }), [colors, spacing, typography]);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.neutral.cream }]} edges={["top"]}>
