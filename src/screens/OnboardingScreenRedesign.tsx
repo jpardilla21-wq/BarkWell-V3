@@ -132,9 +132,32 @@ export default function OnboardingScreenRedesign({
     >
       {/* Hero Section */}
       <View style={styles.heroSection}>
-        <View style={[styles.logoCircle, { backgroundColor: colors.primary[100] }]}>
-          <Feather name="heart" size={48} color={colors.primary[500]} />
+        {/* BarkWell Paw Logo */}
+        <View style={styles.pawLogoContainer}>
+          {/* Background colored dots */}
+          <View style={[styles.pawDot, { top: 0, left: 20, backgroundColor: colors.primary[300] }]} />
+          <View style={[styles.pawDot, { top: 10, right: 10, backgroundColor: colors.primary[400] }]} />
+          <View style={[styles.pawDot, { bottom: 30, left: 10, backgroundColor: colors.accent[300], width: 20, height: 20 }]} />
+          <View style={[styles.pawDot, { bottom: 30, right: 5, backgroundColor: colors.accent[300], width: 20, height: 20 }]} />
+          <View style={[styles.pawDot, { bottom: 0, left: 35, backgroundColor: colors.accent[400], width: 18, height: 18 }]} />
+          <View style={[styles.pawDot, { top: 35, left: 0, backgroundColor: colors.secondary[300], width: 16, height: 16 }]} />
+          <View style={[styles.pawDot, { top: 40, right: 0, backgroundColor: colors.secondary[300], width: 16, height: 16 }]} />
+
+          {/* Main Paw Print */}
+          <View style={[styles.pawPrint, { backgroundColor: colors.neutral[800] }]}>
+            {/* Paw Pad (main oval) */}
+            <View style={[styles.pawPad, { backgroundColor: colors.neutral[800] }]} />
+
+            {/* Toe Pads */}
+            <View style={styles.toePadsContainer}>
+              <View style={[styles.toePad, styles.toePadLeft, { backgroundColor: colors.neutral[800] }]} />
+              <View style={[styles.toePad, styles.toePadCenterLeft, { backgroundColor: colors.neutral[800] }]} />
+              <View style={[styles.toePad, styles.toePadCenterRight, { backgroundColor: colors.neutral[800] }]} />
+              <View style={[styles.toePad, styles.toePadRight, { backgroundColor: colors.neutral[800] }]} />
+            </View>
+          </View>
         </View>
+
         <Text
           style={{
             fontSize: typography.h1.fontSize,
@@ -612,6 +635,61 @@ const styles = StyleSheet.create({
     borderRadius: 48,
     alignItems: "center",
     justifyContent: "center",
+  },
+  pawLogoContainer: {
+    width: 120,
+    height: 120,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+  },
+  pawDot: {
+    position: "absolute",
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+  },
+  pawPrint: {
+    width: 70,
+    height: 70,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    position: "relative",
+  },
+  pawPad: {
+    width: 32,
+    height: 38,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    borderBottomLeftRadius: 22,
+    borderBottomRightRadius: 22,
+    position: "absolute",
+    bottom: 0,
+  },
+  toePadsContainer: {
+    flexDirection: "row",
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    justifyContent: "space-around",
+    paddingHorizontal: 4,
+  },
+  toePad: {
+    width: 12,
+    height: 16,
+    borderRadius: 8,
+  },
+  toePadLeft: {
+    transform: [{ rotate: "-15deg" }],
+  },
+  toePadCenterLeft: {
+    marginTop: -4,
+  },
+  toePadCenterRight: {
+    marginTop: -4,
+  },
+  toePadRight: {
+    transform: [{ rotate: "15deg" }],
   },
   loginButtons: {
     marginTop: 40,

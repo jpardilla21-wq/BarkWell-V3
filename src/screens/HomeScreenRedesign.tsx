@@ -231,73 +231,221 @@ export default function HomeScreenRedesign() {
         </View>
 
         {/* Quick Actions */}
-        <View
-          style={[
-            styles.quickActions,
-            {
-              paddingHorizontal: spacing.lg,
-              marginBottom: spacing['2xl'],
-            },
-          ]}
-        >
-          {/* Scan Button */}
-          <TouchableOpacity
-            onPress={handleScan}
+        <View style={{ marginBottom: spacing['2xl'] }}>
+          <Text
             style={[
-              styles.actionCard,
+              TextStyles.h3,
               {
-                backgroundColor: colors.primary[100],
-                borderRadius: borderRadius.xl,
-                padding: spacing.lg,
-                minHeight: 100,
-                flex: 1,
-                marginRight: spacing.md,
+                paddingHorizontal: spacing.lg,
+                marginBottom: spacing.md,
               },
             ]}
-            activeOpacity={0.7}
           >
-            <Text style={styles.actionEmoji}>📷</Text>
-            <Text
+            Quick Actions
+          </Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ paddingHorizontal: spacing.lg }}
+          >
+            {/* Poop Check */}
+            <TouchableOpacity
+              onPress={() => console.log('Poop Check')}
               style={[
-                TextStyles.label,
+                styles.quickActionButton,
                 {
-                  color: colors.primary[700],
-                  marginTop: spacing.sm,
+                  backgroundColor: colors.accent[500],
+                  borderRadius: borderRadius.lg,
+                  padding: spacing.lg,
+                  marginRight: spacing.md,
+                  minWidth: 140,
                 },
               ]}
+              activeOpacity={0.8}
             >
-              Scan my pet
-            </Text>
-          </TouchableOpacity>
+              <View
+                style={[
+                  styles.quickActionIcon,
+                  {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderRadius: borderRadius.md,
+                    padding: spacing.sm,
+                    marginBottom: spacing.sm,
+                  },
+                ]}
+              >
+                <Feather name="target" size={24} color={colors.neutral.white} />
+              </View>
+              <Text style={[TextStyles.label, { color: colors.neutral.white }]}>
+                Poop Check
+              </Text>
+            </TouchableOpacity>
 
-          {/* Appointment Button */}
-          <TouchableOpacity
-            onPress={handleAppointment}
-            style={[
-              styles.actionCard,
-              {
-                backgroundColor: colors.secondary[50],
-                borderRadius: borderRadius.xl,
-                padding: spacing.lg,
-                minHeight: 100,
-                flex: 1,
-              },
-            ]}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.actionEmoji}>📅</Text>
-            <Text
+            {/* Behavior Check */}
+            <TouchableOpacity
+              onPress={() => console.log('Behavior Check')}
               style={[
-                TextStyles.label,
+                styles.quickActionButton,
                 {
-                  color: colors.secondary[700],
-                  marginTop: spacing.sm,
+                  backgroundColor: colors.primary[500],
+                  borderRadius: borderRadius.lg,
+                  padding: spacing.lg,
+                  marginRight: spacing.md,
+                  minWidth: 140,
                 },
               ]}
+              activeOpacity={0.8}
             >
-              Add appointment
-            </Text>
-          </TouchableOpacity>
+              <View
+                style={[
+                  styles.quickActionIcon,
+                  {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderRadius: borderRadius.md,
+                    padding: spacing.sm,
+                    marginBottom: spacing.sm,
+                  },
+                ]}
+              >
+                <Feather name="activity" size={24} color={colors.neutral.white} />
+              </View>
+              <Text style={[TextStyles.label, { color: colors.neutral.white }]}>
+                Behavior Check
+              </Text>
+            </TouchableOpacity>
+
+            {/* Food Scanner */}
+            <TouchableOpacity
+              onPress={() => console.log('Food Scanner')}
+              style={[
+                styles.quickActionButton,
+                {
+                  backgroundColor: colors.secondary[500],
+                  borderRadius: borderRadius.lg,
+                  padding: spacing.lg,
+                  marginRight: spacing.md,
+                  minWidth: 140,
+                },
+              ]}
+              activeOpacity={0.8}
+            >
+              <View
+                style={[
+                  styles.quickActionIcon,
+                  {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderRadius: borderRadius.md,
+                    padding: spacing.sm,
+                    marginBottom: spacing.sm,
+                  },
+                ]}
+              >
+                <Feather name="search" size={24} color={colors.neutral.white} />
+              </View>
+              <Text style={[TextStyles.label, { color: colors.neutral.white }]}>
+                Food Scanner
+              </Text>
+            </TouchableOpacity>
+
+            {/* Add Appointment */}
+            <TouchableOpacity
+              onPress={handleAppointment}
+              style={[
+                styles.quickActionButton,
+                {
+                  backgroundColor: colors.status.excellent,
+                  borderRadius: borderRadius.lg,
+                  padding: spacing.lg,
+                  marginRight: spacing.md,
+                  minWidth: 140,
+                },
+              ]}
+              activeOpacity={0.8}
+            >
+              <View
+                style={[
+                  styles.quickActionIcon,
+                  {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderRadius: borderRadius.md,
+                    padding: spacing.sm,
+                    marginBottom: spacing.sm,
+                  },
+                ]}
+              >
+                <Feather name="calendar" size={24} color={colors.neutral.white} />
+              </View>
+              <Text style={[TextStyles.label, { color: colors.neutral.white }]}>
+                Appointment
+              </Text>
+            </TouchableOpacity>
+
+            {/* Weekly Snapshot */}
+            <TouchableOpacity
+              onPress={() => console.log('Weekly Snapshot')}
+              style={[
+                styles.quickActionButton,
+                {
+                  backgroundColor: colors.primary[700],
+                  borderRadius: borderRadius.lg,
+                  padding: spacing.lg,
+                  marginRight: spacing.md,
+                  minWidth: 140,
+                },
+              ]}
+              activeOpacity={0.8}
+            >
+              <View
+                style={[
+                  styles.quickActionIcon,
+                  {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderRadius: borderRadius.md,
+                    padding: spacing.sm,
+                    marginBottom: spacing.sm,
+                  },
+                ]}
+              >
+                <Feather name="trending-up" size={24} color={colors.neutral.white} />
+              </View>
+              <Text style={[TextStyles.label, { color: colors.neutral.white }]}>
+                Weekly Snapshot
+              </Text>
+            </TouchableOpacity>
+
+            {/* History */}
+            <TouchableOpacity
+              onPress={() => console.log('History')}
+              style={[
+                styles.quickActionButton,
+                {
+                  backgroundColor: colors.neutral[700],
+                  borderRadius: borderRadius.lg,
+                  padding: spacing.lg,
+                  marginRight: spacing.lg,
+                  minWidth: 140,
+                },
+              ]}
+              activeOpacity={0.8}
+            >
+              <View
+                style={[
+                  styles.quickActionIcon,
+                  {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderRadius: borderRadius.md,
+                    padding: spacing.sm,
+                    marginBottom: spacing.sm,
+                  },
+                ]}
+              >
+                <Feather name="clock" size={24} color={colors.neutral.white} />
+              </View>
+              <Text style={[TextStyles.label, { color: colors.neutral.white }]}>
+                History
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
 
         {/* Latest Scan Section */}
@@ -432,6 +580,13 @@ const styles = StyleSheet.create({
   },
   actionEmoji: {
     fontSize: 32,
+  },
+  quickActionButton: {
+    alignItems: 'flex-start',
+  },
+  quickActionIcon: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   sectionHeader: {
     flexDirection: 'row',
