@@ -211,7 +211,6 @@ const POPULAR_BREEDS = [
   "Smooth Coat Chihuahua",
   "Smooth Collie",
   "Smooth Fox Terrier",
-  "Soft Coated Wheaten Terrier",
   "Spaniel",
   "Spanish Mastiff",
   "Spanish Pointer",
@@ -330,7 +329,7 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
         >
           {filteredBreeds.map((breed, index) => (
             <Pressable
-              key={breed}
+              key={`${breed}-${index}`}
               onPress={() => handleSelectBreed(breed)}
               style={[
                 styles.option,
