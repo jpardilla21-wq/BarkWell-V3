@@ -16,7 +16,6 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
-          navigation.replace("Onboarding");
           return 100;
         }
         return prev + Math.random() * 30;
@@ -24,7 +23,13 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
     }, 300);
 
     return () => clearInterval(interval);
-  }, [navigation]);
+  }, []);
+
+  useEffect(() => {
+    if (progress >= 100) {
+      navigation.replace("Onboarding");
+    }
+  }, [progress, navigation]);
 
   return (
     <View style={styles.container}>
