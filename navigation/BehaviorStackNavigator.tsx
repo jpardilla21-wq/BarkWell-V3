@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import BehaviorCheckScreen from "@/screens/BehaviorCheckScreen";
+// import BehaviorCheckScreen from "@/screens/BehaviorCheckScreen"; // Old screen
+import BehaviorCheckScreenRedesign from "@/src/screens/BehaviorCheckScreenRedesign"; // New redesigned screen
 import { useTheme } from "@/hooks/useTheme";
 import { getCommonScreenOptions } from "@/navigation/screenOptions";
 
@@ -17,9 +18,9 @@ export default function BehaviorStackNavigator() {
     <Stack.Navigator screenOptions={getCommonScreenOptions({ theme, isDark })}>
       <Stack.Screen
         name="BehaviorCheck"
-        component={BehaviorCheckScreen}
+        component={BehaviorCheckScreenRedesign}
         options={{
-          title: "Behavior Check",
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

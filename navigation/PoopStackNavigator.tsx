@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import PoopCheckScreen from "@/screens/PoopCheckScreen";
+// import PoopCheckScreen from "@/screens/PoopCheckScreen"; // Old screen
+import PoopCheckScreenRedesign from "@/src/screens/PoopCheckScreenRedesign"; // New redesigned screen
 import { useTheme } from "@/hooks/useTheme";
 import { getCommonScreenOptions } from "@/navigation/screenOptions";
 
@@ -17,9 +18,9 @@ export default function PoopStackNavigator() {
     <Stack.Navigator screenOptions={getCommonScreenOptions({ theme, isDark })}>
       <Stack.Screen
         name="PoopCheck"
-        component={PoopCheckScreen}
+        component={PoopCheckScreenRedesign}
         options={{
-          title: "Poop Check",
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
