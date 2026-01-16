@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "@/screens/HomeScreen";
+// import HomeScreen from "@/screens/HomeScreen"; // Old screen
+import HomeScreenRedesign from "@/src/screens/HomeScreenRedesign"; // New redesigned screen
 import FoodScannerScreen from "@/screens/FoodScannerScreen";
 import AddDogScreen from "@/screens/AddDogScreen";
 import WeeklySnapshotScreen from "@/screens/WeeklySnapshotScreen";
@@ -28,7 +29,7 @@ export default function HomeStackNavigator() {
     >
       <Stack.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeScreenRedesign}
         options={{
           headerShown: false,
         }}

@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ProfileScreen from "@/screens/ProfileScreen";
+// import ProfileScreen from "@/screens/ProfileScreen"; // Old screen
+import PetProfileScreenRedesign from "@/src/screens/PetProfileScreenRedesign"; // New redesigned screen
 import HistoryScreen from "@/screens/HistoryScreen";
 import { useTheme } from "@/hooks/useTheme";
 import { getCommonScreenOptions } from "@/navigation/screenOptions";
@@ -19,9 +20,9 @@ export default function ProfileStackNavigator() {
     <Stack.Navigator screenOptions={getCommonScreenOptions({ theme, isDark })}>
       <Stack.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={PetProfileScreenRedesign}
         options={{
-          title: "Profile",
+          headerShown: false,
         }}
       />
       <Stack.Screen

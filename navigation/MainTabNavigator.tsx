@@ -8,6 +8,7 @@ import PoopStackNavigator from "@/navigation/PoopStackNavigator";
 import BehaviorStackNavigator from "@/navigation/BehaviorStackNavigator";
 import ProfileStackNavigator from "@/navigation/ProfileStackNavigator";
 import { useTheme } from "@/hooks/useTheme";
+import { useTheme as useDesignTheme } from "@/src/design-system";
 
 export type MainTabParamList = {
   HomeTab: undefined;
@@ -20,18 +21,19 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 
 export default function MainTabNavigator() {
   const { theme, isDark } = useTheme();
+  const { colors } = useDesignTheme();
 
   return (
     <Tab.Navigator
       initialRouteName="HomeTab"
       screenOptions={{
-        tabBarActiveTintColor: theme.tabIconSelected,
-        tabBarInactiveTintColor: theme.tabIconDefault,
+        tabBarActiveTintColor: colors.primary[500],
+        tabBarInactiveTintColor: colors.neutral[400],
         tabBarStyle: {
           position: "absolute",
           backgroundColor: Platform.select({
             ios: "transparent",
-            android: theme.backgroundRoot,
+            android: colors.neutral.white,
           }),
           borderTopWidth: 0,
           elevation: 0,
