@@ -1,7 +1,8 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SplashScreen from "@/screens/SplashScreen";
-import OnboardingScreen from "@/screens/OnboardingScreen";
+// import OnboardingScreen from "@/screens/OnboardingScreen"; // Old onboarding
+import OnboardingScreenRedesign from "@/src/screens/OnboardingScreenRedesign"; // New redesigned onboarding
 import SubscriptionScreen from "@/screens/SubscriptionScreen";
 import MainTabNavigator from "@/navigation/MainTabNavigator";
 
@@ -24,7 +25,7 @@ export default function RootNavigator() {
       }}
     >
       <Stack.Screen name="Splash" component={SplashScreen} />
-      <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+      <Stack.Screen name="Onboarding" component={OnboardingScreenRedesign} />
       <Stack.Screen name="Subscription" component={SubscriptionScreen} />
       <Stack.Screen name="MainTabs" component={MainTabNavigator} />
     </Stack.Navigator>
