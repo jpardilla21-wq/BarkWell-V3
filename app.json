@@ -1,16 +1,16 @@
 {
   "expo": {
-    "name": "PupSense",
-    "slug": "pupsense",
+    "name": "BarkWell",
+    "slug": "barkwell",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/pupsense-logo.png",
-    "scheme": "pupsense",
+    "scheme": "barkwell",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.pupsense.app"
+      "bundleIdentifier": "com.barkwell.app"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,7 +21,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.pupsense.app"
+      "package": "com.barkwell.app"
     },
     "web": {
       "output": "single",
@@ -40,7 +40,15 @@
           }
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-auth-session/google",
+        {
+          "clientId": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+          "iosClientId": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+          "androidClientId": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+        }
+      ]
     ],
     "experiments": {
       "reactCompiler": true
