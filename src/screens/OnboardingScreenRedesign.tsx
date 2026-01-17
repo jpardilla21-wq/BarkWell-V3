@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   StyleSheet,
   View,
@@ -48,6 +48,127 @@ export default function OnboardingScreenRedesign({
   });
   const [dogs, setDogs] = useState<DogProfile[]>([createEmptyDog()]);
   const [selectedPlan, setSelectedPlan] = useState<"monthly" | "yearly">("yearly");
+
+  // Dynamic styles that use theme values
+  const dynamicStyles = useMemo(() => ({
+    welcomeTitle: {
+      fontSize: typography.h1.fontSize,
+      fontFamily: typography.display.fontFamily,
+      fontWeight: "700" as const,
+      color: colors.neutral[900],
+      textAlign: "center" as const,
+      marginTop: spacing.lg,
+    },
+    welcomeSubtitle: {
+      fontSize: typography.bodyL.fontSize,
+      color: colors.neutral[600],
+      textAlign: "center" as const,
+      marginTop: spacing.sm,
+      paddingHorizontal: spacing.xl,
+    },
+    orText: {
+      fontSize: typography.bodyS.fontSize,
+      color: colors.neutral[500],
+      paddingHorizontal: spacing.md,
+    },
+    termsText: {
+      fontSize: typography.bodyS.fontSize,
+      color: colors.neutral[500],
+      textAlign: "center" as const,
+      marginTop: spacing.xl,
+      paddingHorizontal: spacing.xl,
+    },
+    formTitle: {
+      fontSize: typography.h2.fontSize,
+      fontFamily: typography.display.fontFamily,
+      fontWeight: "700" as const,
+      color: colors.neutral[900],
+    },
+    sectionTitle: {
+      fontSize: typography.h4.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+      marginBottom: spacing.md,
+    },
+    inputLabel: {
+      fontSize: typography.bodyS.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[700],
+      marginBottom: spacing.xs,
+    },
+    dogNumber: {
+      fontSize: typography.bodyM.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+    },
+    photoButtonText: {
+      fontSize: typography.bodyS.fontSize,
+      color: colors.neutral[600],
+      marginTop: spacing.xs,
+    },
+    pricingTitle: {
+      fontSize: typography.h2.fontSize,
+      fontFamily: typography.display.fontFamily,
+      fontWeight: "700" as const,
+      color: colors.neutral[900],
+      textAlign: "center" as const,
+    },
+    timelineTitle: {
+      fontSize: typography.bodyM.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+    },
+    timelineText: {
+      fontSize: typography.bodyS.fontSize,
+      color: colors.neutral[600],
+    },
+    planSectionTitle: {
+      fontSize: typography.h4.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+      marginTop: spacing.lg,
+      marginBottom: spacing.md,
+    },
+    planName: {
+      fontSize: typography.bodyM.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+    },
+    planPrice: {
+      fontSize: typography.h3.fontSize,
+      fontWeight: "700" as const,
+      color: colors.neutral[900],
+      marginTop: spacing.xs,
+    },
+    planPeriod: {
+      fontSize: typography.bodyM.fontSize,
+      fontWeight: "400" as const,
+      color: colors.neutral[600],
+    },
+    planSavings: {
+      fontSize: typography.bodyS.fontSize,
+      color: colors.status.excellent,
+      marginTop: 4,
+    },
+    badgeText: {
+      fontSize: typography.bodyXS.fontSize,
+      fontWeight: "700" as const,
+      color: colors.neutral.white,
+    },
+    noPaymentText: {
+      fontSize: typography.bodyM.fontSize,
+      fontWeight: "600" as const,
+      color: colors.neutral[900],
+      marginLeft: spacing.sm,
+    },
+    legalText: {
+      fontSize: typography.bodyXS.fontSize,
+      color: colors.neutral[500],
+      textAlign: "center" as const,
+      marginTop: spacing.md,
+      paddingHorizontal: spacing.lg,
+    },
+  }), [colors, spacing, typography]);
 
   // Step 1: Social Login
   const handleGoogleLogin = () => {
@@ -158,27 +279,10 @@ export default function OnboardingScreenRedesign({
           </View>
         </View>
 
-        <Text
-          style={{
-            fontSize: typography.h1.fontSize,
-            fontFamily: typography.display.fontFamily,
-            fontWeight: "700",
-            color: colors.neutral[900],
-            textAlign: "center",
-            marginTop: spacing.lg,
-          }}
-        >
+        <Text style={dynamicStyles.welcomeTitle}>
           Welcome to BarkWell
         </Text>
-        <Text
-          style={{
-            fontSize: typography.bodyL.fontSize,
-            color: colors.neutral[600],
-            textAlign: "center",
-            marginTop: spacing.sm,
-            paddingHorizontal: spacing.xl,
-          }}
-        >
+        <Text style={dynamicStyles.welcomeSubtitle}>
           AI-powered wellness for your furry friends
         </Text>
       </View>
@@ -209,7 +313,7 @@ export default function OnboardingScreenRedesign({
 
         <View style={styles.divider}>
           <View style={[styles.dividerLine, { backgroundColor: colors.neutral[300] }]} />
-          <Text style={{ fontSize: typography.bodyS.fontSize, color: colors.neutral[500], paddingHorizontal: spacing.md }}>
+          <Text style={dynamicStyles.orText}>
             or
           </Text>
           <View style={[styles.dividerLine, { backgroundColor: colors.neutral[300] }]} />
@@ -221,15 +325,7 @@ export default function OnboardingScreenRedesign({
       </View>
 
       {/* Terms */}
-      <Text
-        style={{
-          fontSize: typography.bodyS.fontSize,
-          color: colors.neutral[500],
-          textAlign: "center",
-          marginTop: spacing.xl,
-          paddingHorizontal: spacing.xl,
-        }}
-      >
+      <Text style={dynamicStyles.termsText}>
         By continuing, you agree to our Terms of Service and Privacy Policy
       </Text>
     </ScrollView>
@@ -245,25 +341,18 @@ export default function OnboardingScreenRedesign({
         <Pressable onPress={() => setStep("login")} style={styles.backButton}>
           <Feather name="arrow-left" size={24} color={colors.neutral[900]} />
         </Pressable>
-        <Text
-          style={{
-            fontSize: typography.h2.fontSize,
-            fontFamily: typography.display.fontFamily,
-            fontWeight: "700",
-            color: colors.neutral[900],
-          }}
-        >
+        <Text style={dynamicStyles.formTitle}>
           Create Your Profile
         </Text>
       </View>
 
       {/* Owner Info */}
       <Card variant="flat" style={styles.section}>
-        <Text style={{ fontSize: typography.h4.fontSize, fontWeight: "600", color: colors.neutral[900], marginBottom: spacing.md }}>
+        <Text style={dynamicStyles.sectionTitle}>
           About You
         </Text>
         <View style={styles.inputGroup}>
-          <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "600", color: colors.neutral[700], marginBottom: spacing.xs }}>
+          <Text style={dynamicStyles.inputLabel}>
             Your Name
           </Text>
           <TextInput
@@ -285,7 +374,7 @@ export default function OnboardingScreenRedesign({
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "600", color: colors.neutral[700], marginBottom: spacing.xs }}>
+          <Text style={dynamicStyles.inputLabel}>
             Email Address
           </Text>
           <TextInput
@@ -310,14 +399,14 @@ export default function OnboardingScreenRedesign({
       </Card>
 
       {/* Dog Profiles */}
-      <Text style={{ fontSize: typography.h4.fontSize, fontWeight: "600", color: colors.neutral[900], marginBottom: spacing.md }}>
+      <Text style={dynamicStyles.sectionTitle}>
         Your Dogs
       </Text>
 
       {dogs.map((dog, index) => (
         <Card key={dog.id} variant="elevated" style={styles.dogCard}>
           <View style={styles.dogCardHeader}>
-            <Text style={{ fontSize: typography.bodyM.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+            <Text style={dynamicStyles.dogNumber}>
               Dog {index + 1}
             </Text>
             {dogs.length > 1 && (
@@ -337,7 +426,7 @@ export default function OnboardingScreenRedesign({
             ) : (
               <>
                 <Feather name="camera" size={32} color={colors.primary[500]} />
-                <Text style={{ fontSize: typography.bodyS.fontSize, color: colors.neutral[600], marginTop: spacing.xs }}>
+                <Text style={dynamicStyles.photoButtonText}>
                   Add Photo
                 </Text>
               </>
@@ -346,7 +435,7 @@ export default function OnboardingScreenRedesign({
 
           {/* Name */}
           <View style={styles.inputGroup}>
-            <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "600", color: colors.neutral[700], marginBottom: spacing.xs }}>
+            <Text style={dynamicStyles.inputLabel}>
               Name
             </Text>
             <TextInput
@@ -369,7 +458,7 @@ export default function OnboardingScreenRedesign({
 
           {/* Breed */}
           <View style={styles.inputGroup}>
-            <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "600", color: colors.neutral[700], marginBottom: spacing.xs }}>
+            <Text style={dynamicStyles.inputLabel}>
               Breed
             </Text>
             <DogBreedDropdown
@@ -380,7 +469,7 @@ export default function OnboardingScreenRedesign({
 
           {/* Age */}
           <View style={styles.inputGroup}>
-            <Text style={{ fontSize: typography.bodyS.fontSize, fontWeight: "600", color: colors.neutral[700], marginBottom: spacing.xs }}>
+            <Text style={dynamicStyles.inputLabel}>
               Age (years)
             </Text>
             <TextInput
@@ -430,15 +519,7 @@ export default function OnboardingScreenRedesign({
         <Pressable onPress={() => setStep("form")} style={styles.backButton}>
           <Feather name="arrow-left" size={24} color={colors.neutral[900]} />
         </Pressable>
-        <Text
-          style={{
-            fontSize: typography.h2.fontSize,
-            fontFamily: typography.display.fontFamily,
-            fontWeight: "700",
-            color: colors.neutral[900],
-            textAlign: "center",
-          }}
-        >
+        <Text style={dynamicStyles.pricingTitle}>
           Start your 3-day FREE trial
         </Text>
       </View>
@@ -450,10 +531,10 @@ export default function OnboardingScreenRedesign({
             <Feather name="unlock" size={16} color={colors.neutral.white} />
           </View>
           <View style={styles.timelineContent}>
-            <Text style={{ fontSize: typography.bodyM.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+            <Text style={dynamicStyles.timelineTitle}>
               Today
             </Text>
-            <Text style={{ fontSize: typography.bodyS.fontSize, color: colors.neutral[600] }}>
+            <Text style={dynamicStyles.timelineText}>
               Unlock all features including AI scanning and health tracking
             </Text>
           </View>
@@ -466,10 +547,10 @@ export default function OnboardingScreenRedesign({
             <Feather name="bell" size={16} color={colors.neutral.white} />
           </View>
           <View style={styles.timelineContent}>
-            <Text style={{ fontSize: typography.bodyM.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+            <Text style={dynamicStyles.timelineTitle}>
               In 2 Days - Reminder
             </Text>
-            <Text style={{ fontSize: typography.bodyS.fontSize, color: colors.neutral[600] }}>
+            <Text style={dynamicStyles.timelineText}>
               We'll send you a reminder that your trial is ending soon
             </Text>
           </View>
@@ -482,10 +563,10 @@ export default function OnboardingScreenRedesign({
             <Feather name="credit-card" size={16} color={colors.neutral.white} />
           </View>
           <View style={styles.timelineContent}>
-            <Text style={{ fontSize: typography.bodyM.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+            <Text style={dynamicStyles.timelineTitle}>
               In 3 Days - Billing Starts
             </Text>
-            <Text style={{ fontSize: typography.bodyS.fontSize, color: colors.neutral[600] }}>
+            <Text style={dynamicStyles.timelineText}>
               You'll be charged unless you cancel anytime before
             </Text>
           </View>
@@ -493,7 +574,7 @@ export default function OnboardingScreenRedesign({
       </Card>
 
       {/* Pricing Plans */}
-      <Text style={{ fontSize: typography.h4.fontSize, fontWeight: "600", color: colors.neutral[900], marginTop: spacing.lg, marginBottom: spacing.md }}>
+      <Text style={dynamicStyles.planSectionTitle}>
         Choose Your Plan
       </Text>
 
@@ -507,11 +588,11 @@ export default function OnboardingScreenRedesign({
         >
           <View style={styles.pricingHeader}>
             <View>
-              <Text style={{ fontSize: typography.bodyM.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+              <Text style={dynamicStyles.planName}>
                 Monthly
               </Text>
-              <Text style={{ fontSize: typography.h3.fontSize, fontWeight: "700", color: colors.neutral[900], marginTop: spacing.xs }}>
-                $9.99<Text style={{ fontSize: typography.bodyM.fontSize, fontWeight: "400", color: colors.neutral[600] }}>/mo</Text>
+              <Text style={dynamicStyles.planPrice}>
+                $9.99<Text style={dynamicStyles.planPeriod}>/mo</Text>
               </Text>
             </View>
             <View
@@ -539,20 +620,20 @@ export default function OnboardingScreenRedesign({
         >
           {selectedPlan === "yearly" && (
             <View style={[styles.badge, { backgroundColor: colors.primary[500] }]}>
-              <Text style={{ fontSize: typography.bodyXS.fontSize, fontWeight: "700", color: colors.neutral.white }}>
+              <Text style={dynamicStyles.badgeText}>
                 3 DAYS FREE
               </Text>
             </View>
           )}
           <View style={styles.pricingHeader}>
             <View>
-              <Text style={{ fontSize: typography.bodyM.fontSize, fontWeight: "600", color: colors.neutral[900] }}>
+              <Text style={dynamicStyles.planName}>
                 Yearly
               </Text>
-              <Text style={{ fontSize: typography.h3.fontSize, fontWeight: "700", color: colors.neutral[900], marginTop: spacing.xs }}>
-                $2.49<Text style={{ fontSize: typography.bodyM.fontSize, fontWeight: "400", color: colors.neutral[600] }}>/mo</Text>
+              <Text style={dynamicStyles.planPrice}>
+                $2.49<Text style={dynamicStyles.planPeriod}>/mo</Text>
               </Text>
-              <Text style={{ fontSize: typography.bodyS.fontSize, color: colors.status.excellent, marginTop: 4 }}>
+              <Text style={dynamicStyles.planSavings}>
                 Save 75% • $29.99/year
               </Text>
             </View>
@@ -574,7 +655,7 @@ export default function OnboardingScreenRedesign({
       {/* No Payment Due */}
       <View style={styles.noPayment}>
         <Feather name="check-circle" size={20} color={colors.status.excellent} />
-        <Text style={{ fontSize: typography.bodyM.fontSize, fontWeight: "600", color: colors.neutral[900], marginLeft: spacing.sm }}>
+        <Text style={dynamicStyles.noPaymentText}>
           No Payment Due Now
         </Text>
       </View>
@@ -585,15 +666,7 @@ export default function OnboardingScreenRedesign({
       </Button>
 
       {/* Legal */}
-      <Text
-        style={{
-          fontSize: typography.bodyXS.fontSize,
-          color: colors.neutral[500],
-          textAlign: "center",
-          marginTop: spacing.md,
-          paddingHorizontal: spacing.lg,
-        }}
-      >
+      <Text style={dynamicStyles.legalText}>
         3 days free, then ${selectedPlan === "monthly" ? "9.99 per month" : "29.99 per year ($2.49/mo)"}
       </Text>
     </ScrollView>
