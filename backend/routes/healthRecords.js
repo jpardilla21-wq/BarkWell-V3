@@ -3,9 +3,9 @@
  * Handles CRUD operations for vaccinations, medications, and vet visits
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('../config/database');
+const db = require("../config/database");
 
 // ================================================
 // VACCINATIONS
@@ -15,7 +15,7 @@ const db = require('../config/database');
  * GET /api/health-records/vaccinations/:petId
  * Get all vaccinations for a pet
  */
-router.get('/vaccinations/:petId', async (req, res) => {
+router.get("/vaccinations/:petId", async (req, res) => {
   try {
     const { petId } = req.params;
 
@@ -43,7 +43,7 @@ router.get('/vaccinations/:petId', async (req, res) => {
       FROM health_records
       WHERE pet_id = $1 AND record_type = 'vaccination'
       ORDER BY next_due_date ASC NULLS LAST, vaccination_date DESC`,
-      [petId]
+      [petId],
     );
 
     res.json({
@@ -51,10 +51,10 @@ router.get('/vaccinations/:petId', async (req, res) => {
       data: result.rows,
     });
   } catch (error) {
-    console.error('Error fetching vaccinations:', error);
+    console.error("Error fetching vaccinations:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch vaccinations',
+      error: "Failed to fetch vaccinations",
     });
   }
 });
@@ -63,7 +63,7 @@ router.get('/vaccinations/:petId', async (req, res) => {
  * POST /api/health-records/vaccinations
  * Create a new vaccination record
  */
-router.post('/vaccinations', async (req, res) => {
+router.post("/vaccinations", async (req, res) => {
   try {
     const { petId, vaccinationName, vaccinationDate, nextDueDate } = req.body;
 
@@ -71,7 +71,8 @@ router.post('/vaccinations', async (req, res) => {
     if (!petId || !vaccinationName || !vaccinationDate) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: petId, vaccinationName, vaccinationDate',
+        error:
+          "Missing required fields: petId, vaccinationName, vaccinationDate",
       });
     }
 
@@ -79,7 +80,7 @@ router.post('/vaccinations', async (req, res) => {
       `INSERT INTO health_records (pet_id, record_type, vaccination_name, vaccination_date, next_due_date)
        VALUES ($1, 'vaccination', $2, $3, $4)
        RETURNING *`,
-      [petId, vaccinationName, vaccinationDate, nextDueDate || null]
+      [petId, vaccinationName, vaccinationDate, nextDueDate || null],
     );
 
     res.status(201).json({
@@ -87,10 +88,10 @@ router.post('/vaccinations', async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error creating vaccination:', error);
+    console.error("Error creating vaccination:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to create vaccination record',
+      error: "Failed to create vaccination record",
     });
   }
 });
@@ -99,7 +100,7 @@ router.post('/vaccinations', async (req, res) => {
  * PUT /api/health-records/vaccinations/:id
  * Update a vaccination record
  */
-router.put('/vaccinations/:id', async (req, res) => {
+router.put("/vaccinations/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { vaccinationName, vaccinationDate, nextDueDate } = req.body;
@@ -111,13 +112,13 @@ router.put('/vaccinations/:id', async (req, res) => {
            next_due_date = COALESCE($3, next_due_date)
        WHERE id = $4 AND record_type = 'vaccination'
        RETURNING *`,
-      [vaccinationName, vaccinationDate, nextDueDate, id]
+      [vaccinationName, vaccinationDate, nextDueDate, id],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'Vaccination record not found',
+        error: "Vaccination record not found",
       });
     }
 
@@ -126,10 +127,10 @@ router.put('/vaccinations/:id', async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error updating vaccination:', error);
+    console.error("Error updating vaccination:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to update vaccination record',
+      error: "Failed to update vaccination record",
     });
   }
 });
@@ -138,31 +139,31 @@ router.put('/vaccinations/:id', async (req, res) => {
  * DELETE /api/health-records/vaccinations/:id
  * Delete a vaccination record
  */
-router.delete('/vaccinations/:id', async (req, res) => {
+router.delete("/vaccinations/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
     const result = await db.query(
-      'DELETE FROM health_records WHERE id = $1 AND record_type = \'vaccination\' RETURNING id',
-      [id]
+      "DELETE FROM health_records WHERE id = $1 AND record_type = 'vaccination' RETURNING id",
+      [id],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'Vaccination record not found',
+        error: "Vaccination record not found",
       });
     }
 
     res.json({
       success: true,
-      message: 'Vaccination record deleted successfully',
+      message: "Vaccination record deleted successfully",
     });
   } catch (error) {
-    console.error('Error deleting vaccination:', error);
+    console.error("Error deleting vaccination:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to delete vaccination record',
+      error: "Failed to delete vaccination record",
     });
   }
 });
@@ -175,7 +176,7 @@ router.delete('/vaccinations/:id', async (req, res) => {
  * GET /api/health-records/medications/:petId
  * Get all medications for a pet
  */
-router.get('/medications/:petId', async (req, res) => {
+router.get("/medications/:petId", async (req, res) => {
   try {
     const { petId } = req.params;
 
@@ -199,7 +200,7 @@ router.get('/medications/:petId', async (req, res) => {
       FROM health_records
       WHERE pet_id = $1 AND record_type = 'medication'
       ORDER BY is_active DESC, start_date DESC`,
-      [petId]
+      [petId],
     );
 
     res.json({
@@ -207,10 +208,10 @@ router.get('/medications/:petId', async (req, res) => {
       data: result.rows,
     });
   } catch (error) {
-    console.error('Error fetching medications:', error);
+    console.error("Error fetching medications:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch medications',
+      error: "Failed to fetch medications",
     });
   }
 });
@@ -219,15 +220,17 @@ router.get('/medications/:petId', async (req, res) => {
  * POST /api/health-records/medications
  * Create a new medication record
  */
-router.post('/medications', async (req, res) => {
+router.post("/medications", async (req, res) => {
   try {
-    const { petId, medicationName, dosage, frequency, startDate, endDate } = req.body;
+    const { petId, medicationName, dosage, frequency, startDate, endDate } =
+      req.body;
 
     // Validate required fields
     if (!petId || !medicationName || !dosage || !frequency || !startDate) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: petId, medicationName, dosage, frequency, startDate',
+        error:
+          "Missing required fields: petId, medicationName, dosage, frequency, startDate",
       });
     }
 
@@ -235,7 +238,7 @@ router.post('/medications', async (req, res) => {
       `INSERT INTO health_records (pet_id, record_type, medication_name, dosage, frequency, start_date, end_date)
        VALUES ($1, 'medication', $2, $3, $4, $5, $6)
        RETURNING *`,
-      [petId, medicationName, dosage, frequency, startDate, endDate || null]
+      [petId, medicationName, dosage, frequency, startDate, endDate || null],
     );
 
     res.status(201).json({
@@ -243,10 +246,10 @@ router.post('/medications', async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error creating medication:', error);
+    console.error("Error creating medication:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to create medication record',
+      error: "Failed to create medication record",
     });
   }
 });
@@ -255,7 +258,7 @@ router.post('/medications', async (req, res) => {
  * PUT /api/health-records/medications/:id
  * Update a medication record
  */
-router.put('/medications/:id', async (req, res) => {
+router.put("/medications/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { medicationName, dosage, frequency, startDate, endDate } = req.body;
@@ -269,13 +272,13 @@ router.put('/medications/:id', async (req, res) => {
            end_date = COALESCE($5, end_date)
        WHERE id = $6 AND record_type = 'medication'
        RETURNING *`,
-      [medicationName, dosage, frequency, startDate, endDate, id]
+      [medicationName, dosage, frequency, startDate, endDate, id],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'Medication record not found',
+        error: "Medication record not found",
       });
     }
 
@@ -284,10 +287,10 @@ router.put('/medications/:id', async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error updating medication:', error);
+    console.error("Error updating medication:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to update medication record',
+      error: "Failed to update medication record",
     });
   }
 });
@@ -296,31 +299,31 @@ router.put('/medications/:id', async (req, res) => {
  * DELETE /api/health-records/medications/:id
  * Delete a medication record
  */
-router.delete('/medications/:id', async (req, res) => {
+router.delete("/medications/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
     const result = await db.query(
-      'DELETE FROM health_records WHERE id = $1 AND record_type = \'medication\' RETURNING id',
-      [id]
+      "DELETE FROM health_records WHERE id = $1 AND record_type = 'medication' RETURNING id",
+      [id],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'Medication record not found',
+        error: "Medication record not found",
       });
     }
 
     res.json({
       success: true,
-      message: 'Medication record deleted successfully',
+      message: "Medication record deleted successfully",
     });
   } catch (error) {
-    console.error('Error deleting medication:', error);
+    console.error("Error deleting medication:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to delete medication record',
+      error: "Failed to delete medication record",
     });
   }
 });
@@ -333,7 +336,7 @@ router.delete('/medications/:id', async (req, res) => {
  * GET /api/health-records/vet-visits/:petId
  * Get all vet visits for a pet
  */
-router.get('/vet-visits/:petId', async (req, res) => {
+router.get("/vet-visits/:petId", async (req, res) => {
   try {
     const { petId } = req.params;
 
@@ -350,7 +353,7 @@ router.get('/vet-visits/:petId', async (req, res) => {
       FROM health_records
       WHERE pet_id = $1 AND record_type = 'vet_visit'
       ORDER BY visit_date DESC`,
-      [petId]
+      [petId],
     );
 
     res.json({
@@ -358,10 +361,10 @@ router.get('/vet-visits/:petId', async (req, res) => {
       data: result.rows,
     });
   } catch (error) {
-    console.error('Error fetching vet visits:', error);
+    console.error("Error fetching vet visits:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch vet visits',
+      error: "Failed to fetch vet visits",
     });
   }
 });
@@ -370,7 +373,7 @@ router.get('/vet-visits/:petId', async (req, res) => {
  * POST /api/health-records/vet-visits
  * Create a new vet visit record
  */
-router.post('/vet-visits', async (req, res) => {
+router.post("/vet-visits", async (req, res) => {
   try {
     const { petId, visitDate, vetName, reason, diagnosis, notes } = req.body;
 
@@ -378,7 +381,7 @@ router.post('/vet-visits', async (req, res) => {
     if (!petId || !visitDate) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: petId, visitDate',
+        error: "Missing required fields: petId, visitDate",
       });
     }
 
@@ -386,7 +389,14 @@ router.post('/vet-visits', async (req, res) => {
       `INSERT INTO health_records (pet_id, record_type, visit_date, vet_name, reason, diagnosis, notes)
        VALUES ($1, 'vet_visit', $2, $3, $4, $5, $6)
        RETURNING *`,
-      [petId, visitDate, vetName || null, reason || null, diagnosis || null, notes || null]
+      [
+        petId,
+        visitDate,
+        vetName || null,
+        reason || null,
+        diagnosis || null,
+        notes || null,
+      ],
     );
 
     res.status(201).json({
@@ -394,10 +404,10 @@ router.post('/vet-visits', async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error creating vet visit:', error);
+    console.error("Error creating vet visit:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to create vet visit record',
+      error: "Failed to create vet visit record",
     });
   }
 });
@@ -406,7 +416,7 @@ router.post('/vet-visits', async (req, res) => {
  * PUT /api/health-records/vet-visits/:id
  * Update a vet visit record
  */
-router.put('/vet-visits/:id', async (req, res) => {
+router.put("/vet-visits/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { visitDate, vetName, reason, diagnosis, notes } = req.body;
@@ -420,13 +430,13 @@ router.put('/vet-visits/:id', async (req, res) => {
            notes = COALESCE($5, notes)
        WHERE id = $6 AND record_type = 'vet_visit'
        RETURNING *`,
-      [visitDate, vetName, reason, diagnosis, notes, id]
+      [visitDate, vetName, reason, diagnosis, notes, id],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'Vet visit record not found',
+        error: "Vet visit record not found",
       });
     }
 
@@ -435,10 +445,10 @@ router.put('/vet-visits/:id', async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error updating vet visit:', error);
+    console.error("Error updating vet visit:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to update vet visit record',
+      error: "Failed to update vet visit record",
     });
   }
 });
@@ -447,31 +457,31 @@ router.put('/vet-visits/:id', async (req, res) => {
  * DELETE /api/health-records/vet-visits/:id
  * Delete a vet visit record
  */
-router.delete('/vet-visits/:id', async (req, res) => {
+router.delete("/vet-visits/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
     const result = await db.query(
-      'DELETE FROM health_records WHERE id = $1 AND record_type = \'vet_visit\' RETURNING id',
-      [id]
+      "DELETE FROM health_records WHERE id = $1 AND record_type = 'vet_visit' RETURNING id",
+      [id],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'Vet visit record not found',
+        error: "Vet visit record not found",
       });
     }
 
     res.json({
       success: true,
-      message: 'Vet visit record deleted successfully',
+      message: "Vet visit record deleted successfully",
     });
   } catch (error) {
-    console.error('Error deleting vet visit:', error);
+    console.error("Error deleting vet visit:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to delete vet visit record',
+      error: "Failed to delete vet visit record",
     });
   }
 });

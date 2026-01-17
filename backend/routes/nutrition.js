@@ -3,10 +3,14 @@
  * Handles nutrition plans, food database, and treat tracking
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { query } = require('../config/database');
-const { calculateCalories, calculatePortionSize, generateMealSchedule } = require('../utils/calorieCalculator');
+const { query } = require("../config/database");
+const {
+  calculateCalories,
+  calculatePortionSize,
+  generateMealSchedule,
+} = require("../utils/calorieCalculator");
 
 // ================================================
 // NUTRITION PLANS ENDPOINTS
@@ -16,32 +20,32 @@ const { calculateCalories, calculatePortionSize, generateMealSchedule } = requir
  * GET /api/nutrition/plan/:petId
  * Get nutrition plan for a specific pet
  */
-router.get('/plan/:petId', async (req, res) => {
+router.get("/plan/:petId", async (req, res) => {
   try {
     const { petId } = req.params;
 
     const result = await query(
-      'SELECT * FROM nutrition_plans WHERE pet_id = $1',
-      [petId]
+      "SELECT * FROM nutrition_plans WHERE pet_id = $1",
+      [petId],
     );
 
     if (result.rows.length === 0) {
       return res.json({
         success: true,
         data: null,
-        message: 'No nutrition plan found for this pet'
+        message: "No nutrition plan found for this pet",
       });
     }
 
     res.json({
       success: true,
-      data: result.rows[0]
+      data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error fetching nutrition plan:', error);
+    console.error("Error fetching nutrition plan:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch nutrition plan'
+      message: "Failed to fetch nutrition plan",
     });
   }
 });
@@ -51,33 +55,33 @@ router.get('/plan/:petId', async (req, res) => {
  * Calculate caloric needs for a pet
  * Body: { breed, ageYears, weightLbs, activityLevel }
  */
-router.post('/calculate', async (req, res) => {
+router.post("/calculate", async (req, res) => {
   try {
     const { breed, ageYears, weightLbs, activityLevel } = req.body;
 
     if (!weightLbs || !ageYears || !activityLevel) {
       return res.status(400).json({
         success: false,
-        message: 'Missing required fields: weightLbs, ageYears, activityLevel'
+        message: "Missing required fields: weightLbs, ageYears, activityLevel",
       });
     }
 
     const caloricNeeds = calculateCalories({
-      breed: breed || 'Mixed Breed',
+      breed: breed || "Mixed Breed",
       ageYears: parseFloat(ageYears),
       weightLbs: parseFloat(weightLbs),
-      activityLevel
+      activityLevel,
     });
 
     res.json({
       success: true,
-      data: caloricNeeds
+      data: caloricNeeds,
     });
   } catch (error) {
-    console.error('Error calculating calories:', error);
+    console.error("Error calculating calories:", error);
     res.status(500).json({
       success: false,
-      message: error.message || 'Failed to calculate calories'
+      message: error.message || "Failed to calculate calories",
     });
   }
 });
@@ -87,27 +91,27 @@ router.post('/calculate', async (req, res) => {
  * Create or update nutrition plan for a pet
  * Body: { petId, activityLevel, mealsPerDay, foodId, notes }
  */
-router.post('/plan', async (req, res) => {
+router.post("/plan", async (req, res) => {
   try {
     const { petId, activityLevel, mealsPerDay = 2, foodId, notes } = req.body;
 
     if (!petId || !activityLevel) {
       return res.status(400).json({
         success: false,
-        message: 'Missing required fields: petId, activityLevel'
+        message: "Missing required fields: petId, activityLevel",
       });
     }
 
     // Get pet information
     const petResult = await query(
-      'SELECT breed, date_of_birth, extract(year from age(date_of_birth)) as age_years FROM pets WHERE id = $1',
-      [petId]
+      "SELECT breed, date_of_birth, extract(year from age(date_of_birth)) as age_years FROM pets WHERE id = $1",
+      [petId],
     );
 
     if (petResult.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Pet not found'
+        message: "Pet not found",
       });
     }
 
@@ -115,14 +119,14 @@ router.post('/plan', async (req, res) => {
 
     // Get latest weight
     const weightResult = await query(
-      'SELECT weight FROM weight_logs WHERE pet_id = $1 ORDER BY date DESC LIMIT 1',
-      [petId]
+      "SELECT weight FROM weight_logs WHERE pet_id = $1 ORDER BY date DESC LIMIT 1",
+      [petId],
     );
 
     if (weightResult.rows.length === 0) {
       return res.status(400).json({
         success: false,
-        message: 'No weight data found for this pet. Please add weight first.'
+        message: "No weight data found for this pet. Please add weight first.",
       });
     }
 
@@ -133,15 +137,15 @@ router.post('/plan', async (req, res) => {
       breed: pet.breed,
       ageYears: parseFloat(pet.age_years),
       weightLbs: parseFloat(weightLbs),
-      activityLevel
+      activityLevel,
     });
 
     // Get food info if foodId provided
     let mealSchedule = [];
     if (foodId) {
       const foodResult = await query(
-        'SELECT calories_per_cup FROM food_database WHERE id = $1',
-        [foodId]
+        "SELECT calories_per_cup FROM food_database WHERE id = $1",
+        [foodId],
       );
 
       if (foodResult.rows.length > 0) {
@@ -149,10 +153,13 @@ router.post('/plan', async (req, res) => {
         const portions = calculatePortionSize(
           caloricNeeds.mealCalories,
           caloriesPerCup,
-          parseInt(mealsPerDay)
+          parseInt(mealsPerDay),
         );
 
-        mealSchedule = generateMealSchedule(portions.cupsPerMeal, parseInt(mealsPerDay));
+        mealSchedule = generateMealSchedule(
+          portions.cupsPerMeal,
+          parseInt(mealsPerDay),
+        );
       }
     } else {
       // Default schedule without specific portions
@@ -178,23 +185,23 @@ router.post('/plan', async (req, res) => {
         JSON.stringify(mealSchedule),
         caloricNeeds.treatAllowance,
         activityLevel,
-        notes || null
-      ]
+        notes || null,
+      ],
     );
 
     res.json({
       success: true,
       data: {
         plan: upsertResult.rows[0],
-        calculations: caloricNeeds
+        calculations: caloricNeeds,
       },
-      message: 'Nutrition plan saved successfully'
+      message: "Nutrition plan saved successfully",
     });
   } catch (error) {
-    console.error('Error creating nutrition plan:', error);
+    console.error("Error creating nutrition plan:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to create nutrition plan'
+      message: "Failed to create nutrition plan",
     });
   }
 });
@@ -208,44 +215,46 @@ router.post('/plan', async (req, res) => {
  * Get all foods from database, optionally filtered by life stage
  * Phase 3: Now includes affiliate_link and average_price
  */
-router.get('/foods', async (req, res) => {
+router.get("/foods", async (req, res) => {
   try {
     const { lifeStage } = req.query;
 
-    let queryText = 'SELECT * FROM food_database';
+    let queryText = "SELECT * FROM food_database";
     const params = [];
 
     if (lifeStage) {
-      queryText += ' WHERE life_stage = $1 OR life_stage = $2';
-      params.push(lifeStage, 'all_life_stages');
+      queryText += " WHERE life_stage = $1 OR life_stage = $2";
+      params.push(lifeStage, "all_life_stages");
     }
 
-    queryText += ' ORDER BY brand_name, product_name';
+    queryText += " ORDER BY brand_name, product_name";
 
     const result = await query(queryText, params);
 
     // Add fallback Amazon search links for foods without affiliate links
-    const foodsWithLinks = result.rows.map(food => {
+    const foodsWithLinks = result.rows.map((food) => {
       if (!food.affiliate_link) {
         // Generate generic Amazon search link
-        const searchQuery = encodeURIComponent(`${food.brand_name} ${food.product_name} dog food`);
+        const searchQuery = encodeURIComponent(
+          `${food.brand_name} ${food.product_name} dog food`,
+        );
         food.affiliate_link = `https://www.amazon.com/s?k=${searchQuery}&tag=pupsense-20`;
-        food.affiliate_link_type = 'search';
+        food.affiliate_link_type = "search";
       } else {
-        food.affiliate_link_type = 'direct';
+        food.affiliate_link_type = "direct";
       }
       return food;
     });
 
     res.json({
       success: true,
-      data: foodsWithLinks
+      data: foodsWithLinks,
     });
   } catch (error) {
-    console.error('Error fetching foods:', error);
+    console.error("Error fetching foods:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch food database'
+      message: "Failed to fetch food database",
     });
   }
 });
@@ -255,27 +264,27 @@ router.get('/foods', async (req, res) => {
  * Calculate portion size for a selected food
  * Body: { petId, foodId, mealsPerDay }
  */
-router.post('/portion', async (req, res) => {
+router.post("/portion", async (req, res) => {
   try {
     const { petId, foodId, mealsPerDay = 2 } = req.body;
 
     if (!petId || !foodId) {
       return res.status(400).json({
         success: false,
-        message: 'Missing required fields: petId, foodId'
+        message: "Missing required fields: petId, foodId",
       });
     }
 
     // Get nutrition plan
     const planResult = await query(
-      'SELECT caloric_needs, treat_allowance FROM nutrition_plans WHERE pet_id = $1',
-      [petId]
+      "SELECT caloric_needs, treat_allowance FROM nutrition_plans WHERE pet_id = $1",
+      [petId],
     );
 
     if (planResult.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Nutrition plan not found. Please create a plan first.'
+        message: "Nutrition plan not found. Please create a plan first.",
       });
     }
 
@@ -284,14 +293,14 @@ router.post('/portion', async (req, res) => {
 
     // Get food info
     const foodResult = await query(
-      'SELECT * FROM food_database WHERE id = $1',
-      [foodId]
+      "SELECT * FROM food_database WHERE id = $1",
+      [foodId],
     );
 
     if (foodResult.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Food not found'
+        message: "Food not found",
       });
     }
 
@@ -299,18 +308,20 @@ router.post('/portion', async (req, res) => {
 
     // Add fallback Amazon search link if no affiliate link
     if (!food.affiliate_link) {
-      const searchQuery = encodeURIComponent(`${food.brand_name} ${food.product_name} dog food`);
+      const searchQuery = encodeURIComponent(
+        `${food.brand_name} ${food.product_name} dog food`,
+      );
       food.affiliate_link = `https://www.amazon.com/s?k=${searchQuery}&tag=pupsense-20`;
-      food.affiliate_link_type = 'search';
+      food.affiliate_link_type = "search";
     } else {
-      food.affiliate_link_type = 'direct';
+      food.affiliate_link_type = "direct";
     }
 
     // Calculate portions
     const portions = calculatePortionSize(
       mealCalories,
       food.calories_per_cup,
-      parseInt(mealsPerDay)
+      parseInt(mealsPerDay),
     );
 
     res.json({
@@ -319,14 +330,14 @@ router.post('/portion', async (req, res) => {
         food,
         portions,
         dailyCalories: plan.caloric_needs,
-        treatAllowance: plan.treat_allowance
-      }
+        treatAllowance: plan.treat_allowance,
+      },
     });
   } catch (error) {
-    console.error('Error calculating portion:', error);
+    console.error("Error calculating portion:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to calculate portion size'
+      message: "Failed to calculate portion size",
     });
   }
 });
@@ -339,27 +350,31 @@ router.post('/portion', async (req, res) => {
  * GET /api/nutrition/treats/:petId
  * Get treat logs for a specific pet for today
  */
-router.get('/treats/:petId', async (req, res) => {
+router.get("/treats/:petId", async (req, res) => {
   try {
     const { petId } = req.params;
     const { date } = req.query; // Optional specific date
 
-    const queryDate = date || 'CURRENT_DATE';
+    const queryDate = date || "CURRENT_DATE";
     const result = await query(
       `SELECT * FROM treat_logs
-       WHERE pet_id = $1 AND date = ${date ? '$2' : 'CURRENT_DATE'}
+       WHERE pet_id = $1 AND date = ${date ? "$2" : "CURRENT_DATE"}
        ORDER BY logged_at DESC`,
-      date ? [petId, date] : [petId]
+      date ? [petId, date] : [petId],
     );
 
     // Get treat allowance from nutrition plan
     const planResult = await query(
-      'SELECT treat_allowance FROM nutrition_plans WHERE pet_id = $1',
-      [petId]
+      "SELECT treat_allowance FROM nutrition_plans WHERE pet_id = $1",
+      [petId],
     );
 
-    const treatAllowance = planResult.rows.length > 0 ? planResult.rows[0].treat_allowance : 0;
-    const caloriesUsed = result.rows.reduce((sum, treat) => sum + treat.calories, 0);
+    const treatAllowance =
+      planResult.rows.length > 0 ? planResult.rows[0].treat_allowance : 0;
+    const caloriesUsed = result.rows.reduce(
+      (sum, treat) => sum + treat.calories,
+      0,
+    );
 
     res.json({
       success: true,
@@ -368,15 +383,15 @@ router.get('/treats/:petId', async (req, res) => {
         summary: {
           treatAllowance,
           caloriesUsed,
-          caloriesRemaining: Math.max(0, treatAllowance - caloriesUsed)
-        }
-      }
+          caloriesRemaining: Math.max(0, treatAllowance - caloriesUsed),
+        },
+      },
     });
   } catch (error) {
-    console.error('Error fetching treats:', error);
+    console.error("Error fetching treats:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch treat logs'
+      message: "Failed to fetch treat logs",
     });
   }
 });
@@ -386,14 +401,14 @@ router.get('/treats/:petId', async (req, res) => {
  * Log a treat
  * Body: { petId, treatName, calories }
  */
-router.post('/treats', async (req, res) => {
+router.post("/treats", async (req, res) => {
   try {
     const { petId, treatName, calories } = req.body;
 
     if (!petId || !treatName || !calories) {
       return res.status(400).json({
         success: false,
-        message: 'Missing required fields: petId, treatName, calories'
+        message: "Missing required fields: petId, treatName, calories",
       });
     }
 
@@ -401,19 +416,19 @@ router.post('/treats', async (req, res) => {
       `INSERT INTO treat_logs (pet_id, treat_name, calories)
        VALUES ($1, $2, $3)
        RETURNING *`,
-      [petId, treatName, parseInt(calories)]
+      [petId, treatName, parseInt(calories)],
     );
 
     res.json({
       success: true,
       data: result.rows[0],
-      message: 'Treat logged successfully'
+      message: "Treat logged successfully",
     });
   } catch (error) {
-    console.error('Error logging treat:', error);
+    console.error("Error logging treat:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to log treat'
+      message: "Failed to log treat",
     });
   }
 });
@@ -422,21 +437,21 @@ router.post('/treats', async (req, res) => {
  * DELETE /api/nutrition/treats/:id
  * Delete a treat log
  */
-router.delete('/treats/:id', async (req, res) => {
+router.delete("/treats/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    await query('DELETE FROM treat_logs WHERE id = $1', [id]);
+    await query("DELETE FROM treat_logs WHERE id = $1", [id]);
 
     res.json({
       success: true,
-      message: 'Treat log deleted successfully'
+      message: "Treat log deleted successfully",
     });
   } catch (error) {
-    console.error('Error deleting treat:', error);
+    console.error("Error deleting treat:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to delete treat log'
+      message: "Failed to delete treat log",
     });
   }
 });

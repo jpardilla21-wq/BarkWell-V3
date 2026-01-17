@@ -6,7 +6,7 @@ import type { RefObject } from "react";
 import type { View } from "react-native";
 
 export async function captureCardAsImage(
-  viewRef: RefObject<View | null>
+  viewRef: RefObject<View | null>,
 ): Promise<string | null> {
   try {
     if (!viewRef.current) {
@@ -29,7 +29,7 @@ export async function captureCardAsImage(
 export async function shareCardImage(
   viewRef: RefObject<View | null>,
   onStart?: () => void,
-  onComplete?: () => void
+  onComplete?: () => void,
 ): Promise<boolean> {
   try {
     onStart?.();
@@ -42,7 +42,10 @@ export async function shareCardImage(
     const isAvailable = await Sharing.isAvailableAsync();
     if (!isAvailable) {
       onComplete?.();
-      Alert.alert("Sharing not available", "Sharing is not available on this device");
+      Alert.alert(
+        "Sharing not available",
+        "Sharing is not available on this device",
+      );
       return false;
     }
 
@@ -64,13 +67,16 @@ export async function shareCardImage(
 export async function saveCardToPhotos(
   viewRef: RefObject<View | null>,
   onStart?: () => void,
-  onComplete?: () => void
+  onComplete?: () => void,
 ): Promise<boolean> {
   try {
     onStart?.();
 
     if (Platform.OS === "web") {
-      Alert.alert("Not Available", "Saving to photos is not available on web. Please use Expo Go on your device.");
+      Alert.alert(
+        "Not Available",
+        "Saving to photos is not available on web. Please use Expo Go on your device.",
+      );
       onComplete?.();
       return false;
     }
@@ -79,7 +85,7 @@ export async function saveCardToPhotos(
     if (status !== "granted") {
       Alert.alert(
         "Permission Required",
-        "Please allow access to your photos to save the snapshot."
+        "Please allow access to your photos to save the snapshot.",
       );
       onComplete?.();
       return false;

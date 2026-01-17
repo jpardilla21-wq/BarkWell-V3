@@ -17,12 +17,7 @@ import { Button } from "@/components/Button";
 import { StatePill } from "@/components/StatePill";
 import { ResultCard } from "@/components/ResultCard";
 import { useTheme } from "@/hooks/useTheme";
-import {
-  Colors,
-  Spacing,
-  BorderRadius,
-  Typography,
-} from "@/constants/theme";
+import { Colors, Spacing, BorderRadius, Typography } from "@/constants/theme";
 import { analyzeBehaviorWithGemini, APIKeyError } from "@/utils/apiClient";
 
 type BehaviorState =
@@ -135,7 +130,7 @@ export default function BehaviorCheckScreen() {
                 },
               },
             ]
-          : [{ text: "OK" }]
+          : [{ text: "OK" }],
       );
       return false;
     }
@@ -146,7 +141,7 @@ export default function BehaviorCheckScreen() {
     if (Platform.OS === "web") {
       Alert.alert(
         "Not Available on Web",
-        "Run in Expo Go to record videos of your dog"
+        "Run in Expo Go to record videos of your dog",
       );
       return;
     }
@@ -212,12 +207,12 @@ export default function BehaviorCheckScreen() {
                 Linking.openURL("http://localhost:8081").catch(() => {
                   Alert.alert(
                     "Link Information",
-                    "Open this link in your browser:\nhttp://localhost:8081"
+                    "Open this link in your browser:\nhttp://localhost:8081",
                   );
                 });
               },
             },
-          ]
+          ],
         );
       } else {
         Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
@@ -236,8 +231,8 @@ export default function BehaviorCheckScreen() {
   return (
     <ScreenKeyboardAwareScrollView>
       <ThemedText type="body" style={{ color: theme.textMuted }}>
-        Record a 30-60 second video of your dog's body language and behavior
-        for AI analysis.
+        Record a 30-60 second video of your dog's body language and behavior for
+        AI analysis.
       </ThemedText>
 
       {!videoUri ? (
@@ -282,11 +277,7 @@ export default function BehaviorCheckScreen() {
               ]}
             >
               <View style={styles.buttonContent}>
-                <Feather
-                  name="video"
-                  size={18}
-                  color={Colors.light.primary}
-                />
+                <Feather name="video" size={18} color={Colors.light.primary} />
                 <Text style={styles.buttonText}>Record</Text>
               </View>
             </Pressable>
@@ -303,11 +294,7 @@ export default function BehaviorCheckScreen() {
               ]}
             >
               <View style={styles.buttonContent}>
-                <Feather
-                  name="film"
-                  size={18}
-                  color={Colors.light.primary}
-                />
+                <Feather name="film" size={18} color={Colors.light.primary} />
                 <Text style={styles.buttonText}>Browse</Text>
               </View>
             </Pressable>
@@ -321,24 +308,28 @@ export default function BehaviorCheckScreen() {
               { backgroundColor: theme.backgroundSecondary },
             ]}
           >
-            <Feather name="check-circle" size={48} color={Colors.light.softGreen} />
+            <Feather
+              name="check-circle"
+              size={48}
+              color={Colors.light.softGreen}
+            />
             <ThemedText type="body" style={{ marginTop: Spacing.md }}>
               Video Ready
             </ThemedText>
           </ThemedView>
           <Pressable
             onPress={handleClearVideo}
-            style={[styles.clearButton, { backgroundColor: Colors.light.primary }]}
+            style={[
+              styles.clearButton,
+              { backgroundColor: Colors.light.primary },
+            ]}
           >
             <Feather name="x" size={20} color="white" />
           </Pressable>
         </View>
       )}
 
-      <Button
-        onPress={analyzeVideo}
-        disabled={!videoUri || isAnalyzing}
-      >
+      <Button onPress={analyzeVideo} disabled={!videoUri || isAnalyzing}>
         {isAnalyzing ? "Analyzing Behavior..." : "Analyze Behavior"}
       </Button>
 

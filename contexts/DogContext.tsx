@@ -30,7 +30,9 @@ export function DogProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <DogContext.Provider value={{ dogs, addDogs, selectedDogId, setSelectedDogId }}>
+    <DogContext.Provider
+      value={{ dogs, addDogs, selectedDogId, setSelectedDogId }}
+    >
       {children}
     </DogContext.Provider>
   );

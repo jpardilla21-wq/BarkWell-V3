@@ -3,16 +3,16 @@
  * Handles CRUD operations for pet weight tracking
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('../config/database');
+const db = require("../config/database");
 
 /**
  * GET /api/weight-logs/:petId
  * Get all weight logs for a pet
  * Query params: ?months=6 (optional, default: 6 months)
  */
-router.get('/:petId', async (req, res) => {
+router.get("/:petId", async (req, res) => {
   try {
     const { petId } = req.params;
     const months = parseInt(req.query.months) || 6;
@@ -29,7 +29,7 @@ router.get('/:petId', async (req, res) => {
        WHERE pet_id = $1
          AND log_date >= CURRENT_DATE - INTERVAL '${months} months'
        ORDER BY log_date DESC`,
-      [petId]
+      [petId],
     );
 
     res.json({
@@ -37,10 +37,10 @@ router.get('/:petId', async (req, res) => {
       data: result.rows,
     });
   } catch (error) {
-    console.error('Error fetching weight logs:', error);
+    console.error("Error fetching weight logs:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch weight logs',
+      error: "Failed to fetch weight logs",
     });
   }
 });
@@ -50,7 +50,7 @@ router.get('/:petId', async (req, res) => {
  * Get weight trend data for charting (last 6 months by default)
  * Query params: ?months=6 (optional)
  */
-router.get('/:petId/trend', async (req, res) => {
+router.get("/:petId/trend", async (req, res) => {
   try {
     const { petId } = req.params;
     const months = parseInt(req.query.months) || 6;
@@ -64,7 +64,7 @@ router.get('/:petId/trend', async (req, res) => {
        WHERE pet_id = $1
          AND log_date >= CURRENT_DATE - INTERVAL '${months} months'
        ORDER BY log_date ASC`,
-      [petId]
+      [petId],
     );
 
     // Calculate weight change statistics
@@ -91,10 +91,10 @@ router.get('/:petId/trend', async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Error fetching weight trend:', error);
+    console.error("Error fetching weight trend:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch weight trend',
+      error: "Failed to fetch weight trend",
     });
   }
 });
@@ -103,7 +103,7 @@ router.get('/:petId/trend', async (req, res) => {
  * POST /api/weight-logs
  * Create a new weight log entry
  */
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { petId, logDate, weight, unit, notes } = req.body;
 
@@ -111,7 +111,7 @@ router.post('/', async (req, res) => {
     if (!petId || !logDate || !weight) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: petId, logDate, weight',
+        error: "Missing required fields: petId, logDate, weight",
       });
     }
 
@@ -119,7 +119,7 @@ router.post('/', async (req, res) => {
     if (parseFloat(weight) <= 0) {
       return res.status(400).json({
         success: false,
-        error: 'Weight must be a positive number',
+        error: "Weight must be a positive number",
       });
     }
 
@@ -127,7 +127,7 @@ router.post('/', async (req, res) => {
       `INSERT INTO weight_logs (pet_id, log_date, weight, unit, notes)
        VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
-      [petId, logDate, weight, unit || 'lbs', notes || null]
+      [petId, logDate, weight, unit || "lbs", notes || null],
     );
 
     res.status(201).json({
@@ -135,10 +135,10 @@ router.post('/', async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error creating weight log:', error);
+    console.error("Error creating weight log:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to create weight log',
+      error: "Failed to create weight log",
     });
   }
 });
@@ -147,7 +147,7 @@ router.post('/', async (req, res) => {
  * PUT /api/weight-logs/:id
  * Update a weight log entry
  */
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { logDate, weight, unit, notes } = req.body;
@@ -156,7 +156,7 @@ router.put('/:id', async (req, res) => {
     if (weight !== undefined && parseFloat(weight) <= 0) {
       return res.status(400).json({
         success: false,
-        error: 'Weight must be a positive number',
+        error: "Weight must be a positive number",
       });
     }
 
@@ -168,13 +168,13 @@ router.put('/:id', async (req, res) => {
            notes = COALESCE($4, notes)
        WHERE id = $5
        RETURNING *`,
-      [logDate, weight, unit, notes, id]
+      [logDate, weight, unit, notes, id],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'Weight log not found',
+        error: "Weight log not found",
       });
     }
 
@@ -183,10 +183,10 @@ router.put('/:id', async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error updating weight log:', error);
+    console.error("Error updating weight log:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to update weight log',
+      error: "Failed to update weight log",
     });
   }
 });
@@ -195,31 +195,31 @@ router.put('/:id', async (req, res) => {
  * DELETE /api/weight-logs/:id
  * Delete a weight log entry
  */
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
     const result = await db.query(
-      'DELETE FROM weight_logs WHERE id = $1 RETURNING id',
-      [id]
+      "DELETE FROM weight_logs WHERE id = $1 RETURNING id",
+      [id],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'Weight log not found',
+        error: "Weight log not found",
       });
     }
 
     res.json({
       success: true,
-      message: 'Weight log deleted successfully',
+      message: "Weight log deleted successfully",
     });
   } catch (error) {
-    console.error('Error deleting weight log:', error);
+    console.error("Error deleting weight log:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to delete weight log',
+      error: "Failed to delete weight log",
     });
   }
 });
@@ -228,7 +228,7 @@ router.delete('/:id', async (req, res) => {
  * GET /api/weight-logs/:petId/latest
  * Get the most recent weight entry for a pet
  */
-router.get('/:petId/latest', async (req, res) => {
+router.get("/:petId/latest", async (req, res) => {
   try {
     const { petId } = req.params;
 
@@ -238,14 +238,14 @@ router.get('/:petId/latest', async (req, res) => {
        WHERE pet_id = $1
        ORDER BY log_date DESC
        LIMIT 1`,
-      [petId]
+      [petId],
     );
 
     if (result.rows.length === 0) {
       return res.json({
         success: true,
         data: null,
-        message: 'No weight logs found',
+        message: "No weight logs found",
       });
     }
 
@@ -254,10 +254,10 @@ router.get('/:petId/latest', async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error fetching latest weight:', error);
+    console.error("Error fetching latest weight:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch latest weight',
+      error: "Failed to fetch latest weight",
     });
   }
 });

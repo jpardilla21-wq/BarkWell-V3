@@ -31,9 +31,24 @@ export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { dogs, selectedDogId, setSelectedDogId } = useDogs();
   const [history] = useState<HistoryItem[]>([
-    { id: "1", type: "poop", title: "Poop Check - Healthy", date: "Today, 2:30 PM" },
-    { id: "2", type: "food", title: "Food Scanner - Chicken Meal", date: "Yesterday" },
-    { id: "3", type: "behavior", title: "Behavior Check - Relaxed", date: "2 days ago" },
+    {
+      id: "1",
+      type: "poop",
+      title: "Poop Check - Healthy",
+      date: "Today, 2:30 PM",
+    },
+    {
+      id: "2",
+      type: "food",
+      title: "Food Scanner - Chicken Meal",
+      date: "Yesterday",
+    },
+    {
+      id: "3",
+      type: "behavior",
+      title: "Behavior Check - Relaxed",
+      date: "2 days ago",
+    },
   ]);
 
   const getHistoryIcon = (type: string) => {
@@ -105,11 +120,7 @@ export default function HomeScreen() {
                   },
                 ]}
               >
-                <Feather
-                  name="plus"
-                  size={32}
-                  color={Colors.light.primary}
-                />
+                <Feather name="plus" size={32} color={Colors.light.primary} />
               </Pressable>
             </View>
           </View>
@@ -182,11 +193,7 @@ export default function HomeScreen() {
                 {item.date}
               </ThemedText>
             </View>
-            <Feather
-              name="chevron-right"
-              size={20}
-              color={theme.textMuted}
-            />
+            <Feather name="chevron-right" size={20} color={theme.textMuted} />
           </Pressable>
         ))}
       </View>

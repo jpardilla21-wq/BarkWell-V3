@@ -9,7 +9,12 @@
     "init-db": "node scripts/initDatabase.js",
     "migrate-phase2": "node scripts/migratePhase2.js"
   },
-  "keywords": ["pet", "health", "tracking", "api"],
+  "keywords": [
+    "pet",
+    "health",
+    "tracking",
+    "api"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {

@@ -12,7 +12,10 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { useCameraPermissions, useMediaLibraryPermissions } from "expo-image-picker";
+import {
+  useCameraPermissions,
+  useMediaLibraryPermissions,
+} from "expo-image-picker";
 import { ScreenKeyboardAwareScrollView } from "@/components/ScreenKeyboardAwareScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { Button } from "@/components/Button";
@@ -198,7 +201,10 @@ export default function AddDogScreen({ navigation }: AddDogScreenProps) {
         onPress={pickImage}
         style={[
           styles.photoContainer,
-          { backgroundColor: theme.backgroundRoot, borderColor: theme.borderLight },
+          {
+            backgroundColor: theme.backgroundRoot,
+            borderColor: theme.borderLight,
+          },
         ]}
       >
         {photoUri ? (
@@ -206,7 +212,10 @@ export default function AddDogScreen({ navigation }: AddDogScreenProps) {
         ) : (
           <View style={styles.photoPlaceholder}>
             <Feather name="camera" size={32} color={theme.textMuted} />
-            <ThemedText type="small" style={{ color: theme.textMuted, marginTop: 8 }}>
+            <ThemedText
+              type="small"
+              style={{ color: theme.textMuted, marginTop: 8 }}
+            >
               Add Photo
             </ThemedText>
           </View>
@@ -269,7 +278,9 @@ export default function AddDogScreen({ navigation }: AddDogScreenProps) {
       <View style={styles.buttonContainer}>
         <Button
           onPress={handleSubmit}
-          disabled={isSubmitting || !name.trim() || !breed.trim() || !age.trim()}
+          disabled={
+            isSubmitting || !name.trim() || !breed.trim() || !age.trim()
+          }
         >
           {isSubmitting ? "Adding..." : "Add Dog"}
         </Button>

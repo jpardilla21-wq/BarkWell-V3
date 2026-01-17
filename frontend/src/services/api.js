@@ -3,14 +3,15 @@
  * Handles all API calls to the backend
  */
 
-import axios from 'axios';
+import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -29,7 +30,7 @@ export const getPet = async (petId) => {
 };
 
 export const createPet = async (petData) => {
-  const response = await api.post('/pets', petData);
+  const response = await api.post("/pets", petData);
   return response.data;
 };
 
@@ -43,7 +44,10 @@ export const getVaccinations = async (petId) => {
 };
 
 export const createVaccination = async (vaccinationData) => {
-  const response = await api.post('/health-records/vaccinations', vaccinationData);
+  const response = await api.post(
+    "/health-records/vaccinations",
+    vaccinationData,
+  );
   return response.data;
 };
 
@@ -58,7 +62,10 @@ export const getMedications = async (petId) => {
 };
 
 export const createMedication = async (medicationData) => {
-  const response = await api.post('/health-records/medications', medicationData);
+  const response = await api.post(
+    "/health-records/medications",
+    medicationData,
+  );
   return response.data;
 };
 
@@ -73,7 +80,7 @@ export const getVetVisits = async (petId) => {
 };
 
 export const createVetVisit = async (vetVisitData) => {
-  const response = await api.post('/health-records/vet-visits', vetVisitData);
+  const response = await api.post("/health-records/vet-visits", vetVisitData);
   return response.data;
 };
 
@@ -92,12 +99,14 @@ export const getDailyLogs = async (petId, days = 30) => {
 };
 
 export const createDailyLog = async (logData) => {
-  const response = await api.post('/daily-logs', logData);
+  const response = await api.post("/daily-logs", logData);
   return response.data;
 };
 
 export const getWellnessTrend = async (petId, days = 30) => {
-  const response = await api.get(`/daily-logs/${petId}/wellness-trend?days=${days}`);
+  const response = await api.get(
+    `/daily-logs/${petId}/wellness-trend?days=${days}`,
+  );
   return response.data;
 };
 
@@ -116,12 +125,14 @@ export const getWeightLogs = async (petId, months = 6) => {
 };
 
 export const getWeightTrend = async (petId, months = 6) => {
-  const response = await api.get(`/weight-logs/${petId}/trend?months=${months}`);
+  const response = await api.get(
+    `/weight-logs/${petId}/trend?months=${months}`,
+  );
   return response.data;
 };
 
 export const createWeightLog = async (weightData) => {
-  const response = await api.post('/weight-logs', weightData);
+  const response = await api.post("/weight-logs", weightData);
   return response.data;
 };
 
@@ -140,32 +151,34 @@ export const getNutritionPlan = async (petId) => {
 };
 
 export const calculateCalories = async (data) => {
-  const response = await api.post('/nutrition/calculate', data);
+  const response = await api.post("/nutrition/calculate", data);
   return response.data;
 };
 
 export const createNutritionPlan = async (planData) => {
-  const response = await api.post('/nutrition/plan', planData);
+  const response = await api.post("/nutrition/plan", planData);
   return response.data;
 };
 
 export const getFoods = async (lifeStage) => {
-  const response = await api.get('/nutrition/foods', { params: { lifeStage } });
+  const response = await api.get("/nutrition/foods", { params: { lifeStage } });
   return response.data;
 };
 
 export const calculatePortion = async (data) => {
-  const response = await api.post('/nutrition/portion', data);
+  const response = await api.post("/nutrition/portion", data);
   return response.data;
 };
 
 export const getTreats = async (petId, date) => {
-  const response = await api.get(`/nutrition/treats/${petId}`, { params: { date } });
+  const response = await api.get(`/nutrition/treats/${petId}`, {
+    params: { date },
+  });
   return response.data;
 };
 
 export const logTreat = async (treatData) => {
-  const response = await api.post('/nutrition/treats', treatData);
+  const response = await api.post("/nutrition/treats", treatData);
   return response.data;
 };
 
@@ -179,17 +192,19 @@ export const deleteTreat = async (id) => {
 // ================================================
 
 export const getContent = async (category, format) => {
-  const response = await api.get('/content', { params: { category, format } });
+  const response = await api.get("/content", { params: { category, format } });
   return response.data;
 };
 
 export const getRecommendedContent = async (petId, limit = 6) => {
-  const response = await api.get(`/content/recommend/${petId}`, { params: { limit } });
+  const response = await api.get(`/content/recommend/${petId}`, {
+    params: { limit },
+  });
   return response.data;
 };
 
 export const getContentCategories = async () => {
-  const response = await api.get('/content/categories/list');
+  const response = await api.get("/content/categories/list");
   return response.data;
 };
 
@@ -198,7 +213,7 @@ export const getContentCategories = async () => {
 // ================================================
 
 export const getAllBreeds = async () => {
-  const response = await api.get('/breeds');
+  const response = await api.get("/breeds");
   return response.data;
 };
 
@@ -212,7 +227,7 @@ export const getBreedInfo = async (breedName) => {
 // ================================================
 
 export const getSubscriptionTiers = async () => {
-  const response = await api.get('/subscriptions/tiers');
+  const response = await api.get("/subscriptions/tiers");
   return response.data;
 };
 
@@ -221,8 +236,12 @@ export const getSubscriptionStatus = async (userId) => {
   return response.data;
 };
 
-export const subscribeToTier = async (userId, tier, paymentMethod = 'mock_payment') => {
-  const response = await api.post('/subscriptions/subscribe', {
+export const subscribeToTier = async (
+  userId,
+  tier,
+  paymentMethod = "mock_payment",
+) => {
+  const response = await api.post("/subscriptions/subscribe", {
     userId,
     tier,
     paymentMethod,
@@ -231,12 +250,14 @@ export const subscribeToTier = async (userId, tier, paymentMethod = 'mock_paymen
 };
 
 export const cancelSubscription = async (userId) => {
-  const response = await api.post('/subscriptions/cancel', { userId });
+  const response = await api.post("/subscriptions/cancel", { userId });
   return response.data;
 };
 
 export const getPaymentHistory = async (userId, limit = 10) => {
-  const response = await api.get(`/subscriptions/payments/${userId}`, { params: { limit } });
+  const response = await api.get(`/subscriptions/payments/${userId}`, {
+    params: { limit },
+  });
   return response.data;
 };
 
@@ -245,7 +266,7 @@ export const getPaymentHistory = async (userId, limit = 10) => {
 // ================================================
 
 export const getProducts = async (filters = {}) => {
-  const response = await api.get('/shop/products', { params: filters });
+  const response = await api.get("/shop/products", { params: filters });
   return response.data;
 };
 
@@ -255,17 +276,21 @@ export const getCuratedProducts = async (petId) => {
 };
 
 export const getProductCategories = async () => {
-  const response = await api.get('/shop/categories');
+  const response = await api.get("/shop/categories");
   return response.data;
 };
 
 export const getInsurancePartners = async () => {
-  const response = await api.get('/shop/insurance');
+  const response = await api.get("/shop/insurance");
   return response.data;
 };
 
-export const trackAffiliateClick = async (productId, petId, clickType = 'product') => {
-  const response = await api.post('/shop/track-click', {
+export const trackAffiliateClick = async (
+  productId,
+  petId,
+  clickType = "product",
+) => {
+  const response = await api.post("/shop/track-click", {
     productId,
     petId,
     clickType,

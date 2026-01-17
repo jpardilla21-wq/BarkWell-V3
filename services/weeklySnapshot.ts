@@ -15,14 +15,27 @@ export interface WeeklySnapshotData {
 export function getWeeklySnapshot(
   dogId: string,
   dogName: string,
-  dogPhoto: string | null
+  dogPhoto: string | null,
 ): WeeklySnapshotData {
   const today = new Date();
   const weekStart = new Date(today);
   weekStart.setDate(today.getDate() - 6);
 
   const formatDate = (date: Date) => {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
     return `${months[date.getMonth()]} ${date.getDate()}`;
   };
 

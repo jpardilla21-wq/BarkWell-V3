@@ -9,7 +9,7 @@
     "notes": {
       "nutritionalValues": "Values shown are typical guaranteed analysis for adult maintenance dry food formulas unless otherwise specified",
       "proteinPercentage": "Minimum crude protein percentage (as-fed basis)",
-      "fatPercentage": "Minimum crude fat percentage (as-fed basis)", 
+      "fatPercentage": "Minimum crude fat percentage (as-fed basis)",
       "fiberPercentage": "Maximum crude fiber percentage (as-fed basis)",
       "moisture": "Maximum moisture percentage",
       "caloriesPerCup": "Metabolizable energy in kcal per standard 8oz cup",
@@ -18,106 +18,2506 @@
     }
   },
   "brands": [
-    {"id":1,"name":"Purina Pro Plan","parentCompany":"Nestlé Purina PetCare","headquarters":"St. Louis, Missouri, USA","markets":["US","Canada","Europe"],"category":"Premium","priceRange":"$$","popularProduct":"Complete Essentials Chicken & Rice","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":16.0,"crudeFiberMax":3.0,"moistureMax":12.0,"caloriesPerCup":378,"caloriesPerKg":3700},"keyFeatures":["Live probiotics","Real meat first ingredient","Omega fatty acids","AAFCO compliant"],"aafcoCompliant":true},
-    {"id":2,"name":"Royal Canin","parentCompany":"Mars, Inc.","headquarters":"Aimargues, France","markets":["US","Canada","Europe"],"category":"Premium","priceRange":"$$$","popularProduct":"Medium Adult","nutritionalProfile":{"crudeProteinMin":23.0,"crudeFatMin":12.0,"crudeFiberMax":3.4,"moistureMax":10.5,"caloriesPerCup":340,"caloriesPerKg":3616},"keyFeatures":["Breed-specific formulas","Veterinary-developed","Tailored nutrition","60+ breed options"],"aafcoCompliant":true},
-    {"id":3,"name":"Hill's Science Diet","parentCompany":"Colgate-Palmolive","headquarters":"Topeka, Kansas, USA","markets":["US","Canada","Europe"],"category":"Premium","priceRange":"$$$","popularProduct":"Adult Chicken & Barley Recipe","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":15.5,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":363,"caloriesPerKg":3700},"keyFeatures":["Veterinary recommended","Natural ingredients","Life stage nutrition","Clinically proven"],"aafcoCompliant":true},
-    {"id":4,"name":"Blue Buffalo","parentCompany":"General Mills","headquarters":"Wilton, Connecticut, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$","popularProduct":"Life Protection Formula Chicken & Brown Rice","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":14.0,"crudeFiberMax":5.0,"moistureMax":10.0,"caloriesPerCup":357,"caloriesPerKg":3599},"keyFeatures":["Real meat first","LifeSource Bits","No poultry by-products","Natural ingredients"],"aafcoCompliant":true},
-    {"id":5,"name":"Pedigree","parentCompany":"Mars, Inc.","headquarters":"McLean, Virginia, USA","markets":["US","Canada","Europe"],"category":"Economy","priceRange":"$","popularProduct":"Complete Nutrition Roasted Chicken","nutritionalProfile":{"crudeProteinMin":21.0,"crudeFatMin":10.0,"crudeFiberMax":4.0,"moistureMax":12.0,"caloriesPerCup":320,"caloriesPerKg":3294},"keyFeatures":["Affordable","Whole grains","Omega-6 fatty acids","Complete nutrition"],"aafcoCompliant":true},
-    {"id":6,"name":"IAMS","parentCompany":"Mars, Inc.","headquarters":"Lewisburg, Ohio, USA","markets":["US","Canada","Europe"],"category":"Mid-range","priceRange":"$$","popularProduct":"ProActive Health Adult","nutritionalProfile":{"crudeProteinMin":25.0,"crudeFatMin":14.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":340,"caloriesPerKg":3520},"keyFeatures":["Real chicken first","Prebiotics","Tailored fiber blend","Skin & coat support"],"aafcoCompliant":true},
-    {"id":7,"name":"Orijen","parentCompany":"Champion Petfoods","headquarters":"Edmonton, Alberta, Canada","markets":["US","Canada","Europe"],"category":"Super-Premium","priceRange":"$$$$","popularProduct":"Original","nutritionalProfile":{"crudeProteinMin":38.0,"crudeFatMin":18.0,"crudeFiberMax":4.0,"moistureMax":12.0,"caloriesPerCup":473,"caloriesPerKg":3940},"keyFeatures":["85% animal ingredients","WholePrey ratios","Fresh/raw meats","Biologically appropriate"],"aafcoCompliant":true},
-    {"id":8,"name":"Acana","parentCompany":"Champion Petfoods","headquarters":"Edmonton, Alberta, Canada","markets":["US","Canada","Europe"],"category":"Premium","priceRange":"$$$","popularProduct":"Wholesome Grains Red Meat","nutritionalProfile":{"crudeProteinMin":31.0,"crudeFatMin":17.0,"crudeFiberMax":6.0,"moistureMax":12.0,"caloriesPerCup":371,"caloriesPerKg":3550},"keyFeatures":["60-75% animal ingredients","Regional ingredients","WholePrey diet","No rendered meats"],"aafcoCompliant":true},
-    {"id":9,"name":"Taste of the Wild","parentCompany":"Diamond Pet Foods","headquarters":"Meta, Missouri, USA","markets":["US","Canada","Europe"],"category":"Premium","priceRange":"$$","popularProduct":"High Prairie Canine Recipe","nutritionalProfile":{"crudeProteinMin":28.0,"crudeFatMin":18.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":370,"caloriesPerKg":3719},"keyFeatures":["Novel proteins","Grain-free options","Probiotics","Antioxidants"],"aafcoCompliant":true},
-    {"id":10,"name":"Wellness Core","parentCompany":"WellPet LLC","headquarters":"Tewksbury, Massachusetts, USA","markets":["US","Canada","Europe"],"category":"Premium","priceRange":"$$$","popularProduct":"Original Deboned Turkey","nutritionalProfile":{"crudeProteinMin":34.0,"crudeFatMin":16.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":360,"caloriesPerKg":3607},"keyFeatures":["Grain-free","High protein","Probiotics","Omega fatty acids"],"aafcoCompliant":true},
-    {"id":11,"name":"Merrick","parentCompany":"Nestlé Purina PetCare","headquarters":"Amarillo, Texas, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Real Texas Beef + Sweet Potato","nutritionalProfile":{"crudeProteinMin":34.0,"crudeFatMin":15.0,"crudeFiberMax":3.5,"moistureMax":11.0,"caloriesPerCup":380,"caloriesPerKg":3510},"keyFeatures":["Deboned meat first","Grain-free options","Made in USA","No artificial ingredients"],"aafcoCompliant":true},
-    {"id":12,"name":"Nutro","parentCompany":"Mars, Inc.","headquarters":"Franklin, Tennessee, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$","popularProduct":"Wholesome Essentials Adult Chicken","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":14.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":336,"caloriesPerKg":3456},"keyFeatures":["Non-GMO ingredients","Real chicken first","Natural fiber","No artificial preservatives"],"aafcoCompliant":true},
-    {"id":13,"name":"Purina One","parentCompany":"Nestlé Purina PetCare","headquarters":"St. Louis, Missouri, USA","markets":["US","Canada","Europe"],"category":"Mid-range","priceRange":"$$","popularProduct":"SmartBlend True Instinct","nutritionalProfile":{"crudeProteinMin":30.0,"crudeFatMin":17.0,"crudeFiberMax":3.0,"moistureMax":12.0,"caloriesPerCup":350,"caloriesPerKg":3600},"keyFeatures":["Real meat first","Omega-6 fatty acids","Glucosamine","Natural sources"],"aafcoCompliant":true},
-    {"id":14,"name":"Eukanuba","parentCompany":"Mars, Inc.","headquarters":"Lewisburg, Ohio, USA","markets":["US","Canada","Europe"],"category":"Premium","priceRange":"$$","popularProduct":"Adult Medium Breed","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":16.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":358,"caloriesPerKg":3730},"keyFeatures":["Animal protein first","3D DentaDefense","Optimal digestion","Healthy joints"],"aafcoCompliant":true},
-    {"id":15,"name":"Natural Balance","parentCompany":"J.M. Smucker Company","headquarters":"Burbank, California, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$","popularProduct":"L.I.D. Limited Ingredient Diets","nutritionalProfile":{"crudeProteinMin":22.0,"crudeFatMin":12.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":340,"caloriesPerKg":3350},"keyFeatures":["Limited ingredients","Novel proteins","Grain-free options","Sensitive stomach"],"aafcoCompliant":true},
-    {"id":16,"name":"Canidae","parentCompany":"Canidae Pet Food Company","headquarters":"San Luis Obispo, California, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$","popularProduct":"All Life Stages Multi-Protein","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":14.5,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":469,"caloriesPerKg":3885},"keyFeatures":["Multiple meat proteins","Whole grains","Probiotics","All life stages"],"aafcoCompliant":true},
-    {"id":17,"name":"The Farmer's Dog","parentCompany":"The Farmer's Dog Inc.","headquarters":"New York, New York, USA","markets":["US"],"category":"Super-Premium Fresh","priceRange":"$$$$","popularProduct":"Beef Recipe","nutritionalProfile":{"crudeProteinMin":33.0,"crudeFatMin":19.0,"crudeFiberMax":1.5,"moistureMax":65.0,"caloriesPerCup":450,"caloriesPerKg":1800},"keyFeatures":["Human-grade ingredients","Fresh delivery","Personalized portions","USDA certified"],"aafcoCompliant":true},
-    {"id":18,"name":"Freshpet","parentCompany":"Freshpet Inc.","headquarters":"Secaucus, New Jersey, USA","markets":["US","Canada","Europe"],"category":"Premium Fresh","priceRange":"$$$","popularProduct":"Select Roasted Meals","nutritionalProfile":{"crudeProteinMin":25.0,"crudeFatMin":14.0,"crudeFiberMax":2.0,"moistureMax":69.0,"caloriesPerCup":425,"caloriesPerKg":1450},"keyFeatures":["Refrigerated fresh food","Real meat and vegetables","No preservatives","Steam cooked"],"aafcoCompliant":true},
-    {"id":19,"name":"Nulo","parentCompany":"Nulo Pet Food","headquarters":"Austin, Texas, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Freestyle Adult Salmon & Peas","nutritionalProfile":{"crudeProteinMin":30.0,"crudeFatMin":17.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":393,"caloriesPerKg":3890},"keyFeatures":["High meat content","Low glycemic","Grain-free options","BC30 Probiotics"],"aafcoCompliant":true},
-    {"id":20,"name":"Ollie","parentCompany":"Ollie Pets Inc.","headquarters":"New York, New York, USA","markets":["US"],"category":"Super-Premium Fresh","priceRange":"$$$$","popularProduct":"Beef Dish","nutritionalProfile":{"crudeProteinMin":32.0,"crudeFatMin":18.0,"crudeFiberMax":2.0,"moistureMax":60.0,"caloriesPerCup":440,"caloriesPerKg":1900},"keyFeatures":["Human-grade","Personalized meals","Fresh delivery","Vet-designed"],"aafcoCompliant":true},
-    {"id":21,"name":"Victor","parentCompany":"Mid America Pet Food","headquarters":"Mount Pleasant, Texas, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$","popularProduct":"Hi-Pro Plus","nutritionalProfile":{"crudeProteinMin":30.0,"crudeFatMin":20.0,"crudeFiberMax":3.5,"moistureMax":10.0,"caloriesPerCup":405,"caloriesPerKg":3820},"keyFeatures":["High protein","Multiple meat proteins","VPRO blend","Gluten free"],"aafcoCompliant":true},
-    {"id":22,"name":"Diamond Naturals","parentCompany":"Diamond Pet Foods","headquarters":"Meta, Missouri, USA","markets":["US","Canada"],"category":"Mid-range","priceRange":"$$","popularProduct":"Adult Chicken & Rice","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":16.0,"crudeFiberMax":3.5,"moistureMax":10.0,"caloriesPerCup":339,"caloriesPerKg":3544},"keyFeatures":["Real meat first","Probiotics","Superfoods","No corn wheat soy"],"aafcoCompliant":true},
-    {"id":23,"name":"Stella & Chewy's","parentCompany":"Stella & Chewy's","headquarters":"Oak Creek, Wisconsin, USA","markets":["US","Canada"],"category":"Super-Premium","priceRange":"$$$$","popularProduct":"Freeze-Dried Raw Dinner Patties","nutritionalProfile":{"crudeProteinMin":42.0,"crudeFatMin":25.0,"crudeFiberMax":4.0,"moistureMax":5.0,"caloriesPerCup":540,"caloriesPerKg":4500},"keyFeatures":["Raw freeze-dried","95% meat/organs/bone","Organic fruits & vegetables","Grass-fed"],"aafcoCompliant":true},
-    {"id":24,"name":"Zignature","parentCompany":"Pets Global Inc.","headquarters":"Irwindale, California, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Lamb Limited Ingredient","nutritionalProfile":{"crudeProteinMin":30.0,"crudeFatMin":16.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":400,"caloriesPerKg":3965},"keyFeatures":["Single protein","Grain-free","No chicken corn wheat soy","Limited ingredient"],"aafcoCompliant":true},
-    {"id":25,"name":"Fromm Family","parentCompany":"Fromm Family Foods","headquarters":"Mequon, Wisconsin, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Four-Star Nutritionals Duck & Sweet Potato","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":18.0,"crudeFiberMax":3.5,"moistureMax":10.0,"caloriesPerCup":404,"caloriesPerKg":3950},"keyFeatures":["Family-owned since 1904","Small batch","Multiple protein sources","Probiotics"],"aafcoCompliant":true},
-    {"id":26,"name":"Instinct","parentCompany":"Nature's Variety","headquarters":"Lincoln, Nebraska, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Original Grain-Free Chicken","nutritionalProfile":{"crudeProteinMin":37.0,"crudeFatMin":20.5,"crudeFiberMax":4.0,"moistureMax":9.0,"caloriesPerCup":451,"caloriesPerKg":4251},"keyFeatures":["Raw coated kibble","High animal protein","Grain-free","Cage-free chicken"],"aafcoCompliant":true},
-    {"id":27,"name":"Purina Dog Chow","parentCompany":"Nestlé Purina PetCare","headquarters":"St. Louis, Missouri, USA","markets":["US","Canada"],"category":"Economy","priceRange":"$","popularProduct":"Complete Adult Chicken","nutritionalProfile":{"crudeProteinMin":23.0,"crudeFatMin":10.0,"crudeFiberMax":4.5,"moistureMax":12.0,"caloriesPerCup":310,"caloriesPerKg":3200},"keyFeatures":["Affordable","Real chicken","Whole grains","100% complete nutrition"],"aafcoCompliant":true},
-    {"id":28,"name":"Rachael Ray Nutrish","parentCompany":"J.M. Smucker Company","headquarters":"Orrville, Ohio, USA","markets":["US","Canada"],"category":"Mid-range","priceRange":"$$","popularProduct":"Real Chicken & Veggies Recipe","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":14.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":321,"caloriesPerKg":3350},"keyFeatures":["Real meat first","No poultry by-products","Natural ingredients","Celebrity brand"],"aafcoCompliant":true},
-    {"id":29,"name":"American Journey","parentCompany":"Chewy","headquarters":"Dania Beach, Florida, USA","markets":["US"],"category":"Mid-range","priceRange":"$$","popularProduct":"Salmon & Sweet Potato","nutritionalProfile":{"crudeProteinMin":32.0,"crudeFatMin":14.0,"crudeFiberMax":5.0,"moistureMax":10.0,"caloriesPerCup":350,"caloriesPerKg":3500},"keyFeatures":["Exclusive to Chewy","Real meat first","Grain-free options","Affordable premium"],"aafcoCompliant":true},
-    {"id":30,"name":"Open Farm","parentCompany":"Open Farm Inc.","headquarters":"Toronto, Ontario, Canada","markets":["US","Canada"],"category":"Super-Premium","priceRange":"$$$$","popularProduct":"Homestead Turkey & Chicken","nutritionalProfile":{"crudeProteinMin":30.0,"crudeFatMin":15.0,"crudeFiberMax":4.5,"moistureMax":10.0,"caloriesPerCup":384,"caloriesPerKg":3750},"keyFeatures":["Ethically sourced","Humanely raised","Traceable ingredients","Certified Humane"],"aafcoCompliant":true},
-    {"id":31,"name":"FirstMate","parentCompany":"FirstMate Pet Foods","headquarters":"Chilliwack, British Columbia, Canada","markets":["US","Canada","Europe"],"category":"Premium","priceRange":"$$$","popularProduct":"Pacific Ocean Fish","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":14.0,"crudeFiberMax":5.0,"moistureMax":10.0,"caloriesPerCup":360,"caloriesPerKg":3536},"keyFeatures":["Canadian made","Single protein","Wild-caught fish","Limited ingredient"],"aafcoCompliant":true},
-    {"id":32,"name":"Petcurean Go! Solutions","parentCompany":"Petcurean Pet Nutrition","headquarters":"Chilliwack, British Columbia, Canada","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Carnivore Chicken Turkey Duck","nutritionalProfile":{"crudeProteinMin":34.0,"crudeFatMin":16.0,"crudeFiberMax":3.5,"moistureMax":10.0,"caloriesPerCup":446,"caloriesPerKg":4198},"keyFeatures":["Premium quality","Grain-free options","Fresh meat","Canadian company"],"aafcoCompliant":true},
-    {"id":33,"name":"Now Fresh","parentCompany":"Petcurean Pet Nutrition","headquarters":"Chilliwack, British Columbia, Canada","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Grain Free Adult Recipe","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":16.0,"crudeFiberMax":3.5,"moistureMax":10.0,"caloriesPerCup":393,"caloriesPerKg":3702},"keyFeatures":["100% fresh meat","Zero rendered meats","Zero grains","Zero artificial preservatives"],"aafcoCompliant":true},
-    {"id":34,"name":"Horizon Pet Nutrition","parentCompany":"Horizon Pet Nutrition","headquarters":"Rosthern, Saskatchewan, Canada","markets":["Canada","US"],"category":"Premium","priceRange":"$$$","popularProduct":"Legacy Adult","nutritionalProfile":{"crudeProteinMin":30.0,"crudeFatMin":18.0,"crudeFiberMax":3.5,"moistureMax":10.0,"caloriesPerCup":450,"caloriesPerKg":4270},"keyFeatures":["Canadian family-owned","Prairie sourced","No corn wheat soy","Single protein options"],"aafcoCompliant":true},
-    {"id":35,"name":"Carna4","parentCompany":"Carna4","headquarters":"Toronto, Ontario, Canada","markets":["US","Canada"],"category":"Super-Premium","priceRange":"$$$$","popularProduct":"Hand Crafted Dog Food Chicken","nutritionalProfile":{"crudeProteinMin":27.0,"crudeFatMin":14.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":411,"caloriesPerKg":3860},"keyFeatures":["No synthetic vitamins","Organic sprouted seeds","Human-grade","Baked not extruded"],"aafcoCompliant":true},
-    {"id":36,"name":"Farmina","parentCompany":"Farmina Pet Foods","headquarters":"Nola, Italy","markets":["US","Canada","Europe"],"category":"Super-Premium","priceRange":"$$$$","popularProduct":"N&D Prime Chicken & Pomegranate","nutritionalProfile":{"crudeProteinMin":30.0,"crudeFatMin":18.0,"crudeFiberMax":2.5,"moistureMax":9.0,"caloriesPerCup":420,"caloriesPerKg":4140},"keyFeatures":["Italian made","Low grain/grain-free","70% animal protein","European standards"],"aafcoCompliant":true},
-    {"id":37,"name":"Brit Care","parentCompany":"VAFO Group","headquarters":"Chodov, Czech Republic","markets":["Europe","Canada"],"category":"Premium","priceRange":"$$","popularProduct":"Sustainable Adult Medium Breed","nutritionalProfile":{"crudeProteinMin":28.0,"crudeFatMin":15.0,"crudeFiberMax":3.0,"moistureMax":10.0,"caloriesPerCup":380,"caloriesPerKg":3750},"keyFeatures":["Czech quality","Sustainable ingredients","Insect protein options","European sourced"],"aafcoCompliant":true},
-    {"id":38,"name":"Carnilove","parentCompany":"VAFO Group","headquarters":"Chodov, Czech Republic","markets":["Europe","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Lamb & Wild Boar","nutritionalProfile":{"crudeProteinMin":32.0,"crudeFatMin":17.0,"crudeFiberMax":3.0,"moistureMax":10.0,"caloriesPerCup":420,"caloriesPerKg":3950},"keyFeatures":["Wild-inspired","Grain-free","Novel proteins","High meat content"],"aafcoCompliant":true},
-    {"id":39,"name":"Monge","parentCompany":"Monge & C. S.p.A.","headquarters":"Monasterolo di Savigliano, Italy","markets":["Europe"],"category":"Premium","priceRange":"$$","popularProduct":"Natural Superpremium Adult","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":14.0,"crudeFiberMax":2.5,"moistureMax":9.0,"caloriesPerCup":360,"caloriesPerKg":3640},"keyFeatures":["Italian family-owned","Natural ingredients","Grain-free options","100+ countries"],"aafcoCompliant":true},
-    {"id":40,"name":"Affinity Petcare Advance","parentCompany":"Agrolimen SA","headquarters":"Barcelona, Spain","markets":["Europe"],"category":"Premium","priceRange":"$$","popularProduct":"Adult Medium Chicken","nutritionalProfile":{"crudeProteinMin":27.0,"crudeFatMin":15.0,"crudeFiberMax":3.0,"moistureMax":9.0,"caloriesPerCup":370,"caloriesPerKg":3680},"keyFeatures":["Spanish brand","Veterinary-developed","Active defense formula","20+ countries"],"aafcoCompliant":true},
-    {"id":41,"name":"Happy Dog","parentCompany":"Interquell GmbH","headquarters":"Wehringen, Germany","markets":["Europe"],"category":"Premium","priceRange":"$$","popularProduct":"Supreme Sensible Africa","nutritionalProfile":{"crudeProteinMin":23.0,"crudeFatMin":10.0,"crudeFiberMax":3.0,"moistureMax":9.0,"caloriesPerCup":330,"caloriesPerKg":3370},"keyFeatures":["German quality","Natural ingredients","Single protein options","Family-owned since 1968"],"aafcoCompliant":true},
-    {"id":42,"name":"Bosch","parentCompany":"Bosch Tiernahrung GmbH","headquarters":"Blaufelden, Germany","markets":["Europe"],"category":"Premium","priceRange":"$$","popularProduct":"High Premium Adult Lamb & Rice","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":14.0,"crudeFiberMax":2.5,"moistureMax":10.0,"caloriesPerCup":365,"caloriesPerKg":3650},"keyFeatures":["German made","Premium ingredients","No artificial colors","Family business since 1960"],"aafcoCompliant":true},
-    {"id":43,"name":"Josera","parentCompany":"Josera GmbH & Co. KG","headquarters":"Kleinheubach, Germany","markets":["Europe"],"category":"Premium","priceRange":"$$","popularProduct":"SensiPlus","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":12.0,"crudeFiberMax":2.5,"moistureMax":10.0,"caloriesPerCup":345,"caloriesPerKg":3470},"keyFeatures":["German family company","Duck protein","Sensitive formula","No wheat/soy"],"aafcoCompliant":true},
-    {"id":44,"name":"Wolfsblut","parentCompany":"Healthfood24 GmbH","headquarters":"Cologne, Germany","markets":["Europe"],"category":"Premium","priceRange":"$$$","popularProduct":"Wild Duck","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":16.0,"crudeFiberMax":3.0,"moistureMax":8.0,"caloriesPerCup":380,"caloriesPerKg":3800},"keyFeatures":["Inspired by wild wolf diet","High meat content","Grain-free","German quality"],"aafcoCompliant":true},
-    {"id":45,"name":"Arden Grange","parentCompany":"Leander International Pet Foods","headquarters":"Alton, Hampshire, UK","markets":["Europe"],"category":"Premium","priceRange":"$$","popularProduct":"Adult Chicken & Rice","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":15.0,"crudeFiberMax":2.3,"moistureMax":8.0,"caloriesPerCup":370,"caloriesPerKg":3736},"keyFeatures":["British made","Hypoallergenic options","No artificial colors","Family-owned"],"aafcoCompliant":true},
-    {"id":46,"name":"Lily's Kitchen","parentCompany":"Nestlé Purina PetCare","headquarters":"London, UK","markets":["Europe"],"category":"Premium","priceRange":"$$$","popularProduct":"Chicken & Duck Dry Food","nutritionalProfile":{"crudeProteinMin":28.0,"crudeFatMin":16.0,"crudeFiberMax":3.0,"moistureMax":8.0,"caloriesPerCup":390,"caloriesPerKg":3870},"keyFeatures":["British brand","Natural ingredients","No meat meal","Certified B Corp"],"aafcoCompliant":true},
-    {"id":47,"name":"Forthglade","parentCompany":"Forthglade Foods Ltd","headquarters":"Devon, UK","markets":["Europe"],"category":"Premium Wet","priceRange":"$$$","popularProduct":"Just Chicken with Liver","nutritionalProfile":{"crudeProteinMin":10.5,"crudeFatMin":6.5,"crudeFiberMax":0.5,"moistureMax":75.0,"caloriesPerCup":120,"caloriesPerKg":960},"keyFeatures":["British wet food","Natural ingredients","Grain-free options","Gently steam cooked"],"aafcoCompliant":true},
-    {"id":48,"name":"Butternut Box","parentCompany":"Butternut Box","headquarters":"London, UK","markets":["Europe"],"category":"Super-Premium Fresh","priceRange":"$$$$","popularProduct":"Beef It Up","nutritionalProfile":{"crudeProteinMin":8.0,"crudeFatMin":7.0,"crudeFiberMax":1.2,"moistureMax":70.0,"caloriesPerCup":140,"caloriesPerKg":1400},"keyFeatures":["Fresh meals delivered","Human-grade","Personalized portions","UK based"],"aafcoCompliant":true},
-    {"id":49,"name":"Tails.com","parentCompany":"Nestlé Purina PetCare","headquarters":"London, UK","markets":["Europe"],"category":"Premium","priceRange":"$$$","popularProduct":"Personalized Kibble Blend","nutritionalProfile":{"crudeProteinMin":25.0,"crudeFatMin":14.0,"crudeFiberMax":3.5,"moistureMax":8.0,"caloriesPerCup":360,"caloriesPerKg":3600},"keyFeatures":["Personalized nutrition","Subscription service","UK made","Tailored to each dog"],"aafcoCompliant":true},
-    {"id":50,"name":"Natures Menu","parentCompany":"Natures Menu Ltd","headquarters":"Snetterton, Norfolk, UK","markets":["Europe"],"category":"Premium Raw","priceRange":"$$$","popularProduct":"Country Hunter Raw Nuggets","nutritionalProfile":{"crudeProteinMin":14.0,"crudeFatMin":10.0,"crudeFiberMax":1.0,"moistureMax":60.0,"caloriesPerCup":200,"caloriesPerKg":1800},"keyFeatures":["Raw specialist","British sourced","Frozen raw nuggets","Over 40 years experience"],"aafcoCompliant":true},
-    {"id":51,"name":"Bella & Duke","parentCompany":"Bella & Duke","headquarters":"Stirling, Scotland, UK","markets":["Europe"],"category":"Premium Raw","priceRange":"$$$","popularProduct":"Working Dog Beef","nutritionalProfile":{"crudeProteinMin":13.0,"crudeFatMin":12.0,"crudeFiberMax":1.0,"moistureMax":65.0,"caloriesPerCup":180,"caloriesPerKg":1650},"keyFeatures":["Scottish raw food","Subscription delivery","BARF diet","Ethically sourced"],"aafcoCompliant":true},
-    {"id":52,"name":"Edgard & Cooper","parentCompany":"Edgard & Cooper","headquarters":"Ghent, Belgium","markets":["Europe"],"category":"Premium","priceRange":"$$$","popularProduct":"Fresh Grass-Fed Beef","nutritionalProfile":{"crudeProteinMin":28.0,"crudeFatMin":16.0,"crudeFiberMax":4.0,"moistureMax":8.0,"caloriesPerCup":390,"caloriesPerKg":3900},"keyFeatures":["Belgian brand","Fresh meat","Sustainable packaging","No meat meal"],"aafcoCompliant":true},
-    {"id":53,"name":"Prins","parentCompany":"Prins Petfoods","headquarters":"Meppel, Netherlands","markets":["Europe"],"category":"Premium","priceRange":"$$","popularProduct":"ProCare Croque Basic Excellent","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":12.0,"crudeFiberMax":3.0,"moistureMax":10.0,"caloriesPerCup":340,"caloriesPerKg":3400},"keyFeatures":["Dutch quality","Over 60 years","Professional breeder choice","No wheat"],"aafcoCompliant":true},
-    {"id":54,"name":"Yarrah","parentCompany":"Yarrah Organic Petfood","headquarters":"Harderwijk, Netherlands","markets":["Europe"],"category":"Premium Organic","priceRange":"$$$","popularProduct":"Organic Adult Chicken","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":12.0,"crudeFiberMax":3.5,"moistureMax":9.0,"caloriesPerCup":340,"caloriesPerKg":3400},"keyFeatures":["100% organic","Certified organic","Dutch brand","Sustainable"],"aafcoCompliant":true},
-    {"id":55,"name":"Almo Nature","parentCompany":"Almo Nature S.p.A.","headquarters":"Genova, Italy","markets":["Europe"],"category":"Premium","priceRange":"$$","popularProduct":"Holistic Adult Chicken & Rice Medium","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":14.0,"crudeFiberMax":3.5,"moistureMax":9.0,"caloriesPerCup":350,"caloriesPerKg":3500},"keyFeatures":["Italian brand","HFC human-grade","Natural ingredients","Sustainable"],"aafcoCompliant":true},
-    {"id":56,"name":"Schesir","parentCompany":"Agras Delic Srl","headquarters":"Bagnolo Cremasco, Italy","markets":["Europe"],"category":"Premium","priceRange":"$$","popularProduct":"Natural Selection Adult Chicken","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":14.0,"crudeFiberMax":3.0,"moistureMax":9.0,"caloriesPerCup":355,"caloriesPerKg":3550},"keyFeatures":["Italian quality","100% natural","Single protein","No GMO"],"aafcoCompliant":true},
-    {"id":57,"name":"Trainer Nova Foods","parentCompany":"Nova Foods Srl","headquarters":"Mariano Comense, Italy","markets":["Europe"],"category":"Premium","priceRange":"$$","popularProduct":"Natural Medium Adult Chicken","nutritionalProfile":{"crudeProteinMin":25.0,"crudeFatMin":15.0,"crudeFiberMax":2.5,"moistureMax":9.0,"caloriesPerCup":360,"caloriesPerKg":3600},"keyFeatures":["Italian brand","Natural ingredients","Single protein","No artificial additives"],"aafcoCompliant":true},
-    {"id":58,"name":"Nutram","parentCompany":"Nutram Pet Products","headquarters":"Elmira, Ontario, Canada","markets":["Canada","US"],"category":"Premium","priceRange":"$$$","popularProduct":"Sound Balanced Wellness Adult","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":15.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":380,"caloriesPerKg":3800},"keyFeatures":["Canadian made","Holistic nutrition","Optimum combinations","No artificial preservatives"],"aafcoCompliant":true},
-    {"id":59,"name":"Hagen Nutrience","parentCompany":"Rolf C. Hagen Inc.","headquarters":"Montreal, Quebec, Canada","markets":["Canada","US"],"category":"Premium","priceRange":"$$$","popularProduct":"SubZero Canadian Pacific","nutritionalProfile":{"crudeProteinMin":36.0,"crudeFatMin":18.0,"crudeFiberMax":5.0,"moistureMax":10.0,"caloriesPerCup":400,"caloriesPerKg":3800},"keyFeatures":["Canadian made","Freeze-dried raw pieces","Grain-free","No artificial preservatives"],"aafcoCompliant":true},
-    {"id":60,"name":"PLB 1st Choice","parentCompany":"PLB International","headquarters":"Boucherville, Quebec, Canada","markets":["Canada","US","Europe"],"category":"Premium","priceRange":"$$","popularProduct":"Adult Chicken","nutritionalProfile":{"crudeProteinMin":25.0,"crudeFatMin":14.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":365,"caloriesPerKg":3650},"keyFeatures":["Canadian family-owned","Premium nutrition","20+ countries","No corn or wheat"],"aafcoCompliant":true},
-    {"id":61,"name":"PetKind","parentCompany":"PetKind Pet Products","headquarters":"Chilliwack, British Columbia, Canada","markets":["Canada","US"],"category":"Premium","priceRange":"$$$","popularProduct":"Green Beef Tripe","nutritionalProfile":{"crudeProteinMin":30.0,"crudeFatMin":18.0,"crudeFiberMax":4.5,"moistureMax":10.0,"caloriesPerCup":390,"caloriesPerKg":3850},"keyFeatures":["Green tripe based","Canadian made","Single animal protein","Grain-free options"],"aafcoCompliant":true},
-    {"id":62,"name":"Hurraw","parentCompany":"Hurraw","headquarters":"Quebec, Canada","markets":["Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Dehydrated Raw Pork","nutritionalProfile":{"crudeProteinMin":35.0,"crudeFatMin":20.0,"crudeFiberMax":5.0,"moistureMax":8.0,"caloriesPerCup":450,"caloriesPerKg":4200},"keyFeatures":["Quebec brand","Dehydrated raw","Human-grade","All life stages"],"aafcoCompliant":true},
-    {"id":63,"name":"Wellness Complete Health","parentCompany":"WellPet LLC","headquarters":"Tewksbury, Massachusetts, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$","popularProduct":"Adult Chicken & Oatmeal","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":15.0,"crudeFiberMax":5.0,"moistureMax":10.0,"caloriesPerCup":353,"caloriesPerKg":3514},"keyFeatures":["Natural ingredients","No by-products","Omega fatty acids","Probiotics"],"aafcoCompliant":true},
-    {"id":64,"name":"Solid Gold","parentCompany":"Solid Gold Pet LLC","headquarters":"El Cajon, California, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Hund-N-Flocken Lamb & Rice","nutritionalProfile":{"crudeProteinMin":22.0,"crudeFatMin":10.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":332,"caloriesPerKg":3350},"keyFeatures":["Holistic since 1974","Superfoods","Digestive support","No artificial ingredients"],"aafcoCompliant":true},
-    {"id":65,"name":"Earthborn Holistic","parentCompany":"Midwestern Pet Foods","headquarters":"Evansville, Indiana, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$","popularProduct":"Primitive Natural","nutritionalProfile":{"crudeProteinMin":38.0,"crudeFatMin":20.0,"crudeFiberMax":3.0,"moistureMax":10.0,"caloriesPerCup":399,"caloriesPerKg":3890},"keyFeatures":["Holistic formulas","High protein","Grain-free options","Eco-friendly packaging"],"aafcoCompliant":true},
-    {"id":66,"name":"Annamaet","parentCompany":"Annamaet Petfoods","headquarters":"Sellersville, Pennsylvania, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Extra Formula","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":18.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":422,"caloriesPerKg":4040},"keyFeatures":["Family-owned","Science-based formulas","Working dog nutrition","No wheat corn soy"],"aafcoCompliant":true},
-    {"id":67,"name":"Spot & Tango","parentCompany":"Spot & Tango","headquarters":"New York, New York, USA","markets":["US"],"category":"Super-Premium","priceRange":"$$$$","popularProduct":"UnKibble Beef & Barley","nutritionalProfile":{"crudeProteinMin":40.0,"crudeFatMin":20.0,"crudeFiberMax":3.5,"moistureMax":7.0,"caloriesPerCup":480,"caloriesPerKg":4500},"keyFeatures":["Fresh food delivery","Human-grade","Gently dried","Personalized"],"aafcoCompliant":true},
-    {"id":68,"name":"Nom Nom","parentCompany":"NomNomNow Inc.","headquarters":"Nashville, Tennessee, USA","markets":["US"],"category":"Super-Premium Fresh","priceRange":"$$$$","popularProduct":"Beef Mash","nutritionalProfile":{"crudeProteinMin":35.0,"crudeFatMin":20.0,"crudeFiberMax":1.5,"moistureMax":63.0,"caloriesPerCup":470,"caloriesPerKg":1850},"keyFeatures":["Restaurant-quality","Portion controlled","Board-certified nutritionist formulated","Fresh"],"aafcoCompliant":true},
-    {"id":69,"name":"JustFoodForDogs","parentCompany":"JustFoodForDogs","headquarters":"Los Angeles, California, USA","markets":["US"],"category":"Super-Premium Fresh","priceRange":"$$$$","popularProduct":"Beef & Russet Potato","nutritionalProfile":{"crudeProteinMin":19.0,"crudeFatMin":6.0,"crudeFiberMax":0.5,"moistureMax":65.0,"caloriesPerCup":200,"caloriesPerKg":1500},"keyFeatures":["Fresh cooked","Human-grade USDA","Veterinary nutritionist formulated","Restaurant kitchens"],"aafcoCompliant":true},
-    {"id":70,"name":"Jinx","parentCompany":"Jinx Inc.","headquarters":"Los Angeles, California, USA","markets":["US"],"category":"Premium","priceRange":"$$","popularProduct":"Salmon Brown Rice & Sweet Potato","nutritionalProfile":{"crudeProteinMin":28.0,"crudeFatMin":12.0,"crudeFiberMax":5.0,"moistureMax":10.0,"caloriesPerCup":350,"caloriesPerKg":3500},"keyFeatures":["Direct-to-consumer","Clean ingredients","No fillers","Modern branding"],"aafcoCompliant":true},
-    {"id":71,"name":"Sundays","parentCompany":"Sundays for Dogs","headquarters":"New York, New York, USA","markets":["US"],"category":"Super-Premium","priceRange":"$$$$","popularProduct":"Beef Recipe","nutritionalProfile":{"crudeProteinMin":35.0,"crudeFatMin":17.0,"crudeFiberMax":5.0,"moistureMax":8.0,"caloriesPerCup":400,"caloriesPerKg":4000},"keyFeatures":["Air-dried","Human-grade USDA","90% meat","No artificial ingredients"],"aafcoCompliant":true},
-    {"id":72,"name":"Halo","parentCompany":"Halo Pets","headquarters":"Tampa, Florida, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Holistic Adult Chicken Recipe","nutritionalProfile":{"crudeProteinMin":27.0,"crudeFatMin":15.0,"crudeFiberMax":5.0,"moistureMax":10.0,"caloriesPerCup":344,"caloriesPerKg":3445},"keyFeatures":["Whole meat first","No meat meal","Sustainable","Plant-based options"],"aafcoCompliant":true},
-    {"id":73,"name":"Nature's Logic","parentCompany":"Nature's Logic","headquarters":"Lincoln, Nebraska, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Canine Chicken Meal Feast","nutritionalProfile":{"crudeProteinMin":36.0,"crudeFatMin":14.5,"crudeFiberMax":5.5,"moistureMax":10.0,"caloriesPerCup":379,"caloriesPerKg":3595},"keyFeatures":["No synthetic vitamins","100% natural","Concentrated meat protein","Whole food nutrition"],"aafcoCompliant":true},
-    {"id":74,"name":"Ziwi Peak","parentCompany":"ZIWI","headquarters":"Dannevirke, New Zealand","markets":["US","Canada","Europe"],"category":"Super-Premium","priceRange":"$$$$","popularProduct":"Air-Dried Beef","nutritionalProfile":{"crudeProteinMin":38.0,"crudeFatMin":30.0,"crudeFiberMax":2.0,"moistureMax":14.0,"caloriesPerCup":560,"caloriesPerKg":5600},"keyFeatures":["New Zealand sourced","96% meat content","Air-dried","Free-range grass-fed"],"aafcoCompliant":true},
-    {"id":75,"name":"K9 Natural","parentCompany":"K9 Natural Foods","headquarters":"Christchurch, New Zealand","markets":["US","Canada","Europe"],"category":"Super-Premium Raw","priceRange":"$$$$","popularProduct":"Freeze Dried Beef Feast","nutritionalProfile":{"crudeProteinMin":44.0,"crudeFatMin":34.0,"crudeFiberMax":2.0,"moistureMax":8.0,"caloriesPerCup":600,"caloriesPerKg":5800},"keyFeatures":["New Zealand sourced","Raw freeze-dried","Grass-fed free-range","90%+ meat"],"aafcoCompliant":true},
-    {"id":76,"name":"Primal Pet Foods","parentCompany":"Primal Pet Foods","headquarters":"Fairfield, California, USA","markets":["US","Canada"],"category":"Super-Premium Raw","priceRange":"$$$$","popularProduct":"Frozen Raw Chicken Formula","nutritionalProfile":{"crudeProteinMin":16.0,"crudeFatMin":10.0,"crudeFiberMax":1.0,"moistureMax":65.0,"caloriesPerCup":200,"caloriesPerKg":1600},"keyFeatures":["Raw frozen/freeze-dried","Antibiotic-free meats","Organic produce","Human-grade"],"aafcoCompliant":true},
-    {"id":77,"name":"Answers Pet Food","parentCompany":"Answers Pet Food","headquarters":"Wayne, Pennsylvania, USA","markets":["US"],"category":"Super-Premium Raw","priceRange":"$$$$","popularProduct":"Detailed Beef Formula","nutritionalProfile":{"crudeProteinMin":13.0,"crudeFatMin":10.0,"crudeFiberMax":1.0,"moistureMax":70.0,"caloriesPerCup":170,"caloriesPerKg":1400},"keyFeatures":["Fermented raw","Whole prey diet","Pastured animals","Probiotic-rich"],"aafcoCompliant":true},
-    {"id":78,"name":"Kirkland Signature Nature's Domain","parentCompany":"Costco Wholesale","headquarters":"Issaquah, Washington, USA","markets":["US","Canada"],"category":"Value Premium","priceRange":"$$","popularProduct":"Salmon Meal & Sweet Potato","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":14.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":355,"caloriesPerKg":3550},"keyFeatures":["Costco exclusive","Diamond Pet Foods made","Great value","Premium quality"],"aafcoCompliant":true},
-    {"id":79,"name":"Purina Beneful","parentCompany":"Nestlé Purina PetCare","headquarters":"St. Louis, Missouri, USA","markets":["US","Canada"],"category":"Mid-range","priceRange":"$$","popularProduct":"Originals with Farm-Raised Beef","nutritionalProfile":{"crudeProteinMin":23.0,"crudeFatMin":10.0,"crudeFiberMax":4.0,"moistureMax":14.0,"caloriesPerCup":308,"caloriesPerKg":3116},"keyFeatures":["Colorful kibble","Real meat","Visible veggies","Complete nutrition"],"aafcoCompliant":true},
-    {"id":80,"name":"Cesar","parentCompany":"Mars, Inc.","headquarters":"McLean, Virginia, USA","markets":["US","Canada","Europe"],"category":"Premium Wet","priceRange":"$$","popularProduct":"Classic Loaf in Sauce Filet Mignon","nutritionalProfile":{"crudeProteinMin":9.0,"crudeFatMin":6.0,"crudeFiberMax":1.0,"moistureMax":78.0,"caloriesPerCup":100,"caloriesPerKg":890},"keyFeatures":["Small dog specialist","Gourmet wet food","Single serve trays","Real meat"],"aafcoCompliant":true},
-    {"id":81,"name":"Greenies","parentCompany":"Mars, Inc.","headquarters":"Franklin, Tennessee, USA","markets":["US","Canada","Europe"],"category":"Dental Treats","priceRange":"$$","popularProduct":"Original Dental Treats","nutritionalProfile":{"crudeProteinMin":30.0,"crudeFatMin":8.0,"crudeFiberMax":4.0,"moistureMax":12.0,"caloriesPerCup":340,"caloriesPerKg":3400},"keyFeatures":["VOHC accepted","Dental health","Natural ingredients","Easy to digest"],"aafcoCompliant":false},
-    {"id":82,"name":"Weruva","parentCompany":"Weruva International","headquarters":"US offices","markets":["US","Canada"],"category":"Premium Wet","priceRange":"$$$","popularProduct":"Paw Lickin Chicken","nutritionalProfile":{"crudeProteinMin":10.0,"crudeFatMin":1.5,"crudeFiberMax":0.5,"moistureMax":85.0,"caloriesPerCup":65,"caloriesPerKg":650},"keyFeatures":["Wet food specialist","Human-style foods","BPA-free cans","Real ingredients visible"],"aafcoCompliant":true},
-    {"id":83,"name":"Holistic Select","parentCompany":"WellPet LLC","headquarters":"Tewksbury, Massachusetts, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$","popularProduct":"Adult Chicken & Brown Rice","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":15.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":410,"caloriesPerKg":3912},"keyFeatures":["Digestive health focus","Natural fiber","Prebiotics & probiotics","Whole body health"],"aafcoCompliant":true},
-    {"id":84,"name":"I and Love and You","parentCompany":"I and Love and You","headquarters":"Boulder, Colorado, USA","markets":["US"],"category":"Premium","priceRange":"$$","popularProduct":"Baked & Saucy Chicken + Sweet Potato","nutritionalProfile":{"crudeProteinMin":23.0,"crudeFatMin":14.0,"crudeFiberMax":5.5,"moistureMax":11.0,"caloriesPerCup":320,"caloriesPerKg":3200},"keyFeatures":["Natural ingredients","No artificial anything","Grain-free options","Baked formulas"],"aafcoCompliant":true},
-    {"id":85,"name":"Redbarn","parentCompany":"Redbarn Pet Products","headquarters":"Long Beach, California, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$","popularProduct":"Grain Free Land Recipe","nutritionalProfile":{"crudeProteinMin":28.0,"crudeFatMin":15.0,"crudeFiberMax":5.0,"moistureMax":10.0,"caloriesPerCup":352,"caloriesPerKg":3520},"keyFeatures":["Protein focused","Air-dried options","Natural treats","US sourced"],"aafcoCompliant":true},
-    {"id":86,"name":"Whole Earth Farms","parentCompany":"Merrick Pet Care","headquarters":"Amarillo, Texas, USA","markets":["US","Canada"],"category":"Mid-range","priceRange":"$$","popularProduct":"Grain Free Chicken & Turkey","nutritionalProfile":{"crudeProteinMin":25.0,"crudeFatMin":13.0,"crudeFiberMax":5.0,"moistureMax":11.0,"caloriesPerCup":320,"caloriesPerKg":3300},"keyFeatures":["Affordable natural","No artificial ingredients","Grain-free options","Real meat first"],"aafcoCompliant":true},
-    {"id":87,"name":"Smack Pet Food","parentCompany":"Smack Pet Food","headquarters":"Winnipeg, Manitoba, Canada","markets":["Canada","US"],"category":"Super-Premium","priceRange":"$$$$","popularProduct":"Organic Raw Dehydrated Very Berry Chicken","nutritionalProfile":{"crudeProteinMin":40.0,"crudeFatMin":28.0,"crudeFiberMax":6.0,"moistureMax":6.0,"caloriesPerCup":500,"caloriesPerKg":4800},"keyFeatures":["Canadian dehydrated raw","Organic certified","Human-grade","Cold-pressed"],"aafcoCompliant":true},
-    {"id":88,"name":"Rollover Premium Pet Food","parentCompany":"Rollover Premium Pet Food","headquarters":"Edmonton, Alberta, Canada","markets":["Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Semi-Moist Beef Roll","nutritionalProfile":{"crudeProteinMin":15.0,"crudeFatMin":8.0,"crudeFiberMax":2.5,"moistureMax":32.0,"caloriesPerCup":280,"caloriesPerKg":2800},"keyFeatures":["Canadian semi-moist","Human-grade ingredients","Small batch","Natural preservation"],"aafcoCompliant":true},
-    {"id":89,"name":"Rocco Zooplus","parentCompany":"Zooplus AG","headquarters":"Munich, Germany","markets":["Europe"],"category":"Mid-range Wet","priceRange":"$$","popularProduct":"Classic Beef & Chicken","nutritionalProfile":{"crudeProteinMin":11.0,"crudeFatMin":6.0,"crudeFiberMax":0.5,"moistureMax":75.0,"caloriesPerCup":100,"caloriesPerKg":900},"keyFeatures":["European exclusive","Wet food specialist","High meat content","Good value"],"aafcoCompliant":true},
-    {"id":90,"name":"Partner in Pet Food","parentCompany":"Partner in Pet Food","headquarters":"Hungary","markets":["Europe"],"category":"Private Label","priceRange":"$$","popularProduct":"Various private label brands","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":12.0,"crudeFiberMax":3.5,"moistureMax":10.0,"caloriesPerCup":340,"caloriesPerKg":3400},"keyFeatures":["European private label leader","38 countries","9 production facilities","500k tons/year"],"aafcoCompliant":true},
-    {"id":91,"name":"C & D Foods","parentCompany":"C & D Foods","headquarters":"Ireland","markets":["Europe"],"category":"Private Label","priceRange":"$$","popularProduct":"Various private label brands","nutritionalProfile":{"crudeProteinMin":23.0,"crudeFatMin":11.0,"crudeFiberMax":3.0,"moistureMax":10.0,"caloriesPerCup":330,"caloriesPerKg":3300},"keyFeatures":["European private label manufacturer","675k+ tons/year","Multiple formats","Wet and dry"],"aafcoCompliant":true},
-    {"id":92,"name":"Deuerer Vitakraft","parentCompany":"Deuerer GmbH","headquarters":"Bremen, Germany","markets":["Europe"],"category":"Mid-range","priceRange":"$$","popularProduct":"Vitakraft Premium Adult","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":13.0,"crudeFiberMax":3.0,"moistureMax":10.0,"caloriesPerCup":350,"caloriesPerKg":3500},"keyFeatures":["German manufacturer","Multiple European brands","Quality focused","Wide distribution"],"aafcoCompliant":true},
-    {"id":93,"name":"Fressnapf Real Nature","parentCompany":"Fressnapf Holding","headquarters":"Krefeld, Germany","markets":["Europe"],"category":"Retail Private Label","priceRange":"$$","popularProduct":"Wilderness Adult","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":14.0,"crudeFiberMax":3.0,"moistureMax":10.0,"caloriesPerCup":360,"caloriesPerKg":3600},"keyFeatures":["Fressnapf exclusive","German quality","High meat content","Grain-free options"],"aafcoCompliant":true},
-    {"id":94,"name":"Elmira Pet Products","parentCompany":"Elmira Pet Products","headquarters":"Elmira, Ontario, Canada","markets":["Canada"],"category":"Private Label","priceRange":"$$","popularProduct":"Various private label brands","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":13.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":350,"caloriesPerKg":3500},"keyFeatures":["Largest Canadian private label","Therapeutic to economy","200+ employees","Custom formulations"],"aafcoCompliant":true},
-    {"id":95,"name":"Faim Museau","parentCompany":"Faim Museau","headquarters":"Quebec, Canada","markets":["Canada"],"category":"Premium Raw","priceRange":"$$$","popularProduct":"Raw Natural Meals","nutritionalProfile":{"crudeProteinMin":14.0,"crudeFatMin":10.0,"crudeFiberMax":2.0,"moistureMax":65.0,"caloriesPerCup":180,"caloriesPerKg":1600},"keyFeatures":["Quebec raw specialist","BARF diet","Biologically appropriate","Since 2008"],"aafcoCompliant":true},
-    {"id":96,"name":"Dr. Tim's","parentCompany":"Dr. Tim's Pet Food Company","headquarters":"Interlochen, Michigan, USA","markets":["US","Canada"],"category":"Premium","priceRange":"$$$","popularProduct":"Kinesis Formula","nutritionalProfile":{"crudeProteinMin":28.0,"crudeFatMin":18.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":416,"caloriesPerKg":4080},"keyFeatures":["Vet-developed","Performance nutrition","No artificial ingredients","Family-owned"],"aafcoCompliant":true},
-    {"id":97,"name":"Sportmix","parentCompany":"Midwestern Pet Foods","headquarters":"Evansville, Indiana, USA","markets":["US"],"category":"Economy","priceRange":"$","popularProduct":"Sportmix Original","nutritionalProfile":{"crudeProteinMin":24.0,"crudeFatMin":13.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":320,"caloriesPerKg":3250},"keyFeatures":["Budget friendly","Active dog formula","Corn-based energy","Basic nutrition"],"aafcoCompliant":true},
-    {"id":98,"name":"Milk-Bone","parentCompany":"J.M. Smucker Company","headquarters":"Orrville, Ohio, USA","markets":["US","Canada"],"category":"Treats","priceRange":"$","popularProduct":"Original Biscuits","nutritionalProfile":{"crudeProteinMin":18.0,"crudeFatMin":8.0,"crudeFiberMax":3.0,"moistureMax":12.0,"caloriesPerCup":300,"caloriesPerKg":3000},"keyFeatures":["Iconic treat brand","Since 1908","12 vitamins & minerals","Crunchy biscuits"],"aafcoCompliant":false},
-    {"id":99,"name":"Wholehearted (Petco)","parentCompany":"Petco","headquarters":"San Diego, California, USA","markets":["US"],"category":"Mid-range","priceRange":"$$","popularProduct":"Grain Free Beef & Pea Recipe","nutritionalProfile":{"crudeProteinMin":30.0,"crudeFatMin":14.0,"crudeFiberMax":5.0,"moistureMax":10.0,"caloriesPerCup":360,"caloriesPerKg":3600},"keyFeatures":["Petco exclusive","Grain-free options","Real meat first","Affordable quality"],"aafcoCompliant":true},
-    {"id":100,"name":"Authority (PetSmart)","parentCompany":"PetSmart","headquarters":"Phoenix, Arizona, USA","markets":["US","Canada"],"category":"Mid-range","priceRange":"$$","popularProduct":"Chicken & Rice Formula","nutritionalProfile":{"crudeProteinMin":26.0,"crudeFatMin":14.0,"crudeFiberMax":4.0,"moistureMax":10.0,"caloriesPerCup":350,"caloriesPerKg":3500},"keyFeatures":["PetSmart exclusive","Quality ingredients","Multiple formulas","Affordable premium"],"aafcoCompliant":true}
+    {
+      "id": 1,
+      "name": "Purina Pro Plan",
+      "parentCompany": "Nestlé Purina PetCare",
+      "headquarters": "St. Louis, Missouri, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Complete Essentials Chicken & Rice",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 16.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 12.0,
+        "caloriesPerCup": 378,
+        "caloriesPerKg": 3700
+      },
+      "keyFeatures": [
+        "Live probiotics",
+        "Real meat first ingredient",
+        "Omega fatty acids",
+        "AAFCO compliant"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 2,
+      "name": "Royal Canin",
+      "parentCompany": "Mars, Inc.",
+      "headquarters": "Aimargues, France",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Medium Adult",
+      "nutritionalProfile": {
+        "crudeProteinMin": 23.0,
+        "crudeFatMin": 12.0,
+        "crudeFiberMax": 3.4,
+        "moistureMax": 10.5,
+        "caloriesPerCup": 340,
+        "caloriesPerKg": 3616
+      },
+      "keyFeatures": [
+        "Breed-specific formulas",
+        "Veterinary-developed",
+        "Tailored nutrition",
+        "60+ breed options"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 3,
+      "name": "Hill's Science Diet",
+      "parentCompany": "Colgate-Palmolive",
+      "headquarters": "Topeka, Kansas, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Adult Chicken & Barley Recipe",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 15.5,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 363,
+        "caloriesPerKg": 3700
+      },
+      "keyFeatures": [
+        "Veterinary recommended",
+        "Natural ingredients",
+        "Life stage nutrition",
+        "Clinically proven"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 4,
+      "name": "Blue Buffalo",
+      "parentCompany": "General Mills",
+      "headquarters": "Wilton, Connecticut, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Life Protection Formula Chicken & Brown Rice",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 357,
+        "caloriesPerKg": 3599
+      },
+      "keyFeatures": [
+        "Real meat first",
+        "LifeSource Bits",
+        "No poultry by-products",
+        "Natural ingredients"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 5,
+      "name": "Pedigree",
+      "parentCompany": "Mars, Inc.",
+      "headquarters": "McLean, Virginia, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Economy",
+      "priceRange": "$",
+      "popularProduct": "Complete Nutrition Roasted Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 21.0,
+        "crudeFatMin": 10.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 12.0,
+        "caloriesPerCup": 320,
+        "caloriesPerKg": 3294
+      },
+      "keyFeatures": [
+        "Affordable",
+        "Whole grains",
+        "Omega-6 fatty acids",
+        "Complete nutrition"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 6,
+      "name": "IAMS",
+      "parentCompany": "Mars, Inc.",
+      "headquarters": "Lewisburg, Ohio, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Mid-range",
+      "priceRange": "$$",
+      "popularProduct": "ProActive Health Adult",
+      "nutritionalProfile": {
+        "crudeProteinMin": 25.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 340,
+        "caloriesPerKg": 3520
+      },
+      "keyFeatures": [
+        "Real chicken first",
+        "Prebiotics",
+        "Tailored fiber blend",
+        "Skin & coat support"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 7,
+      "name": "Orijen",
+      "parentCompany": "Champion Petfoods",
+      "headquarters": "Edmonton, Alberta, Canada",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Super-Premium",
+      "priceRange": "$$$$",
+      "popularProduct": "Original",
+      "nutritionalProfile": {
+        "crudeProteinMin": 38.0,
+        "crudeFatMin": 18.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 12.0,
+        "caloriesPerCup": 473,
+        "caloriesPerKg": 3940
+      },
+      "keyFeatures": [
+        "85% animal ingredients",
+        "WholePrey ratios",
+        "Fresh/raw meats",
+        "Biologically appropriate"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 8,
+      "name": "Acana",
+      "parentCompany": "Champion Petfoods",
+      "headquarters": "Edmonton, Alberta, Canada",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Wholesome Grains Red Meat",
+      "nutritionalProfile": {
+        "crudeProteinMin": 31.0,
+        "crudeFatMin": 17.0,
+        "crudeFiberMax": 6.0,
+        "moistureMax": 12.0,
+        "caloriesPerCup": 371,
+        "caloriesPerKg": 3550
+      },
+      "keyFeatures": [
+        "60-75% animal ingredients",
+        "Regional ingredients",
+        "WholePrey diet",
+        "No rendered meats"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 9,
+      "name": "Taste of the Wild",
+      "parentCompany": "Diamond Pet Foods",
+      "headquarters": "Meta, Missouri, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "High Prairie Canine Recipe",
+      "nutritionalProfile": {
+        "crudeProteinMin": 28.0,
+        "crudeFatMin": 18.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 370,
+        "caloriesPerKg": 3719
+      },
+      "keyFeatures": [
+        "Novel proteins",
+        "Grain-free options",
+        "Probiotics",
+        "Antioxidants"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 10,
+      "name": "Wellness Core",
+      "parentCompany": "WellPet LLC",
+      "headquarters": "Tewksbury, Massachusetts, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Original Deboned Turkey",
+      "nutritionalProfile": {
+        "crudeProteinMin": 34.0,
+        "crudeFatMin": 16.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 360,
+        "caloriesPerKg": 3607
+      },
+      "keyFeatures": [
+        "Grain-free",
+        "High protein",
+        "Probiotics",
+        "Omega fatty acids"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 11,
+      "name": "Merrick",
+      "parentCompany": "Nestlé Purina PetCare",
+      "headquarters": "Amarillo, Texas, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Real Texas Beef + Sweet Potato",
+      "nutritionalProfile": {
+        "crudeProteinMin": 34.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 11.0,
+        "caloriesPerCup": 380,
+        "caloriesPerKg": 3510
+      },
+      "keyFeatures": [
+        "Deboned meat first",
+        "Grain-free options",
+        "Made in USA",
+        "No artificial ingredients"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 12,
+      "name": "Nutro",
+      "parentCompany": "Mars, Inc.",
+      "headquarters": "Franklin, Tennessee, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Wholesome Essentials Adult Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 336,
+        "caloriesPerKg": 3456
+      },
+      "keyFeatures": [
+        "Non-GMO ingredients",
+        "Real chicken first",
+        "Natural fiber",
+        "No artificial preservatives"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 13,
+      "name": "Purina One",
+      "parentCompany": "Nestlé Purina PetCare",
+      "headquarters": "St. Louis, Missouri, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Mid-range",
+      "priceRange": "$$",
+      "popularProduct": "SmartBlend True Instinct",
+      "nutritionalProfile": {
+        "crudeProteinMin": 30.0,
+        "crudeFatMin": 17.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 12.0,
+        "caloriesPerCup": 350,
+        "caloriesPerKg": 3600
+      },
+      "keyFeatures": [
+        "Real meat first",
+        "Omega-6 fatty acids",
+        "Glucosamine",
+        "Natural sources"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 14,
+      "name": "Eukanuba",
+      "parentCompany": "Mars, Inc.",
+      "headquarters": "Lewisburg, Ohio, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Adult Medium Breed",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 16.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 358,
+        "caloriesPerKg": 3730
+      },
+      "keyFeatures": [
+        "Animal protein first",
+        "3D DentaDefense",
+        "Optimal digestion",
+        "Healthy joints"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 15,
+      "name": "Natural Balance",
+      "parentCompany": "J.M. Smucker Company",
+      "headquarters": "Burbank, California, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "L.I.D. Limited Ingredient Diets",
+      "nutritionalProfile": {
+        "crudeProteinMin": 22.0,
+        "crudeFatMin": 12.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 340,
+        "caloriesPerKg": 3350
+      },
+      "keyFeatures": [
+        "Limited ingredients",
+        "Novel proteins",
+        "Grain-free options",
+        "Sensitive stomach"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 16,
+      "name": "Canidae",
+      "parentCompany": "Canidae Pet Food Company",
+      "headquarters": "San Luis Obispo, California, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "All Life Stages Multi-Protein",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 14.5,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 469,
+        "caloriesPerKg": 3885
+      },
+      "keyFeatures": [
+        "Multiple meat proteins",
+        "Whole grains",
+        "Probiotics",
+        "All life stages"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 17,
+      "name": "The Farmer's Dog",
+      "parentCompany": "The Farmer's Dog Inc.",
+      "headquarters": "New York, New York, USA",
+      "markets": ["US"],
+      "category": "Super-Premium Fresh",
+      "priceRange": "$$$$",
+      "popularProduct": "Beef Recipe",
+      "nutritionalProfile": {
+        "crudeProteinMin": 33.0,
+        "crudeFatMin": 19.0,
+        "crudeFiberMax": 1.5,
+        "moistureMax": 65.0,
+        "caloriesPerCup": 450,
+        "caloriesPerKg": 1800
+      },
+      "keyFeatures": [
+        "Human-grade ingredients",
+        "Fresh delivery",
+        "Personalized portions",
+        "USDA certified"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 18,
+      "name": "Freshpet",
+      "parentCompany": "Freshpet Inc.",
+      "headquarters": "Secaucus, New Jersey, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Premium Fresh",
+      "priceRange": "$$$",
+      "popularProduct": "Select Roasted Meals",
+      "nutritionalProfile": {
+        "crudeProteinMin": 25.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 2.0,
+        "moistureMax": 69.0,
+        "caloriesPerCup": 425,
+        "caloriesPerKg": 1450
+      },
+      "keyFeatures": [
+        "Refrigerated fresh food",
+        "Real meat and vegetables",
+        "No preservatives",
+        "Steam cooked"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 19,
+      "name": "Nulo",
+      "parentCompany": "Nulo Pet Food",
+      "headquarters": "Austin, Texas, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Freestyle Adult Salmon & Peas",
+      "nutritionalProfile": {
+        "crudeProteinMin": 30.0,
+        "crudeFatMin": 17.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 393,
+        "caloriesPerKg": 3890
+      },
+      "keyFeatures": [
+        "High meat content",
+        "Low glycemic",
+        "Grain-free options",
+        "BC30 Probiotics"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 20,
+      "name": "Ollie",
+      "parentCompany": "Ollie Pets Inc.",
+      "headquarters": "New York, New York, USA",
+      "markets": ["US"],
+      "category": "Super-Premium Fresh",
+      "priceRange": "$$$$",
+      "popularProduct": "Beef Dish",
+      "nutritionalProfile": {
+        "crudeProteinMin": 32.0,
+        "crudeFatMin": 18.0,
+        "crudeFiberMax": 2.0,
+        "moistureMax": 60.0,
+        "caloriesPerCup": 440,
+        "caloriesPerKg": 1900
+      },
+      "keyFeatures": [
+        "Human-grade",
+        "Personalized meals",
+        "Fresh delivery",
+        "Vet-designed"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 21,
+      "name": "Victor",
+      "parentCompany": "Mid America Pet Food",
+      "headquarters": "Mount Pleasant, Texas, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Hi-Pro Plus",
+      "nutritionalProfile": {
+        "crudeProteinMin": 30.0,
+        "crudeFatMin": 20.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 405,
+        "caloriesPerKg": 3820
+      },
+      "keyFeatures": [
+        "High protein",
+        "Multiple meat proteins",
+        "VPRO blend",
+        "Gluten free"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 22,
+      "name": "Diamond Naturals",
+      "parentCompany": "Diamond Pet Foods",
+      "headquarters": "Meta, Missouri, USA",
+      "markets": ["US", "Canada"],
+      "category": "Mid-range",
+      "priceRange": "$$",
+      "popularProduct": "Adult Chicken & Rice",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 16.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 339,
+        "caloriesPerKg": 3544
+      },
+      "keyFeatures": [
+        "Real meat first",
+        "Probiotics",
+        "Superfoods",
+        "No corn wheat soy"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 23,
+      "name": "Stella & Chewy's",
+      "parentCompany": "Stella & Chewy's",
+      "headquarters": "Oak Creek, Wisconsin, USA",
+      "markets": ["US", "Canada"],
+      "category": "Super-Premium",
+      "priceRange": "$$$$",
+      "popularProduct": "Freeze-Dried Raw Dinner Patties",
+      "nutritionalProfile": {
+        "crudeProteinMin": 42.0,
+        "crudeFatMin": 25.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 5.0,
+        "caloriesPerCup": 540,
+        "caloriesPerKg": 4500
+      },
+      "keyFeatures": [
+        "Raw freeze-dried",
+        "95% meat/organs/bone",
+        "Organic fruits & vegetables",
+        "Grass-fed"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 24,
+      "name": "Zignature",
+      "parentCompany": "Pets Global Inc.",
+      "headquarters": "Irwindale, California, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Lamb Limited Ingredient",
+      "nutritionalProfile": {
+        "crudeProteinMin": 30.0,
+        "crudeFatMin": 16.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 400,
+        "caloriesPerKg": 3965
+      },
+      "keyFeatures": [
+        "Single protein",
+        "Grain-free",
+        "No chicken corn wheat soy",
+        "Limited ingredient"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 25,
+      "name": "Fromm Family",
+      "parentCompany": "Fromm Family Foods",
+      "headquarters": "Mequon, Wisconsin, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Four-Star Nutritionals Duck & Sweet Potato",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 18.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 404,
+        "caloriesPerKg": 3950
+      },
+      "keyFeatures": [
+        "Family-owned since 1904",
+        "Small batch",
+        "Multiple protein sources",
+        "Probiotics"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 26,
+      "name": "Instinct",
+      "parentCompany": "Nature's Variety",
+      "headquarters": "Lincoln, Nebraska, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Original Grain-Free Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 37.0,
+        "crudeFatMin": 20.5,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 9.0,
+        "caloriesPerCup": 451,
+        "caloriesPerKg": 4251
+      },
+      "keyFeatures": [
+        "Raw coated kibble",
+        "High animal protein",
+        "Grain-free",
+        "Cage-free chicken"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 27,
+      "name": "Purina Dog Chow",
+      "parentCompany": "Nestlé Purina PetCare",
+      "headquarters": "St. Louis, Missouri, USA",
+      "markets": ["US", "Canada"],
+      "category": "Economy",
+      "priceRange": "$",
+      "popularProduct": "Complete Adult Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 23.0,
+        "crudeFatMin": 10.0,
+        "crudeFiberMax": 4.5,
+        "moistureMax": 12.0,
+        "caloriesPerCup": 310,
+        "caloriesPerKg": 3200
+      },
+      "keyFeatures": [
+        "Affordable",
+        "Real chicken",
+        "Whole grains",
+        "100% complete nutrition"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 28,
+      "name": "Rachael Ray Nutrish",
+      "parentCompany": "J.M. Smucker Company",
+      "headquarters": "Orrville, Ohio, USA",
+      "markets": ["US", "Canada"],
+      "category": "Mid-range",
+      "priceRange": "$$",
+      "popularProduct": "Real Chicken & Veggies Recipe",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 321,
+        "caloriesPerKg": 3350
+      },
+      "keyFeatures": [
+        "Real meat first",
+        "No poultry by-products",
+        "Natural ingredients",
+        "Celebrity brand"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 29,
+      "name": "American Journey",
+      "parentCompany": "Chewy",
+      "headquarters": "Dania Beach, Florida, USA",
+      "markets": ["US"],
+      "category": "Mid-range",
+      "priceRange": "$$",
+      "popularProduct": "Salmon & Sweet Potato",
+      "nutritionalProfile": {
+        "crudeProteinMin": 32.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 350,
+        "caloriesPerKg": 3500
+      },
+      "keyFeatures": [
+        "Exclusive to Chewy",
+        "Real meat first",
+        "Grain-free options",
+        "Affordable premium"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 30,
+      "name": "Open Farm",
+      "parentCompany": "Open Farm Inc.",
+      "headquarters": "Toronto, Ontario, Canada",
+      "markets": ["US", "Canada"],
+      "category": "Super-Premium",
+      "priceRange": "$$$$",
+      "popularProduct": "Homestead Turkey & Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 30.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 4.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 384,
+        "caloriesPerKg": 3750
+      },
+      "keyFeatures": [
+        "Ethically sourced",
+        "Humanely raised",
+        "Traceable ingredients",
+        "Certified Humane"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 31,
+      "name": "FirstMate",
+      "parentCompany": "FirstMate Pet Foods",
+      "headquarters": "Chilliwack, British Columbia, Canada",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Pacific Ocean Fish",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 360,
+        "caloriesPerKg": 3536
+      },
+      "keyFeatures": [
+        "Canadian made",
+        "Single protein",
+        "Wild-caught fish",
+        "Limited ingredient"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 32,
+      "name": "Petcurean Go! Solutions",
+      "parentCompany": "Petcurean Pet Nutrition",
+      "headquarters": "Chilliwack, British Columbia, Canada",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Carnivore Chicken Turkey Duck",
+      "nutritionalProfile": {
+        "crudeProteinMin": 34.0,
+        "crudeFatMin": 16.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 446,
+        "caloriesPerKg": 4198
+      },
+      "keyFeatures": [
+        "Premium quality",
+        "Grain-free options",
+        "Fresh meat",
+        "Canadian company"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 33,
+      "name": "Now Fresh",
+      "parentCompany": "Petcurean Pet Nutrition",
+      "headquarters": "Chilliwack, British Columbia, Canada",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Grain Free Adult Recipe",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 16.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 393,
+        "caloriesPerKg": 3702
+      },
+      "keyFeatures": [
+        "100% fresh meat",
+        "Zero rendered meats",
+        "Zero grains",
+        "Zero artificial preservatives"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 34,
+      "name": "Horizon Pet Nutrition",
+      "parentCompany": "Horizon Pet Nutrition",
+      "headquarters": "Rosthern, Saskatchewan, Canada",
+      "markets": ["Canada", "US"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Legacy Adult",
+      "nutritionalProfile": {
+        "crudeProteinMin": 30.0,
+        "crudeFatMin": 18.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 450,
+        "caloriesPerKg": 4270
+      },
+      "keyFeatures": [
+        "Canadian family-owned",
+        "Prairie sourced",
+        "No corn wheat soy",
+        "Single protein options"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 35,
+      "name": "Carna4",
+      "parentCompany": "Carna4",
+      "headquarters": "Toronto, Ontario, Canada",
+      "markets": ["US", "Canada"],
+      "category": "Super-Premium",
+      "priceRange": "$$$$",
+      "popularProduct": "Hand Crafted Dog Food Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 27.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 411,
+        "caloriesPerKg": 3860
+      },
+      "keyFeatures": [
+        "No synthetic vitamins",
+        "Organic sprouted seeds",
+        "Human-grade",
+        "Baked not extruded"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 36,
+      "name": "Farmina",
+      "parentCompany": "Farmina Pet Foods",
+      "headquarters": "Nola, Italy",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Super-Premium",
+      "priceRange": "$$$$",
+      "popularProduct": "N&D Prime Chicken & Pomegranate",
+      "nutritionalProfile": {
+        "crudeProteinMin": 30.0,
+        "crudeFatMin": 18.0,
+        "crudeFiberMax": 2.5,
+        "moistureMax": 9.0,
+        "caloriesPerCup": 420,
+        "caloriesPerKg": 4140
+      },
+      "keyFeatures": [
+        "Italian made",
+        "Low grain/grain-free",
+        "70% animal protein",
+        "European standards"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 37,
+      "name": "Brit Care",
+      "parentCompany": "VAFO Group",
+      "headquarters": "Chodov, Czech Republic",
+      "markets": ["Europe", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Sustainable Adult Medium Breed",
+      "nutritionalProfile": {
+        "crudeProteinMin": 28.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 380,
+        "caloriesPerKg": 3750
+      },
+      "keyFeatures": [
+        "Czech quality",
+        "Sustainable ingredients",
+        "Insect protein options",
+        "European sourced"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 38,
+      "name": "Carnilove",
+      "parentCompany": "VAFO Group",
+      "headquarters": "Chodov, Czech Republic",
+      "markets": ["Europe", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Lamb & Wild Boar",
+      "nutritionalProfile": {
+        "crudeProteinMin": 32.0,
+        "crudeFatMin": 17.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 420,
+        "caloriesPerKg": 3950
+      },
+      "keyFeatures": [
+        "Wild-inspired",
+        "Grain-free",
+        "Novel proteins",
+        "High meat content"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 39,
+      "name": "Monge",
+      "parentCompany": "Monge & C. S.p.A.",
+      "headquarters": "Monasterolo di Savigliano, Italy",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Natural Superpremium Adult",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 2.5,
+        "moistureMax": 9.0,
+        "caloriesPerCup": 360,
+        "caloriesPerKg": 3640
+      },
+      "keyFeatures": [
+        "Italian family-owned",
+        "Natural ingredients",
+        "Grain-free options",
+        "100+ countries"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 40,
+      "name": "Affinity Petcare Advance",
+      "parentCompany": "Agrolimen SA",
+      "headquarters": "Barcelona, Spain",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Adult Medium Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 27.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 9.0,
+        "caloriesPerCup": 370,
+        "caloriesPerKg": 3680
+      },
+      "keyFeatures": [
+        "Spanish brand",
+        "Veterinary-developed",
+        "Active defense formula",
+        "20+ countries"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 41,
+      "name": "Happy Dog",
+      "parentCompany": "Interquell GmbH",
+      "headquarters": "Wehringen, Germany",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Supreme Sensible Africa",
+      "nutritionalProfile": {
+        "crudeProteinMin": 23.0,
+        "crudeFatMin": 10.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 9.0,
+        "caloriesPerCup": 330,
+        "caloriesPerKg": 3370
+      },
+      "keyFeatures": [
+        "German quality",
+        "Natural ingredients",
+        "Single protein options",
+        "Family-owned since 1968"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 42,
+      "name": "Bosch",
+      "parentCompany": "Bosch Tiernahrung GmbH",
+      "headquarters": "Blaufelden, Germany",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "High Premium Adult Lamb & Rice",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 2.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 365,
+        "caloriesPerKg": 3650
+      },
+      "keyFeatures": [
+        "German made",
+        "Premium ingredients",
+        "No artificial colors",
+        "Family business since 1960"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 43,
+      "name": "Josera",
+      "parentCompany": "Josera GmbH & Co. KG",
+      "headquarters": "Kleinheubach, Germany",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "SensiPlus",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 12.0,
+        "crudeFiberMax": 2.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 345,
+        "caloriesPerKg": 3470
+      },
+      "keyFeatures": [
+        "German family company",
+        "Duck protein",
+        "Sensitive formula",
+        "No wheat/soy"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 44,
+      "name": "Wolfsblut",
+      "parentCompany": "Healthfood24 GmbH",
+      "headquarters": "Cologne, Germany",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Wild Duck",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 16.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 8.0,
+        "caloriesPerCup": 380,
+        "caloriesPerKg": 3800
+      },
+      "keyFeatures": [
+        "Inspired by wild wolf diet",
+        "High meat content",
+        "Grain-free",
+        "German quality"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 45,
+      "name": "Arden Grange",
+      "parentCompany": "Leander International Pet Foods",
+      "headquarters": "Alton, Hampshire, UK",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Adult Chicken & Rice",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 2.3,
+        "moistureMax": 8.0,
+        "caloriesPerCup": 370,
+        "caloriesPerKg": 3736
+      },
+      "keyFeatures": [
+        "British made",
+        "Hypoallergenic options",
+        "No artificial colors",
+        "Family-owned"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 46,
+      "name": "Lily's Kitchen",
+      "parentCompany": "Nestlé Purina PetCare",
+      "headquarters": "London, UK",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Chicken & Duck Dry Food",
+      "nutritionalProfile": {
+        "crudeProteinMin": 28.0,
+        "crudeFatMin": 16.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 8.0,
+        "caloriesPerCup": 390,
+        "caloriesPerKg": 3870
+      },
+      "keyFeatures": [
+        "British brand",
+        "Natural ingredients",
+        "No meat meal",
+        "Certified B Corp"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 47,
+      "name": "Forthglade",
+      "parentCompany": "Forthglade Foods Ltd",
+      "headquarters": "Devon, UK",
+      "markets": ["Europe"],
+      "category": "Premium Wet",
+      "priceRange": "$$$",
+      "popularProduct": "Just Chicken with Liver",
+      "nutritionalProfile": {
+        "crudeProteinMin": 10.5,
+        "crudeFatMin": 6.5,
+        "crudeFiberMax": 0.5,
+        "moistureMax": 75.0,
+        "caloriesPerCup": 120,
+        "caloriesPerKg": 960
+      },
+      "keyFeatures": [
+        "British wet food",
+        "Natural ingredients",
+        "Grain-free options",
+        "Gently steam cooked"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 48,
+      "name": "Butternut Box",
+      "parentCompany": "Butternut Box",
+      "headquarters": "London, UK",
+      "markets": ["Europe"],
+      "category": "Super-Premium Fresh",
+      "priceRange": "$$$$",
+      "popularProduct": "Beef It Up",
+      "nutritionalProfile": {
+        "crudeProteinMin": 8.0,
+        "crudeFatMin": 7.0,
+        "crudeFiberMax": 1.2,
+        "moistureMax": 70.0,
+        "caloriesPerCup": 140,
+        "caloriesPerKg": 1400
+      },
+      "keyFeatures": [
+        "Fresh meals delivered",
+        "Human-grade",
+        "Personalized portions",
+        "UK based"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 49,
+      "name": "Tails.com",
+      "parentCompany": "Nestlé Purina PetCare",
+      "headquarters": "London, UK",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Personalized Kibble Blend",
+      "nutritionalProfile": {
+        "crudeProteinMin": 25.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 8.0,
+        "caloriesPerCup": 360,
+        "caloriesPerKg": 3600
+      },
+      "keyFeatures": [
+        "Personalized nutrition",
+        "Subscription service",
+        "UK made",
+        "Tailored to each dog"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 50,
+      "name": "Natures Menu",
+      "parentCompany": "Natures Menu Ltd",
+      "headquarters": "Snetterton, Norfolk, UK",
+      "markets": ["Europe"],
+      "category": "Premium Raw",
+      "priceRange": "$$$",
+      "popularProduct": "Country Hunter Raw Nuggets",
+      "nutritionalProfile": {
+        "crudeProteinMin": 14.0,
+        "crudeFatMin": 10.0,
+        "crudeFiberMax": 1.0,
+        "moistureMax": 60.0,
+        "caloriesPerCup": 200,
+        "caloriesPerKg": 1800
+      },
+      "keyFeatures": [
+        "Raw specialist",
+        "British sourced",
+        "Frozen raw nuggets",
+        "Over 40 years experience"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 51,
+      "name": "Bella & Duke",
+      "parentCompany": "Bella & Duke",
+      "headquarters": "Stirling, Scotland, UK",
+      "markets": ["Europe"],
+      "category": "Premium Raw",
+      "priceRange": "$$$",
+      "popularProduct": "Working Dog Beef",
+      "nutritionalProfile": {
+        "crudeProteinMin": 13.0,
+        "crudeFatMin": 12.0,
+        "crudeFiberMax": 1.0,
+        "moistureMax": 65.0,
+        "caloriesPerCup": 180,
+        "caloriesPerKg": 1650
+      },
+      "keyFeatures": [
+        "Scottish raw food",
+        "Subscription delivery",
+        "BARF diet",
+        "Ethically sourced"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 52,
+      "name": "Edgard & Cooper",
+      "parentCompany": "Edgard & Cooper",
+      "headquarters": "Ghent, Belgium",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Fresh Grass-Fed Beef",
+      "nutritionalProfile": {
+        "crudeProteinMin": 28.0,
+        "crudeFatMin": 16.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 8.0,
+        "caloriesPerCup": 390,
+        "caloriesPerKg": 3900
+      },
+      "keyFeatures": [
+        "Belgian brand",
+        "Fresh meat",
+        "Sustainable packaging",
+        "No meat meal"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 53,
+      "name": "Prins",
+      "parentCompany": "Prins Petfoods",
+      "headquarters": "Meppel, Netherlands",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "ProCare Croque Basic Excellent",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 12.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 340,
+        "caloriesPerKg": 3400
+      },
+      "keyFeatures": [
+        "Dutch quality",
+        "Over 60 years",
+        "Professional breeder choice",
+        "No wheat"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 54,
+      "name": "Yarrah",
+      "parentCompany": "Yarrah Organic Petfood",
+      "headquarters": "Harderwijk, Netherlands",
+      "markets": ["Europe"],
+      "category": "Premium Organic",
+      "priceRange": "$$$",
+      "popularProduct": "Organic Adult Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 12.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 9.0,
+        "caloriesPerCup": 340,
+        "caloriesPerKg": 3400
+      },
+      "keyFeatures": [
+        "100% organic",
+        "Certified organic",
+        "Dutch brand",
+        "Sustainable"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 55,
+      "name": "Almo Nature",
+      "parentCompany": "Almo Nature S.p.A.",
+      "headquarters": "Genova, Italy",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Holistic Adult Chicken & Rice Medium",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 9.0,
+        "caloriesPerCup": 350,
+        "caloriesPerKg": 3500
+      },
+      "keyFeatures": [
+        "Italian brand",
+        "HFC human-grade",
+        "Natural ingredients",
+        "Sustainable"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 56,
+      "name": "Schesir",
+      "parentCompany": "Agras Delic Srl",
+      "headquarters": "Bagnolo Cremasco, Italy",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Natural Selection Adult Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 9.0,
+        "caloriesPerCup": 355,
+        "caloriesPerKg": 3550
+      },
+      "keyFeatures": [
+        "Italian quality",
+        "100% natural",
+        "Single protein",
+        "No GMO"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 57,
+      "name": "Trainer Nova Foods",
+      "parentCompany": "Nova Foods Srl",
+      "headquarters": "Mariano Comense, Italy",
+      "markets": ["Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Natural Medium Adult Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 25.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 2.5,
+        "moistureMax": 9.0,
+        "caloriesPerCup": 360,
+        "caloriesPerKg": 3600
+      },
+      "keyFeatures": [
+        "Italian brand",
+        "Natural ingredients",
+        "Single protein",
+        "No artificial additives"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 58,
+      "name": "Nutram",
+      "parentCompany": "Nutram Pet Products",
+      "headquarters": "Elmira, Ontario, Canada",
+      "markets": ["Canada", "US"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Sound Balanced Wellness Adult",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 380,
+        "caloriesPerKg": 3800
+      },
+      "keyFeatures": [
+        "Canadian made",
+        "Holistic nutrition",
+        "Optimum combinations",
+        "No artificial preservatives"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 59,
+      "name": "Hagen Nutrience",
+      "parentCompany": "Rolf C. Hagen Inc.",
+      "headquarters": "Montreal, Quebec, Canada",
+      "markets": ["Canada", "US"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "SubZero Canadian Pacific",
+      "nutritionalProfile": {
+        "crudeProteinMin": 36.0,
+        "crudeFatMin": 18.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 400,
+        "caloriesPerKg": 3800
+      },
+      "keyFeatures": [
+        "Canadian made",
+        "Freeze-dried raw pieces",
+        "Grain-free",
+        "No artificial preservatives"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 60,
+      "name": "PLB 1st Choice",
+      "parentCompany": "PLB International",
+      "headquarters": "Boucherville, Quebec, Canada",
+      "markets": ["Canada", "US", "Europe"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Adult Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 25.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 365,
+        "caloriesPerKg": 3650
+      },
+      "keyFeatures": [
+        "Canadian family-owned",
+        "Premium nutrition",
+        "20+ countries",
+        "No corn or wheat"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 61,
+      "name": "PetKind",
+      "parentCompany": "PetKind Pet Products",
+      "headquarters": "Chilliwack, British Columbia, Canada",
+      "markets": ["Canada", "US"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Green Beef Tripe",
+      "nutritionalProfile": {
+        "crudeProteinMin": 30.0,
+        "crudeFatMin": 18.0,
+        "crudeFiberMax": 4.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 390,
+        "caloriesPerKg": 3850
+      },
+      "keyFeatures": [
+        "Green tripe based",
+        "Canadian made",
+        "Single animal protein",
+        "Grain-free options"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 62,
+      "name": "Hurraw",
+      "parentCompany": "Hurraw",
+      "headquarters": "Quebec, Canada",
+      "markets": ["Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Dehydrated Raw Pork",
+      "nutritionalProfile": {
+        "crudeProteinMin": 35.0,
+        "crudeFatMin": 20.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 8.0,
+        "caloriesPerCup": 450,
+        "caloriesPerKg": 4200
+      },
+      "keyFeatures": [
+        "Quebec brand",
+        "Dehydrated raw",
+        "Human-grade",
+        "All life stages"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 63,
+      "name": "Wellness Complete Health",
+      "parentCompany": "WellPet LLC",
+      "headquarters": "Tewksbury, Massachusetts, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Adult Chicken & Oatmeal",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 353,
+        "caloriesPerKg": 3514
+      },
+      "keyFeatures": [
+        "Natural ingredients",
+        "No by-products",
+        "Omega fatty acids",
+        "Probiotics"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 64,
+      "name": "Solid Gold",
+      "parentCompany": "Solid Gold Pet LLC",
+      "headquarters": "El Cajon, California, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Hund-N-Flocken Lamb & Rice",
+      "nutritionalProfile": {
+        "crudeProteinMin": 22.0,
+        "crudeFatMin": 10.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 332,
+        "caloriesPerKg": 3350
+      },
+      "keyFeatures": [
+        "Holistic since 1974",
+        "Superfoods",
+        "Digestive support",
+        "No artificial ingredients"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 65,
+      "name": "Earthborn Holistic",
+      "parentCompany": "Midwestern Pet Foods",
+      "headquarters": "Evansville, Indiana, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Primitive Natural",
+      "nutritionalProfile": {
+        "crudeProteinMin": 38.0,
+        "crudeFatMin": 20.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 399,
+        "caloriesPerKg": 3890
+      },
+      "keyFeatures": [
+        "Holistic formulas",
+        "High protein",
+        "Grain-free options",
+        "Eco-friendly packaging"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 66,
+      "name": "Annamaet",
+      "parentCompany": "Annamaet Petfoods",
+      "headquarters": "Sellersville, Pennsylvania, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Extra Formula",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 18.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 422,
+        "caloriesPerKg": 4040
+      },
+      "keyFeatures": [
+        "Family-owned",
+        "Science-based formulas",
+        "Working dog nutrition",
+        "No wheat corn soy"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 67,
+      "name": "Spot & Tango",
+      "parentCompany": "Spot & Tango",
+      "headquarters": "New York, New York, USA",
+      "markets": ["US"],
+      "category": "Super-Premium",
+      "priceRange": "$$$$",
+      "popularProduct": "UnKibble Beef & Barley",
+      "nutritionalProfile": {
+        "crudeProteinMin": 40.0,
+        "crudeFatMin": 20.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 7.0,
+        "caloriesPerCup": 480,
+        "caloriesPerKg": 4500
+      },
+      "keyFeatures": [
+        "Fresh food delivery",
+        "Human-grade",
+        "Gently dried",
+        "Personalized"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 68,
+      "name": "Nom Nom",
+      "parentCompany": "NomNomNow Inc.",
+      "headquarters": "Nashville, Tennessee, USA",
+      "markets": ["US"],
+      "category": "Super-Premium Fresh",
+      "priceRange": "$$$$",
+      "popularProduct": "Beef Mash",
+      "nutritionalProfile": {
+        "crudeProteinMin": 35.0,
+        "crudeFatMin": 20.0,
+        "crudeFiberMax": 1.5,
+        "moistureMax": 63.0,
+        "caloriesPerCup": 470,
+        "caloriesPerKg": 1850
+      },
+      "keyFeatures": [
+        "Restaurant-quality",
+        "Portion controlled",
+        "Board-certified nutritionist formulated",
+        "Fresh"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 69,
+      "name": "JustFoodForDogs",
+      "parentCompany": "JustFoodForDogs",
+      "headquarters": "Los Angeles, California, USA",
+      "markets": ["US"],
+      "category": "Super-Premium Fresh",
+      "priceRange": "$$$$",
+      "popularProduct": "Beef & Russet Potato",
+      "nutritionalProfile": {
+        "crudeProteinMin": 19.0,
+        "crudeFatMin": 6.0,
+        "crudeFiberMax": 0.5,
+        "moistureMax": 65.0,
+        "caloriesPerCup": 200,
+        "caloriesPerKg": 1500
+      },
+      "keyFeatures": [
+        "Fresh cooked",
+        "Human-grade USDA",
+        "Veterinary nutritionist formulated",
+        "Restaurant kitchens"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 70,
+      "name": "Jinx",
+      "parentCompany": "Jinx Inc.",
+      "headquarters": "Los Angeles, California, USA",
+      "markets": ["US"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Salmon Brown Rice & Sweet Potato",
+      "nutritionalProfile": {
+        "crudeProteinMin": 28.0,
+        "crudeFatMin": 12.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 350,
+        "caloriesPerKg": 3500
+      },
+      "keyFeatures": [
+        "Direct-to-consumer",
+        "Clean ingredients",
+        "No fillers",
+        "Modern branding"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 71,
+      "name": "Sundays",
+      "parentCompany": "Sundays for Dogs",
+      "headquarters": "New York, New York, USA",
+      "markets": ["US"],
+      "category": "Super-Premium",
+      "priceRange": "$$$$",
+      "popularProduct": "Beef Recipe",
+      "nutritionalProfile": {
+        "crudeProteinMin": 35.0,
+        "crudeFatMin": 17.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 8.0,
+        "caloriesPerCup": 400,
+        "caloriesPerKg": 4000
+      },
+      "keyFeatures": [
+        "Air-dried",
+        "Human-grade USDA",
+        "90% meat",
+        "No artificial ingredients"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 72,
+      "name": "Halo",
+      "parentCompany": "Halo Pets",
+      "headquarters": "Tampa, Florida, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Holistic Adult Chicken Recipe",
+      "nutritionalProfile": {
+        "crudeProteinMin": 27.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 344,
+        "caloriesPerKg": 3445
+      },
+      "keyFeatures": [
+        "Whole meat first",
+        "No meat meal",
+        "Sustainable",
+        "Plant-based options"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 73,
+      "name": "Nature's Logic",
+      "parentCompany": "Nature's Logic",
+      "headquarters": "Lincoln, Nebraska, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Canine Chicken Meal Feast",
+      "nutritionalProfile": {
+        "crudeProteinMin": 36.0,
+        "crudeFatMin": 14.5,
+        "crudeFiberMax": 5.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 379,
+        "caloriesPerKg": 3595
+      },
+      "keyFeatures": [
+        "No synthetic vitamins",
+        "100% natural",
+        "Concentrated meat protein",
+        "Whole food nutrition"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 74,
+      "name": "Ziwi Peak",
+      "parentCompany": "ZIWI",
+      "headquarters": "Dannevirke, New Zealand",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Super-Premium",
+      "priceRange": "$$$$",
+      "popularProduct": "Air-Dried Beef",
+      "nutritionalProfile": {
+        "crudeProteinMin": 38.0,
+        "crudeFatMin": 30.0,
+        "crudeFiberMax": 2.0,
+        "moistureMax": 14.0,
+        "caloriesPerCup": 560,
+        "caloriesPerKg": 5600
+      },
+      "keyFeatures": [
+        "New Zealand sourced",
+        "96% meat content",
+        "Air-dried",
+        "Free-range grass-fed"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 75,
+      "name": "K9 Natural",
+      "parentCompany": "K9 Natural Foods",
+      "headquarters": "Christchurch, New Zealand",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Super-Premium Raw",
+      "priceRange": "$$$$",
+      "popularProduct": "Freeze Dried Beef Feast",
+      "nutritionalProfile": {
+        "crudeProteinMin": 44.0,
+        "crudeFatMin": 34.0,
+        "crudeFiberMax": 2.0,
+        "moistureMax": 8.0,
+        "caloriesPerCup": 600,
+        "caloriesPerKg": 5800
+      },
+      "keyFeatures": [
+        "New Zealand sourced",
+        "Raw freeze-dried",
+        "Grass-fed free-range",
+        "90%+ meat"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 76,
+      "name": "Primal Pet Foods",
+      "parentCompany": "Primal Pet Foods",
+      "headquarters": "Fairfield, California, USA",
+      "markets": ["US", "Canada"],
+      "category": "Super-Premium Raw",
+      "priceRange": "$$$$",
+      "popularProduct": "Frozen Raw Chicken Formula",
+      "nutritionalProfile": {
+        "crudeProteinMin": 16.0,
+        "crudeFatMin": 10.0,
+        "crudeFiberMax": 1.0,
+        "moistureMax": 65.0,
+        "caloriesPerCup": 200,
+        "caloriesPerKg": 1600
+      },
+      "keyFeatures": [
+        "Raw frozen/freeze-dried",
+        "Antibiotic-free meats",
+        "Organic produce",
+        "Human-grade"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 77,
+      "name": "Answers Pet Food",
+      "parentCompany": "Answers Pet Food",
+      "headquarters": "Wayne, Pennsylvania, USA",
+      "markets": ["US"],
+      "category": "Super-Premium Raw",
+      "priceRange": "$$$$",
+      "popularProduct": "Detailed Beef Formula",
+      "nutritionalProfile": {
+        "crudeProteinMin": 13.0,
+        "crudeFatMin": 10.0,
+        "crudeFiberMax": 1.0,
+        "moistureMax": 70.0,
+        "caloriesPerCup": 170,
+        "caloriesPerKg": 1400
+      },
+      "keyFeatures": [
+        "Fermented raw",
+        "Whole prey diet",
+        "Pastured animals",
+        "Probiotic-rich"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 78,
+      "name": "Kirkland Signature Nature's Domain",
+      "parentCompany": "Costco Wholesale",
+      "headquarters": "Issaquah, Washington, USA",
+      "markets": ["US", "Canada"],
+      "category": "Value Premium",
+      "priceRange": "$$",
+      "popularProduct": "Salmon Meal & Sweet Potato",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 355,
+        "caloriesPerKg": 3550
+      },
+      "keyFeatures": [
+        "Costco exclusive",
+        "Diamond Pet Foods made",
+        "Great value",
+        "Premium quality"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 79,
+      "name": "Purina Beneful",
+      "parentCompany": "Nestlé Purina PetCare",
+      "headquarters": "St. Louis, Missouri, USA",
+      "markets": ["US", "Canada"],
+      "category": "Mid-range",
+      "priceRange": "$$",
+      "popularProduct": "Originals with Farm-Raised Beef",
+      "nutritionalProfile": {
+        "crudeProteinMin": 23.0,
+        "crudeFatMin": 10.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 14.0,
+        "caloriesPerCup": 308,
+        "caloriesPerKg": 3116
+      },
+      "keyFeatures": [
+        "Colorful kibble",
+        "Real meat",
+        "Visible veggies",
+        "Complete nutrition"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 80,
+      "name": "Cesar",
+      "parentCompany": "Mars, Inc.",
+      "headquarters": "McLean, Virginia, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Premium Wet",
+      "priceRange": "$$",
+      "popularProduct": "Classic Loaf in Sauce Filet Mignon",
+      "nutritionalProfile": {
+        "crudeProteinMin": 9.0,
+        "crudeFatMin": 6.0,
+        "crudeFiberMax": 1.0,
+        "moistureMax": 78.0,
+        "caloriesPerCup": 100,
+        "caloriesPerKg": 890
+      },
+      "keyFeatures": [
+        "Small dog specialist",
+        "Gourmet wet food",
+        "Single serve trays",
+        "Real meat"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 81,
+      "name": "Greenies",
+      "parentCompany": "Mars, Inc.",
+      "headquarters": "Franklin, Tennessee, USA",
+      "markets": ["US", "Canada", "Europe"],
+      "category": "Dental Treats",
+      "priceRange": "$$",
+      "popularProduct": "Original Dental Treats",
+      "nutritionalProfile": {
+        "crudeProteinMin": 30.0,
+        "crudeFatMin": 8.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 12.0,
+        "caloriesPerCup": 340,
+        "caloriesPerKg": 3400
+      },
+      "keyFeatures": [
+        "VOHC accepted",
+        "Dental health",
+        "Natural ingredients",
+        "Easy to digest"
+      ],
+      "aafcoCompliant": false
+    },
+    {
+      "id": 82,
+      "name": "Weruva",
+      "parentCompany": "Weruva International",
+      "headquarters": "US offices",
+      "markets": ["US", "Canada"],
+      "category": "Premium Wet",
+      "priceRange": "$$$",
+      "popularProduct": "Paw Lickin Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 10.0,
+        "crudeFatMin": 1.5,
+        "crudeFiberMax": 0.5,
+        "moistureMax": 85.0,
+        "caloriesPerCup": 65,
+        "caloriesPerKg": 650
+      },
+      "keyFeatures": [
+        "Wet food specialist",
+        "Human-style foods",
+        "BPA-free cans",
+        "Real ingredients visible"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 83,
+      "name": "Holistic Select",
+      "parentCompany": "WellPet LLC",
+      "headquarters": "Tewksbury, Massachusetts, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Adult Chicken & Brown Rice",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 410,
+        "caloriesPerKg": 3912
+      },
+      "keyFeatures": [
+        "Digestive health focus",
+        "Natural fiber",
+        "Prebiotics & probiotics",
+        "Whole body health"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 84,
+      "name": "I and Love and You",
+      "parentCompany": "I and Love and You",
+      "headquarters": "Boulder, Colorado, USA",
+      "markets": ["US"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Baked & Saucy Chicken + Sweet Potato",
+      "nutritionalProfile": {
+        "crudeProteinMin": 23.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 5.5,
+        "moistureMax": 11.0,
+        "caloriesPerCup": 320,
+        "caloriesPerKg": 3200
+      },
+      "keyFeatures": [
+        "Natural ingredients",
+        "No artificial anything",
+        "Grain-free options",
+        "Baked formulas"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 85,
+      "name": "Redbarn",
+      "parentCompany": "Redbarn Pet Products",
+      "headquarters": "Long Beach, California, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$",
+      "popularProduct": "Grain Free Land Recipe",
+      "nutritionalProfile": {
+        "crudeProteinMin": 28.0,
+        "crudeFatMin": 15.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 352,
+        "caloriesPerKg": 3520
+      },
+      "keyFeatures": [
+        "Protein focused",
+        "Air-dried options",
+        "Natural treats",
+        "US sourced"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 86,
+      "name": "Whole Earth Farms",
+      "parentCompany": "Merrick Pet Care",
+      "headquarters": "Amarillo, Texas, USA",
+      "markets": ["US", "Canada"],
+      "category": "Mid-range",
+      "priceRange": "$$",
+      "popularProduct": "Grain Free Chicken & Turkey",
+      "nutritionalProfile": {
+        "crudeProteinMin": 25.0,
+        "crudeFatMin": 13.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 11.0,
+        "caloriesPerCup": 320,
+        "caloriesPerKg": 3300
+      },
+      "keyFeatures": [
+        "Affordable natural",
+        "No artificial ingredients",
+        "Grain-free options",
+        "Real meat first"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 87,
+      "name": "Smack Pet Food",
+      "parentCompany": "Smack Pet Food",
+      "headquarters": "Winnipeg, Manitoba, Canada",
+      "markets": ["Canada", "US"],
+      "category": "Super-Premium",
+      "priceRange": "$$$$",
+      "popularProduct": "Organic Raw Dehydrated Very Berry Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 40.0,
+        "crudeFatMin": 28.0,
+        "crudeFiberMax": 6.0,
+        "moistureMax": 6.0,
+        "caloriesPerCup": 500,
+        "caloriesPerKg": 4800
+      },
+      "keyFeatures": [
+        "Canadian dehydrated raw",
+        "Organic certified",
+        "Human-grade",
+        "Cold-pressed"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 88,
+      "name": "Rollover Premium Pet Food",
+      "parentCompany": "Rollover Premium Pet Food",
+      "headquarters": "Edmonton, Alberta, Canada",
+      "markets": ["Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Semi-Moist Beef Roll",
+      "nutritionalProfile": {
+        "crudeProteinMin": 15.0,
+        "crudeFatMin": 8.0,
+        "crudeFiberMax": 2.5,
+        "moistureMax": 32.0,
+        "caloriesPerCup": 280,
+        "caloriesPerKg": 2800
+      },
+      "keyFeatures": [
+        "Canadian semi-moist",
+        "Human-grade ingredients",
+        "Small batch",
+        "Natural preservation"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 89,
+      "name": "Rocco Zooplus",
+      "parentCompany": "Zooplus AG",
+      "headquarters": "Munich, Germany",
+      "markets": ["Europe"],
+      "category": "Mid-range Wet",
+      "priceRange": "$$",
+      "popularProduct": "Classic Beef & Chicken",
+      "nutritionalProfile": {
+        "crudeProteinMin": 11.0,
+        "crudeFatMin": 6.0,
+        "crudeFiberMax": 0.5,
+        "moistureMax": 75.0,
+        "caloriesPerCup": 100,
+        "caloriesPerKg": 900
+      },
+      "keyFeatures": [
+        "European exclusive",
+        "Wet food specialist",
+        "High meat content",
+        "Good value"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 90,
+      "name": "Partner in Pet Food",
+      "parentCompany": "Partner in Pet Food",
+      "headquarters": "Hungary",
+      "markets": ["Europe"],
+      "category": "Private Label",
+      "priceRange": "$$",
+      "popularProduct": "Various private label brands",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 12.0,
+        "crudeFiberMax": 3.5,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 340,
+        "caloriesPerKg": 3400
+      },
+      "keyFeatures": [
+        "European private label leader",
+        "38 countries",
+        "9 production facilities",
+        "500k tons/year"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 91,
+      "name": "C & D Foods",
+      "parentCompany": "C & D Foods",
+      "headquarters": "Ireland",
+      "markets": ["Europe"],
+      "category": "Private Label",
+      "priceRange": "$$",
+      "popularProduct": "Various private label brands",
+      "nutritionalProfile": {
+        "crudeProteinMin": 23.0,
+        "crudeFatMin": 11.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 330,
+        "caloriesPerKg": 3300
+      },
+      "keyFeatures": [
+        "European private label manufacturer",
+        "675k+ tons/year",
+        "Multiple formats",
+        "Wet and dry"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 92,
+      "name": "Deuerer Vitakraft",
+      "parentCompany": "Deuerer GmbH",
+      "headquarters": "Bremen, Germany",
+      "markets": ["Europe"],
+      "category": "Mid-range",
+      "priceRange": "$$",
+      "popularProduct": "Vitakraft Premium Adult",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 13.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 350,
+        "caloriesPerKg": 3500
+      },
+      "keyFeatures": [
+        "German manufacturer",
+        "Multiple European brands",
+        "Quality focused",
+        "Wide distribution"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 93,
+      "name": "Fressnapf Real Nature",
+      "parentCompany": "Fressnapf Holding",
+      "headquarters": "Krefeld, Germany",
+      "markets": ["Europe"],
+      "category": "Retail Private Label",
+      "priceRange": "$$",
+      "popularProduct": "Wilderness Adult",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 360,
+        "caloriesPerKg": 3600
+      },
+      "keyFeatures": [
+        "Fressnapf exclusive",
+        "German quality",
+        "High meat content",
+        "Grain-free options"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 94,
+      "name": "Elmira Pet Products",
+      "parentCompany": "Elmira Pet Products",
+      "headquarters": "Elmira, Ontario, Canada",
+      "markets": ["Canada"],
+      "category": "Private Label",
+      "priceRange": "$$",
+      "popularProduct": "Various private label brands",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 13.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 350,
+        "caloriesPerKg": 3500
+      },
+      "keyFeatures": [
+        "Largest Canadian private label",
+        "Therapeutic to economy",
+        "200+ employees",
+        "Custom formulations"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 95,
+      "name": "Faim Museau",
+      "parentCompany": "Faim Museau",
+      "headquarters": "Quebec, Canada",
+      "markets": ["Canada"],
+      "category": "Premium Raw",
+      "priceRange": "$$$",
+      "popularProduct": "Raw Natural Meals",
+      "nutritionalProfile": {
+        "crudeProteinMin": 14.0,
+        "crudeFatMin": 10.0,
+        "crudeFiberMax": 2.0,
+        "moistureMax": 65.0,
+        "caloriesPerCup": 180,
+        "caloriesPerKg": 1600
+      },
+      "keyFeatures": [
+        "Quebec raw specialist",
+        "BARF diet",
+        "Biologically appropriate",
+        "Since 2008"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 96,
+      "name": "Dr. Tim's",
+      "parentCompany": "Dr. Tim's Pet Food Company",
+      "headquarters": "Interlochen, Michigan, USA",
+      "markets": ["US", "Canada"],
+      "category": "Premium",
+      "priceRange": "$$$",
+      "popularProduct": "Kinesis Formula",
+      "nutritionalProfile": {
+        "crudeProteinMin": 28.0,
+        "crudeFatMin": 18.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 416,
+        "caloriesPerKg": 4080
+      },
+      "keyFeatures": [
+        "Vet-developed",
+        "Performance nutrition",
+        "No artificial ingredients",
+        "Family-owned"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 97,
+      "name": "Sportmix",
+      "parentCompany": "Midwestern Pet Foods",
+      "headquarters": "Evansville, Indiana, USA",
+      "markets": ["US"],
+      "category": "Economy",
+      "priceRange": "$",
+      "popularProduct": "Sportmix Original",
+      "nutritionalProfile": {
+        "crudeProteinMin": 24.0,
+        "crudeFatMin": 13.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 320,
+        "caloriesPerKg": 3250
+      },
+      "keyFeatures": [
+        "Budget friendly",
+        "Active dog formula",
+        "Corn-based energy",
+        "Basic nutrition"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 98,
+      "name": "Milk-Bone",
+      "parentCompany": "J.M. Smucker Company",
+      "headquarters": "Orrville, Ohio, USA",
+      "markets": ["US", "Canada"],
+      "category": "Treats",
+      "priceRange": "$",
+      "popularProduct": "Original Biscuits",
+      "nutritionalProfile": {
+        "crudeProteinMin": 18.0,
+        "crudeFatMin": 8.0,
+        "crudeFiberMax": 3.0,
+        "moistureMax": 12.0,
+        "caloriesPerCup": 300,
+        "caloriesPerKg": 3000
+      },
+      "keyFeatures": [
+        "Iconic treat brand",
+        "Since 1908",
+        "12 vitamins & minerals",
+        "Crunchy biscuits"
+      ],
+      "aafcoCompliant": false
+    },
+    {
+      "id": 99,
+      "name": "Wholehearted (Petco)",
+      "parentCompany": "Petco",
+      "headquarters": "San Diego, California, USA",
+      "markets": ["US"],
+      "category": "Mid-range",
+      "priceRange": "$$",
+      "popularProduct": "Grain Free Beef & Pea Recipe",
+      "nutritionalProfile": {
+        "crudeProteinMin": 30.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 5.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 360,
+        "caloriesPerKg": 3600
+      },
+      "keyFeatures": [
+        "Petco exclusive",
+        "Grain-free options",
+        "Real meat first",
+        "Affordable quality"
+      ],
+      "aafcoCompliant": true
+    },
+    {
+      "id": 100,
+      "name": "Authority (PetSmart)",
+      "parentCompany": "PetSmart",
+      "headquarters": "Phoenix, Arizona, USA",
+      "markets": ["US", "Canada"],
+      "category": "Mid-range",
+      "priceRange": "$$",
+      "popularProduct": "Chicken & Rice Formula",
+      "nutritionalProfile": {
+        "crudeProteinMin": 26.0,
+        "crudeFatMin": 14.0,
+        "crudeFiberMax": 4.0,
+        "moistureMax": 10.0,
+        "caloriesPerCup": 350,
+        "caloriesPerKg": 3500
+      },
+      "keyFeatures": [
+        "PetSmart exclusive",
+        "Quality ingredients",
+        "Multiple formulas",
+        "Affordable premium"
+      ],
+      "aafcoCompliant": true
+    }
   ],
   "summary": {
     "totalBrands": 100,

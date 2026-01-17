@@ -48,14 +48,14 @@ export default function WeeklySnapshotScreen({
   const snapshot = getWeeklySnapshot(
     selectedDog.id,
     selectedDog.name,
-    selectedDog.photo
+    selectedDog.photo,
   );
 
   const handleShare = async () => {
     await shareCardImage(
       cardRef,
       () => setIsSharing(true),
-      () => setIsSharing(false)
+      () => setIsSharing(false),
     );
   };
 
@@ -63,7 +63,7 @@ export default function WeeklySnapshotScreen({
     await saveCardToPhotos(
       cardRef,
       () => setIsSaving(true),
-      () => setIsSaving(false)
+      () => setIsSaving(false),
     );
   };
 
@@ -91,18 +91,25 @@ export default function WeeklySnapshotScreen({
             disabled={isSaving}
             style={[
               styles.secondaryButton,
-              { backgroundColor: theme.backgroundDefault, borderColor: Colors.light.primary },
+              {
+                backgroundColor: theme.backgroundDefault,
+                borderColor: Colors.light.primary,
+              },
             ]}
           >
             {isSaving ? (
               <View style={styles.loadingButton}>
                 <ActivityIndicator size="small" color={Colors.light.primary} />
-                <ThemedText style={[styles.loadingText, { color: Colors.light.primary }]}>
+                <ThemedText
+                  style={[styles.loadingText, { color: Colors.light.primary }]}
+                >
                   Saving...
                 </ThemedText>
               </View>
             ) : (
-              <ThemedText style={{ color: Colors.light.primary, fontWeight: "600" }}>
+              <ThemedText
+                style={{ color: Colors.light.primary, fontWeight: "600" }}
+              >
                 Save to Photos
               </ThemedText>
             )}

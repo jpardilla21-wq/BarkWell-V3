@@ -3,9 +3,9 @@
  * Handles educational content and personalized recommendations
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { query } = require('../config/database');
+const { query } = require("../config/database");
 
 // ================================================
 // CONTENT LIBRARY ENDPOINTS
@@ -15,11 +15,11 @@ const { query } = require('../config/database');
  * GET /api/content
  * Get all content from library, optionally filtered by category
  */
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { category, format } = req.query;
 
-    let queryText = 'SELECT * FROM content_library WHERE 1=1';
+    let queryText = "SELECT * FROM content_library WHERE 1=1";
     const params = [];
     let paramIndex = 1;
 
@@ -35,19 +35,19 @@ router.get('/', async (req, res) => {
       paramIndex++;
     }
 
-    queryText += ' ORDER BY created_at DESC';
+    queryText += " ORDER BY created_at DESC";
 
     const result = await query(queryText, params);
 
     res.json({
       success: true,
-      data: result.rows
+      data: result.rows,
     });
   } catch (error) {
-    console.error('Error fetching content:', error);
+    console.error("Error fetching content:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch content'
+      message: "Failed to fetch content",
     });
   }
 });
@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
  * - If weight trend shows increase: prioritize "Weight Management", "Nutrition"
  * - Otherwise: show general content relevant to all ages
  */
-router.get('/recommend/:petId', async (req, res) => {
+router.get("/recommend/:petId", async (req, res) => {
   try {
     const { petId } = req.params;
     const { limit = 6 } = req.query;
@@ -77,13 +77,13 @@ router.get('/recommend/:petId', async (req, res) => {
         extract(year from age(date_of_birth)) as age_years,
         extract(month from age(date_of_birth)) as age_months
       FROM pets WHERE id = $1`,
-      [petId]
+      [petId],
     );
 
     if (petResult.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Pet not found'
+        message: "Pet not found",
       });
     }
 
@@ -98,7 +98,7 @@ router.get('/recommend/:petId', async (req, res) => {
        WHERE pet_id = $1
        ORDER BY date DESC
        LIMIT 7`,
-      [petId]
+      [petId],
     );
 
     // Get recent weight trend
@@ -106,7 +106,7 @@ router.get('/recommend/:petId', async (req, res) => {
       `SELECT
         (SELECT weight FROM weight_logs WHERE pet_id = $1 ORDER BY date DESC LIMIT 1) as current_weight,
         (SELECT weight FROM weight_logs WHERE pet_id = $1 ORDER BY date DESC LIMIT 1 OFFSET 1) as previous_weight`,
-      [petId]
+      [petId],
     );
 
     // Determine personalization tags based on pet profile
@@ -115,35 +115,49 @@ router.get('/recommend/:petId', async (req, res) => {
 
     // Age-based recommendations
     if (ageYears < 1 || (ageYears === 0 && ageMonths < 12)) {
-      recommendedTags.push('Puppy', 'Beginner', 'Socialization', 'Training');
-      priorityCategories.push('Training');
+      recommendedTags.push("Puppy", "Beginner", "Socialization", "Training");
+      priorityCategories.push("Training");
     } else if (ageYears >= 7) {
-      recommendedTags.push('Senior', 'Health');
-      priorityCategories.push('Health', 'Nutrition');
+      recommendedTags.push("Senior", "Health");
+      priorityCategories.push("Health", "Nutrition");
     }
 
     // Wellness-based recommendations
     if (wellnessResult.rows.length > 0) {
-      const avgBehavior = wellnessResult.rows.reduce((sum, log) => sum + (log.behavior_score || 0), 0) / wellnessResult.rows.length;
-      const avgActivity = wellnessResult.rows.reduce((sum, log) => sum + (log.activity_score || 0), 0) / wellnessResult.rows.length;
+      const avgBehavior =
+        wellnessResult.rows.reduce(
+          (sum, log) => sum + (log.behavior_score || 0),
+          0,
+        ) / wellnessResult.rows.length;
+      const avgActivity =
+        wellnessResult.rows.reduce(
+          (sum, log) => sum + (log.activity_score || 0),
+          0,
+        ) / wellnessResult.rows.length;
 
       if (avgBehavior < 60) {
-        recommendedTags.push('Anxiety', 'Behavior');
-        priorityCategories.push('Behavior');
+        recommendedTags.push("Anxiety", "Behavior");
+        priorityCategories.push("Behavior");
       }
 
       if (avgActivity < 50) {
-        recommendedTags.push('Active', 'Exercise');
-        priorityCategories.push('Training');
+        recommendedTags.push("Active", "Exercise");
+        priorityCategories.push("Training");
       }
     }
 
     // Weight-based recommendations
-    if (weightResult.rows.length > 0 && weightResult.rows[0].current_weight && weightResult.rows[0].previous_weight) {
-      const weightChange = weightResult.rows[0].current_weight - weightResult.rows[0].previous_weight;
+    if (
+      weightResult.rows.length > 0 &&
+      weightResult.rows[0].current_weight &&
+      weightResult.rows[0].previous_weight
+    ) {
+      const weightChange =
+        weightResult.rows[0].current_weight -
+        weightResult.rows[0].previous_weight;
       if (weightChange > 2) {
-        recommendedTags.push('Weight Management', 'Diet');
-        priorityCategories.push('Nutrition');
+        recommendedTags.push("Weight Management", "Diet");
+        priorityCategories.push("Nutrition");
       }
     }
 
@@ -164,7 +178,9 @@ router.get('/recommend/:petId', async (req, res) => {
 
     // Add category filter if we have priority categories
     if (priorityCategories.length > 0) {
-      const categoryPlaceholders = priorityCategories.map((_, i) => `$${recommendedTags.length + 2 + i}`).join(', ');
+      const categoryPlaceholders = priorityCategories
+        .map((_, i) => `$${recommendedTags.length + 2 + i}`)
+        .join(", ");
       contentQuery += `WHERE category IN (${categoryPlaceholders}) OR 1=1\n`;
     }
 
@@ -182,10 +198,10 @@ router.get('/recommend/:petId', async (req, res) => {
       const remaining = limit - contentResult.rows.length;
       const generalResult = await query(
         `SELECT * FROM content_library
-         WHERE id NOT IN (${contentResult.rows.map(r => r.id).join(',') || '0'})
+         WHERE id NOT IN (${contentResult.rows.map((r) => r.id).join(",") || "0"})
          ORDER BY created_at DESC
          LIMIT $1`,
-        [remaining]
+        [remaining],
       );
       generalContent = generalResult.rows;
     }
@@ -198,15 +214,15 @@ router.get('/recommend/:petId', async (req, res) => {
         personalization: {
           petAge: ageYears,
           tags: recommendedTags,
-          categories: priorityCategories
-        }
-      }
+          categories: priorityCategories,
+        },
+      },
     });
   } catch (error) {
-    console.error('Error generating recommendations:', error);
+    console.error("Error generating recommendations:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to generate recommendations'
+      message: "Failed to generate recommendations",
     });
   }
 });
@@ -215,31 +231,30 @@ router.get('/recommend/:petId', async (req, res) => {
  * GET /api/content/:id
  * Get specific content by ID
  */
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await query(
-      'SELECT * FROM content_library WHERE id = $1',
-      [id]
-    );
+    const result = await query("SELECT * FROM content_library WHERE id = $1", [
+      id,
+    ]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Content not found'
+        message: "Content not found",
       });
     }
 
     res.json({
       success: true,
-      data: result.rows[0]
+      data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error fetching content:', error);
+    console.error("Error fetching content:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch content'
+      message: "Failed to fetch content",
     });
   }
 });
@@ -248,21 +263,21 @@ router.get('/:id', async (req, res) => {
  * GET /api/content/categories/list
  * Get all available categories
  */
-router.get('/categories/list', async (req, res) => {
+router.get("/categories/list", async (req, res) => {
   try {
     const result = await query(
-      'SELECT DISTINCT category FROM content_library ORDER BY category'
+      "SELECT DISTINCT category FROM content_library ORDER BY category",
     );
 
     res.json({
       success: true,
-      data: result.rows.map(row => row.category)
+      data: result.rows.map((row) => row.category),
     });
   } catch (error) {
-    console.error('Error fetching categories:', error);
+    console.error("Error fetching categories:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch categories'
+      message: "Failed to fetch categories",
     });
   }
 });

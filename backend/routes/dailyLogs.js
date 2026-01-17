@@ -3,22 +3,22 @@
  * Handles CRUD operations for daily health logs and wellness scores
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('../config/database');
+const db = require("../config/database");
 const {
   calculateWellnessScore,
   calculatePreventiveCareScore,
   detectScoreDrop,
   getWellnessScoreTrend,
-} = require('../utils/wellnessScore');
+} = require("../utils/wellnessScore");
 
 /**
  * GET /api/daily-logs/:petId
  * Get all daily logs for a pet
  * Query params: ?days=30 (optional, default: 30)
  */
-router.get('/:petId', async (req, res) => {
+router.get("/:petId", async (req, res) => {
   try {
     const { petId } = req.params;
     const days = parseInt(req.query.days) || 30;
@@ -29,7 +29,7 @@ router.get('/:petId', async (req, res) => {
        WHERE pet_id = $1
          AND log_date >= CURRENT_DATE - INTERVAL '${days} days'
        ORDER BY log_date DESC`,
-      [petId]
+      [petId],
     );
 
     res.json({
@@ -37,10 +37,10 @@ router.get('/:petId', async (req, res) => {
       data: result.rows,
     });
   } catch (error) {
-    console.error('Error fetching daily logs:', error);
+    console.error("Error fetching daily logs:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch daily logs',
+      error: "Failed to fetch daily logs",
     });
   }
 });
@@ -49,19 +49,19 @@ router.get('/:petId', async (req, res) => {
  * GET /api/daily-logs/:petId/date/:date
  * Get daily log for a specific date
  */
-router.get('/:petId/date/:date', async (req, res) => {
+router.get("/:petId/date/:date", async (req, res) => {
   try {
     const { petId, date } = req.params;
 
     const result = await db.query(
-      'SELECT * FROM daily_logs WHERE pet_id = $1 AND log_date = $2',
-      [petId, date]
+      "SELECT * FROM daily_logs WHERE pet_id = $1 AND log_date = $2",
+      [petId, date],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'Daily log not found for this date',
+        error: "Daily log not found for this date",
       });
     }
 
@@ -70,10 +70,10 @@ router.get('/:petId/date/:date', async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    console.error('Error fetching daily log:', error);
+    console.error("Error fetching daily log:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch daily log',
+      error: "Failed to fetch daily log",
     });
   }
 });
@@ -82,7 +82,7 @@ router.get('/:petId/date/:date', async (req, res) => {
  * POST /api/daily-logs
  * Create or update a daily log
  */
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const {
       petId,
@@ -101,7 +101,7 @@ router.post('/', async (req, res) => {
     if (!petId || !logDate) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: petId, logDate',
+        error: "Missing required fields: petId, logDate",
       });
     }
 
@@ -148,7 +148,7 @@ router.post('/', async (req, res) => {
         behaviorNotes,
         activityNotes,
         wellnessScore,
-      ]
+      ],
     );
 
     // Check for significant score drop
@@ -160,10 +160,10 @@ router.post('/', async (req, res) => {
       alert: alertStatus.isAlert ? alertStatus : null,
     });
   } catch (error) {
-    console.error('Error creating/updating daily log:', error);
+    console.error("Error creating/updating daily log:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to create/update daily log',
+      error: "Failed to create/update daily log",
     });
   }
 });
@@ -172,31 +172,31 @@ router.post('/', async (req, res) => {
  * DELETE /api/daily-logs/:petId/date/:date
  * Delete a daily log
  */
-router.delete('/:petId/date/:date', async (req, res) => {
+router.delete("/:petId/date/:date", async (req, res) => {
   try {
     const { petId, date } = req.params;
 
     const result = await db.query(
-      'DELETE FROM daily_logs WHERE pet_id = $1 AND log_date = $2 RETURNING id',
-      [petId, date]
+      "DELETE FROM daily_logs WHERE pet_id = $1 AND log_date = $2 RETURNING id",
+      [petId, date],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'Daily log not found',
+        error: "Daily log not found",
       });
     }
 
     res.json({
       success: true,
-      message: 'Daily log deleted successfully',
+      message: "Daily log deleted successfully",
     });
   } catch (error) {
-    console.error('Error deleting daily log:', error);
+    console.error("Error deleting daily log:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to delete daily log',
+      error: "Failed to delete daily log",
     });
   }
 });
@@ -206,7 +206,7 @@ router.delete('/:petId/date/:date', async (req, res) => {
  * Get wellness score trend over time
  * Query params: ?days=30 (optional, default: 30)
  */
-router.get('/:petId/wellness-trend', async (req, res) => {
+router.get("/:petId/wellness-trend", async (req, res) => {
   try {
     const { petId } = req.params;
     const days = parseInt(req.query.days) || 30;
@@ -218,10 +218,10 @@ router.get('/:petId/wellness-trend', async (req, res) => {
       data: trend,
     });
   } catch (error) {
-    console.error('Error fetching wellness trend:', error);
+    console.error("Error fetching wellness trend:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch wellness trend',
+      error: "Failed to fetch wellness trend",
     });
   }
 });
@@ -230,7 +230,7 @@ router.get('/:petId/wellness-trend', async (req, res) => {
  * GET /api/daily-logs/:petId/current-score
  * Get the most recent wellness score and alert status
  */
-router.get('/:petId/current-score', async (req, res) => {
+router.get("/:petId/current-score", async (req, res) => {
   try {
     const { petId } = req.params;
 
@@ -241,7 +241,7 @@ router.get('/:petId/current-score', async (req, res) => {
        WHERE pet_id = $1
        ORDER BY log_date DESC
        LIMIT 1`,
-      [petId]
+      [petId],
     );
 
     if (result.rows.length === 0) {
@@ -249,7 +249,7 @@ router.get('/:petId/current-score', async (req, res) => {
         success: true,
         data: {
           currentScore: null,
-          message: 'No daily logs found',
+          message: "No daily logs found",
         },
       });
     }
@@ -272,10 +272,10 @@ router.get('/:petId/current-score', async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Error fetching current score:', error);
+    console.error("Error fetching current score:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch current wellness score',
+      error: "Failed to fetch current wellness score",
     });
   }
 });

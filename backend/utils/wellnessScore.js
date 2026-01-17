@@ -17,7 +17,7 @@
  * - Preventive Care is based on vaccination status and recent vet visits
  */
 
-const db = require('../config/database');
+const db = require("../config/database");
 
 /**
  * Calculate Preventive Care Score
@@ -73,9 +73,8 @@ async function calculatePreventiveCareScore(petId) {
     if (vetVisitResult.rows[0].recent_visits > 0) {
       score += 20;
     }
-
   } catch (error) {
-    console.error('Error calculating preventive care score:', error);
+    console.error("Error calculating preventive care score:", error);
     // Return default score on error
     return 50;
   }
@@ -112,7 +111,7 @@ function calculateWellnessScore(components) {
     behaviorScore,
     activityScore,
     preventiveCareScore,
-  ].filter(score => score !== null && score !== undefined);
+  ].filter((score) => score !== null && score !== undefined);
 
   // If no scores available, return 0
   if (scores.length === 0) {
@@ -153,12 +152,13 @@ async function detectScoreDrop(petId, currentScore, daysToCompare = 7) {
       // No previous data to compare
       return {
         isAlert: false,
-        message: 'No previous data for comparison'
+        message: "No previous data for comparison",
       };
     }
 
     const previousAverage = parseFloat(result.rows[0].avg_score);
-    const dropPercentage = ((previousAverage - currentScore) / previousAverage) * 100;
+    const dropPercentage =
+      ((previousAverage - currentScore) / previousAverage) * 100;
 
     // Alert if drop is greater than 15%
     if (dropPercentage > 15) {
@@ -176,9 +176,8 @@ async function detectScoreDrop(petId, currentScore, daysToCompare = 7) {
       previousAverage: Math.round(previousAverage),
       currentScore,
     };
-
   } catch (error) {
-    console.error('Error detecting score drop:', error);
+    console.error("Error detecting score drop:", error);
     return { isAlert: false, error: error.message };
   }
 }
@@ -204,13 +203,12 @@ async function getWellnessScoreTrend(petId, days = 30) {
     `;
     const result = await db.query(trendQuery, [petId]);
 
-    return result.rows.map(row => ({
+    return result.rows.map((row) => ({
       date: row.date,
       score: parseInt(row.score),
     }));
-
   } catch (error) {
-    console.error('Error getting wellness score trend:', error);
+    console.error("Error getting wellness score trend:", error);
     return [];
   }
 }

@@ -20,12 +20,7 @@ import { Button } from "@/components/Button";
 import { ScoreBadge } from "@/components/ScoreBadge";
 import { ResultCard } from "@/components/ResultCard";
 import { useTheme } from "@/hooks/useTheme";
-import {
-  Colors,
-  Spacing,
-  BorderRadius,
-  Typography,
-} from "@/constants/theme";
+import { Colors, Spacing, BorderRadius, Typography } from "@/constants/theme";
 import { analyzeIngredientWithGemini, APIKeyError } from "@/utils/apiClient";
 
 interface FoodAnalysisResult {
@@ -139,7 +134,7 @@ export default function FoodScannerScreen() {
                 },
               },
             ]
-          : [{ text: "OK" }]
+          : [{ text: "OK" }],
       );
       return false;
     }
@@ -207,12 +202,12 @@ export default function FoodScannerScreen() {
                 Linking.openURL("http://localhost:8081").catch(() => {
                   Alert.alert(
                     "Link Information",
-                    "Open this link in your browser:\nhttp://localhost:8081"
+                    "Open this link in your browser:\nhttp://localhost:8081",
                   );
                 });
               },
             },
-          ]
+          ],
         );
       } else {
         Alert.alert("Analysis Error", "Failed to analyze. Please try again.");
@@ -360,14 +355,21 @@ export default function FoodScannerScreen() {
               >
                 <ThemedText
                   type="h4"
-                  style={{ color: getRatingColor(result.rating), fontWeight: "700" }}
+                  style={{
+                    color: getRatingColor(result.rating),
+                    fontWeight: "700",
+                  }}
                 >
                   {result.rating}
                 </ThemedText>
               </View>
               <ThemedText
                 type="small"
-                style={{ color: theme.textMuted, textAlign: "center", marginTop: Spacing.xs }}
+                style={{
+                  color: theme.textMuted,
+                  textAlign: "center",
+                  marginTop: Spacing.xs,
+                }}
               >
                 {getRatingDescription(result.rating)}
               </ThemedText>
@@ -387,7 +389,10 @@ export default function FoodScannerScreen() {
             >
               <ThemedText
                 type="h4"
-                style={{ color: Colors.light.urgentRed, marginBottom: Spacing.sm }}
+                style={{
+                  color: Colors.light.urgentRed,
+                  marginBottom: Spacing.sm,
+                }}
               >
                 Toxic Ingredients Found
               </ThemedText>
@@ -395,7 +400,10 @@ export default function FoodScannerScreen() {
                 <ThemedText
                   key={index}
                   type="body"
-                  style={{ color: Colors.light.urgentRed, marginBottom: Spacing.xs }}
+                  style={{
+                    color: Colors.light.urgentRed,
+                    marginBottom: Spacing.xs,
+                  }}
                 >
                   • {toxin}
                 </ThemedText>
@@ -412,7 +420,10 @@ export default function FoodScannerScreen() {
             >
               <ThemedText
                 type="h4"
-                style={{ color: Colors.light.warningYellow, marginBottom: Spacing.sm }}
+                style={{
+                  color: Colors.light.warningYellow,
+                  marginBottom: Spacing.sm,
+                }}
               >
                 Potential Allergens
               </ThemedText>
@@ -420,7 +431,10 @@ export default function FoodScannerScreen() {
                 <ThemedText
                   key={index}
                   type="body"
-                  style={{ color: Colors.light.warningYellow, marginBottom: Spacing.xs }}
+                  style={{
+                    color: Colors.light.warningYellow,
+                    marginBottom: Spacing.xs,
+                  }}
                 >
                   ⚠ {allergen}
                 </ThemedText>
@@ -432,7 +446,10 @@ export default function FoodScannerScreen() {
             <View style={styles.listSection}>
               <ThemedText
                 type="h4"
-                style={{ color: Colors.light.softGreen, marginBottom: Spacing.sm }}
+                style={{
+                  color: Colors.light.softGreen,
+                  marginBottom: Spacing.sm,
+                }}
               >
                 Positives
               </ThemedText>
@@ -453,7 +470,10 @@ export default function FoodScannerScreen() {
             <View style={styles.listSection}>
               <ThemedText
                 type="h4"
-                style={{ color: Colors.light.warningYellow, marginBottom: Spacing.sm }}
+                style={{
+                  color: Colors.light.warningYellow,
+                  marginBottom: Spacing.sm,
+                }}
               >
                 Concerns
               </ThemedText>
@@ -495,7 +515,10 @@ export default function FoodScannerScreen() {
             <View style={styles.recommendationSection}>
               <ThemedText
                 type="h4"
-                style={{ marginBottom: Spacing.md, color: Colors.light.primary }}
+                style={{
+                  marginBottom: Spacing.md,
+                  color: Colors.light.primary,
+                }}
               >
                 Recommended Alternatives
               </ThemedText>
@@ -543,7 +566,6 @@ export default function FoodScannerScreen() {
     </ScreenKeyboardAwareScrollView>
   );
 }
-
 
 const styles = StyleSheet.create({
   photoSection: {

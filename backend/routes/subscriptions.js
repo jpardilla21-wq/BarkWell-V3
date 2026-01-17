@@ -3,63 +3,63 @@
  * Handles subscription upgrades, downgrades, and payment tracking
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('../config/database');
+const db = require("../config/database");
 
 /**
  * GET /api/subscriptions/tiers
  * Get available subscription tiers and pricing
  */
-router.get('/tiers', (req, res) => {
+router.get("/tiers", (req, res) => {
   const tiers = [
     {
-      id: 'free',
-      name: 'Free',
+      id: "free",
+      name: "Free",
       price: 0,
       interval: null,
       features: [
-        'Track up to 5 health records',
-        'Basic wellness scoring',
-        'Weight tracking',
-        'Community support',
+        "Track up to 5 health records",
+        "Basic wellness scoring",
+        "Weight tracking",
+        "Community support",
       ],
       limitations: [
-        'Limited to 5 health records',
-        'Ads displayed',
-        'No PDF export',
-        'No AI insights',
+        "Limited to 5 health records",
+        "Ads displayed",
+        "No PDF export",
+        "No AI insights",
       ],
     },
     {
-      id: 'plus',
-      name: 'Plus',
+      id: "plus",
+      name: "Plus",
       price: 4.99,
-      interval: 'month',
+      interval: "month",
       popular: true,
       features: [
-        'Unlimited health records',
-        'Advanced wellness trends',
-        'PDF export of records',
-        'Ad-free experience',
-        'Priority email support',
-        'Custom reminders',
+        "Unlimited health records",
+        "Advanced wellness trends",
+        "PDF export of records",
+        "Ad-free experience",
+        "Priority email support",
+        "Custom reminders",
       ],
       limitations: [],
     },
     {
-      id: 'pro',
-      name: 'Pro',
+      id: "pro",
+      name: "Pro",
       price: 9.99,
-      interval: 'month',
+      interval: "month",
       features: [
-        'Everything in Plus',
-        'AI wellness insights & predictions',
-        '24/7 telemedicine access',
-        'Nutrition optimization',
-        'Breed-specific recommendations',
-        'Priority phone support',
-        'Early access to new features',
+        "Everything in Plus",
+        "AI wellness insights & predictions",
+        "24/7 telemedicine access",
+        "Nutrition optimization",
+        "Breed-specific recommendations",
+        "Priority phone support",
+        "Early access to new features",
       ],
       limitations: [],
     },
@@ -75,40 +75,42 @@ router.get('/tiers', (req, res) => {
  * GET /api/subscriptions/status/:userId
  * Get user's current subscription status
  */
-router.get('/status/:userId', async (req, res) => {
+router.get("/status/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 
     const result = await db.query(
       `SELECT subscription_tier, subscription_expiry, stripe_customer_id
        FROM users WHERE id = $1`,
-      [userId]
+      [userId],
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'User not found',
+        error: "User not found",
       });
     }
 
     const user = result.rows[0];
-    const isExpired = user.subscription_expiry && new Date(user.subscription_expiry) < new Date();
+    const isExpired =
+      user.subscription_expiry &&
+      new Date(user.subscription_expiry) < new Date();
 
     res.json({
       success: true,
       subscription: {
-        tier: isExpired ? 'free' : user.subscription_tier,
+        tier: isExpired ? "free" : user.subscription_tier,
         expiry: user.subscription_expiry,
         isExpired,
         hasPaymentMethod: !!user.stripe_customer_id,
       },
     });
   } catch (error) {
-    console.error('Get subscription status error:', error);
+    console.error("Get subscription status error:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to get subscription status',
+      error: "Failed to get subscription status",
     });
   }
 });
@@ -117,7 +119,7 @@ router.get('/status/:userId', async (req, res) => {
  * POST /api/subscriptions/subscribe
  * Mock payment endpoint - simulates Stripe subscription
  */
-router.post('/subscribe', async (req, res) => {
+router.post("/subscribe", async (req, res) => {
   const client = await db.getClient();
 
   try {
@@ -127,11 +129,11 @@ router.post('/subscribe', async (req, res) => {
     if (!userId || !tier) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: userId and tier',
+        error: "Missing required fields: userId and tier",
       });
     }
 
-    if (!['plus', 'pro'].includes(tier)) {
+    if (!["plus", "pro"].includes(tier)) {
       return res.status(400).json({
         success: false,
         error: 'Invalid tier. Must be "plus" or "pro"',
@@ -139,11 +141,13 @@ router.post('/subscribe', async (req, res) => {
     }
 
     // Validate user exists
-    const userCheck = await client.query('SELECT id FROM users WHERE id = $1', [userId]);
+    const userCheck = await client.query("SELECT id FROM users WHERE id = $1", [
+      userId,
+    ]);
     if (userCheck.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'User not found',
+        error: "User not found",
       });
     }
 
@@ -159,7 +163,7 @@ router.post('/subscribe', async (req, res) => {
     expiryDate.setMonth(expiryDate.getMonth() + 1);
 
     // Start transaction
-    await client.query('BEGIN');
+    await client.query("BEGIN");
 
     // Update user's subscription
     await client.query(
@@ -169,7 +173,7 @@ router.post('/subscribe', async (req, res) => {
            stripe_customer_id = $3,
            updated_at = CURRENT_TIMESTAMP
        WHERE id = $4`,
-      [tier, expiryDate, `mock_customer_${userId}_${Date.now()}`, userId]
+      [tier, expiryDate, `mock_customer_${userId}_${Date.now()}`, userId],
     );
 
     // Record payment
@@ -181,15 +185,15 @@ router.post('/subscribe', async (req, res) => {
         userId,
         amount,
         tier,
-        'completed',
-        paymentMethod || 'mock_payment',
+        "completed",
+        paymentMethod || "mock_payment",
         `mock_txn_${Date.now()}`,
-        'Mock payment processed successfully',
-      ]
+        "Mock payment processed successfully",
+      ],
     );
 
     // Commit transaction
-    await client.query('COMMIT');
+    await client.query("COMMIT");
 
     const payment = paymentResult.rows[0];
 
@@ -204,18 +208,18 @@ router.post('/subscribe', async (req, res) => {
       payment: {
         id: payment.id,
         amount,
-        status: 'completed',
+        status: "completed",
         createdAt: payment.created_at,
       },
       mock: true,
-      note: 'This is a mock payment. In production, this would integrate with Stripe.',
+      note: "This is a mock payment. In production, this would integrate with Stripe.",
     });
   } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('Subscribe error:', error);
+    await client.query("ROLLBACK");
+    console.error("Subscribe error:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to process subscription',
+      error: "Failed to process subscription",
       message: error.message,
     });
   } finally {
@@ -227,14 +231,14 @@ router.post('/subscribe', async (req, res) => {
  * POST /api/subscriptions/cancel
  * Cancel user's subscription (downgrade to free)
  */
-router.post('/cancel', async (req, res) => {
+router.post("/cancel", async (req, res) => {
   try {
     const { userId } = req.body;
 
     if (!userId) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required field: userId',
+        error: "Missing required field: userId",
       });
     }
 
@@ -245,22 +249,22 @@ router.post('/cancel', async (req, res) => {
            subscription_expiry = NULL,
            updated_at = CURRENT_TIMESTAMP
        WHERE id = $1`,
-      [userId]
+      [userId],
     );
 
     res.json({
       success: true,
-      message: 'Subscription cancelled successfully',
+      message: "Subscription cancelled successfully",
       subscription: {
-        tier: 'free',
+        tier: "free",
         expiry: null,
       },
     });
   } catch (error) {
-    console.error('Cancel subscription error:', error);
+    console.error("Cancel subscription error:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to cancel subscription',
+      error: "Failed to cancel subscription",
     });
   }
 });
@@ -269,7 +273,7 @@ router.post('/cancel', async (req, res) => {
  * GET /api/subscriptions/payments/:userId
  * Get payment history for a user
  */
-router.get('/payments/:userId', async (req, res) => {
+router.get("/payments/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const limit = parseInt(req.query.limit) || 10;
@@ -280,7 +284,7 @@ router.get('/payments/:userId', async (req, res) => {
        WHERE user_id = $1
        ORDER BY created_at DESC
        LIMIT $2`,
-      [userId, limit]
+      [userId, limit],
     );
 
     res.json({
@@ -289,10 +293,10 @@ router.get('/payments/:userId', async (req, res) => {
       count: result.rows.length,
     });
   } catch (error) {
-    console.error('Get payments error:', error);
+    console.error("Get payments error:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to get payment history',
+      error: "Failed to get payment history",
     });
   }
 });

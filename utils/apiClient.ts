@@ -5,7 +5,7 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 export class APIKeyError extends Error {
   constructor(service: string) {
     super(
-      `${service} API key not configured. For the best experience, please use the web version of PupSense.`
+      `${service} API key not configured. For the best experience, please use the web version of PupSense.`,
     );
     this.name = "APIKeyError";
   }
@@ -13,7 +13,7 @@ export class APIKeyError extends Error {
 
 export async function analyzePoopWithGemini(
   photoUri: string | null,
-  description: string
+  description: string,
 ): Promise<{
   riskLevel: "Low" | "Medium" | "High";
   summary: string;
@@ -71,7 +71,7 @@ export async function analyzePoopWithGemini(
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
-      }
+      },
     );
 
     const data = await response.json();
@@ -93,7 +93,7 @@ export async function analyzePoopWithGemini(
 
 export async function analyzeIngredientWithGemini(
   photoUri: string | null,
-  ingredients: string
+  ingredients: string,
 ): Promise<{
   score: number;
   rating: "Elite" | "Excellent" | "Good" | "Fair" | "Borderline" | "Poor";
@@ -103,7 +103,11 @@ export async function analyzeIngredientWithGemini(
   neither: string[];
   allergens: string[];
   toxins: string[];
-  recommendations: Array<{ name: string; reason: string; affiliateLink: string }>;
+  recommendations: Array<{
+    name: string;
+    reason: string;
+    affiliateLink: string;
+  }>;
 }> {
   try {
     if (!GEMINI_API_KEY) throw new APIKeyError("Gemini");
@@ -195,7 +199,7 @@ export async function analyzeIngredientWithGemini(
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
-      }
+      },
     );
 
     const data = await response.json();
@@ -215,9 +219,7 @@ export async function analyzeIngredientWithGemini(
   }
 }
 
-export async function analyzeBehaviorWithGemini(
-  videoUri: string
-): Promise<{
+export async function analyzeBehaviorWithGemini(videoUri: string): Promise<{
   state:
     | "Relaxed"
     | "Happy & Engaged"
@@ -284,7 +286,7 @@ export async function analyzeBehaviorWithGemini(
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
-      }
+      },
     );
 
     const data = await response.json();

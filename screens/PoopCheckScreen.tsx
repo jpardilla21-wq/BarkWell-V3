@@ -19,12 +19,7 @@ import { Button } from "@/components/Button";
 import { RiskBadge } from "@/components/RiskBadge";
 import { ResultCard } from "@/components/ResultCard";
 import { useTheme } from "@/hooks/useTheme";
-import {
-  Spacing,
-  BorderRadius,
-  Typography,
-  Colors,
-} from "@/constants/theme";
+import { Spacing, BorderRadius, Typography, Colors } from "@/constants/theme";
 import { analyzePoopWithGemini, APIKeyError } from "@/utils/apiClient";
 
 type RiskLevel = "Low" | "Medium" | "High";
@@ -65,7 +60,7 @@ export default function PoopCheckScreen() {
                 },
               },
             ]
-          : [{ text: "OK" }]
+          : [{ text: "OK" }],
       );
       return false;
     }
@@ -133,12 +128,12 @@ export default function PoopCheckScreen() {
                 Linking.openURL("http://localhost:8081").catch(() => {
                   Alert.alert(
                     "Link Information",
-                    "Open this link in your browser:\nhttp://localhost:8081"
+                    "Open this link in your browser:\nhttp://localhost:8081",
                   );
                 });
               },
             },
-          ]
+          ],
         );
       } else {
         Alert.alert("Analysis Error", "Failed to analyze. Please try again.");

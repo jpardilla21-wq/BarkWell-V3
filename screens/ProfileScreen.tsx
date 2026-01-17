@@ -46,13 +46,13 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
     <ScreenScrollView>
       <View style={styles.profileSection}>
         <View
-          style={[
-            styles.avatar,
-            { backgroundColor: theme.backgroundDefault },
-          ]}
+          style={[styles.avatar, { backgroundColor: theme.backgroundDefault }]}
         >
           {selectedDog.photo ? (
-            <Image source={{ uri: selectedDog.photo }} style={styles.avatarImage} />
+            <Image
+              source={{ uri: selectedDog.photo }}
+              style={styles.avatarImage}
+            />
           ) : (
             <Feather name="smile" size={48} color={Colors.light.primary} />
           )}
@@ -61,12 +61,16 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           {selectedDog.name}
         </ThemedText>
         {selectedDog.nickname ? (
-          <ThemedText type="body" style={{ color: theme.textMuted, marginBottom: Spacing.xs }}>
+          <ThemedText
+            type="body"
+            style={{ color: theme.textMuted, marginBottom: Spacing.xs }}
+          >
             "{selectedDog.nickname}"
           </ThemedText>
         ) : null}
         <ThemedText type="body" style={{ color: theme.textMuted }}>
-          {selectedDog.age} {parseInt(selectedDog.age) === 1 ? "year" : "years"} old • {selectedDog.breed}
+          {selectedDog.age} {parseInt(selectedDog.age) === 1 ? "year" : "years"}{" "}
+          old • {selectedDog.breed}
         </ThemedText>
       </View>
 
@@ -75,7 +79,10 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           onPress={() => navigation.navigate("History")}
           style={({ pressed }) => [
             styles.menuItem,
-            { backgroundColor: theme.backgroundDefault, opacity: pressed ? 0.7 : 1 },
+            {
+              backgroundColor: theme.backgroundDefault,
+              opacity: pressed ? 0.7 : 1,
+            },
           ]}
         >
           <View style={styles.menuItemLeft}>
@@ -95,7 +102,10 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
         <Pressable
           style={({ pressed }) => [
             styles.menuItem,
-            { backgroundColor: theme.backgroundDefault, opacity: pressed ? 0.7 : 1 },
+            {
+              backgroundColor: theme.backgroundDefault,
+              opacity: pressed ? 0.7 : 1,
+            },
           ]}
         >
           <View style={styles.menuItemLeft}>

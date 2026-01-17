@@ -51,7 +51,9 @@ const HISTORY_DATA: HistoryItem[] = [
   },
 ];
 
-const getIconForType = (type: HistoryItemType): keyof typeof Feather.glyphMap => {
+const getIconForType = (
+  type: HistoryItemType,
+): keyof typeof Feather.glyphMap => {
   switch (type) {
     case "poop":
       return "target";
@@ -109,10 +111,7 @@ export default function HistoryScreen() {
         ]}
       >
         <View
-          style={[
-            styles.iconContainer,
-            { backgroundColor: iconColor + "20" },
-          ]}
+          style={[styles.iconContainer, { backgroundColor: iconColor + "20" }]}
         >
           <Feather name={iconName} size={22} color={iconColor} />
         </View>

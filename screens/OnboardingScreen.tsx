@@ -1,12 +1,24 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Image, TextInput, ScrollView, Platform, Linking, Pressable, Alert, useWindowDimensions } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  KeyboardAwareScrollView,
-} from "react-native-keyboard-controller";
+  StyleSheet,
+  View,
+  Image,
+  TextInput,
+  ScrollView,
+  Platform,
+  Linking,
+  Pressable,
+  Alert,
+  useWindowDimensions,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { useCameraPermissions, useMediaLibraryPermissions } from "expo-image-picker";
+import {
+  useCameraPermissions,
+  useMediaLibraryPermissions,
+} from "expo-image-picker";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DogBreedDropdown } from "@/components/DogBreedDropdown";
 import { ThemedText } from "@/components/ThemedText";
@@ -53,7 +65,8 @@ const translations = {
     continue: "Continue",
     termsLink: "Terms of Service",
     privacyLink: "Privacy Policy",
-    disclaimer: "By clicking Continue, you agree to our Terms of Service and Privacy Policy.",
+    disclaimer:
+      "By clicking Continue, you agree to our Terms of Service and Privacy Policy.",
     atLeastOneDog: "Please add at least one dog profile",
     fillAllFields: "Please fill in all required fields for each dog",
     takePhoto: "Take Photo",
@@ -62,7 +75,8 @@ const translations = {
   },
   esp: {
     getStarted: "Comenzar",
-    title: "Respuestas impulsadas por IA para los problemas cotidianos de tu perro",
+    title:
+      "Respuestas impulsadas por IA para los problemas cotidianos de tu perro",
     subtitle: "Tu asistente integral de bienestar para mascotas",
     ownerFormTitle: "Cuéntanos sobre ti",
     ownerFormSubtitle: "Usaremos esto para personalizar tu experiencia",
@@ -87,9 +101,11 @@ const translations = {
     continue: "Continuar",
     termsLink: "Términos de Servicio",
     privacyLink: "Política de Privacidad",
-    disclaimer: "Al hacer clic en Continuar, aceptas nuestros Términos de Servicio y Política de Privacidad.",
+    disclaimer:
+      "Al hacer clic en Continuar, aceptas nuestros Términos de Servicio y Política de Privacidad.",
     atLeastOneDog: "Por favor agrega al menos un perfil de perro",
-    fillAllFields: "Por favor completa todos los campos requeridos para cada perro",
+    fillAllFields:
+      "Por favor completa todos los campos requeridos para cada perro",
     takePhoto: "Tomar Foto",
     chooseFromLibrary: "Elegir de la Galería",
     cancel: "Cancelar",
@@ -105,7 +121,9 @@ const createEmptyDog = (): DogProfile => ({
   photo: null,
 });
 
-export default function OnboardingScreen({ navigation }: OnboardingScreenProps) {
+export default function OnboardingScreen({
+  navigation,
+}: OnboardingScreenProps) {
   const insets = useSafeAreaInsets();
   const { theme, isDark } = useTheme();
   const { language } = useLanguage();
@@ -119,7 +137,8 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   });
   const [dogs, setDogs] = useState<DogProfile[]>([createEmptyDog()]);
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
-  const [mediaLibraryPermission, requestMediaLibraryPermission] = useMediaLibraryPermissions();
+  const [mediaLibraryPermission, requestMediaLibraryPermission] =
+    useMediaLibraryPermissions();
 
   const t = translations[language];
 
@@ -139,7 +158,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
       return;
     }
     const allDogsValid = dogs.every(
-      (dog) => dog.name.trim() && dog.breed.trim() && dog.age.trim()
+      (dog) => dog.name.trim() && dog.breed.trim() && dog.age.trim(),
     );
     if (!allDogsValid) {
       Alert.alert("", t.fillAllFields);
@@ -157,11 +176,13 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
     setOwnerData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const updateDogField = (dogId: string, field: keyof DogProfile, value: string | null) => {
+  const updateDogField = (
+    dogId: string,
+    field: keyof DogProfile,
+    value: string | null,
+  ) => {
     setDogs((prev) =>
-      prev.map((dog) =>
-        dog.id === dogId ? { ...dog, [field]: value } : dog
-      )
+      prev.map((dog) => (dog.id === dogId ? { ...dog, [field]: value } : dog)),
     );
   };
 
@@ -198,22 +219,41 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         updateDogField(dogId, "photo", result.assets[0].uri);
       }
     } else {
-      const openSettingsText = language === "eng" ? "Open Settings" : "Abrir Configuración";
-      const cameraPermissionDeniedText = language === "eng" 
-        ? "Camera permission was denied. Please enable it in settings." 
-        : "El permiso de cámara fue denegado. Por favor habilítalo en configuración.";
-      const libraryPermissionDeniedText = language === "eng" 
-        ? "Photo library permission was denied. Please enable it in settings." 
-        : "El permiso de la galería fue denegado. Por favor habilítalo en configuración.";
-      
-      Alert.alert(
-        "",
-        t.addPhoto,
-        [
-          {
-            text: t.takePhoto,
-            onPress: async () => {
-              if (cameraPermission?.granted) {
+      const openSettingsText =
+        language === "eng" ? "Open Settings" : "Abrir Configuración";
+      const cameraPermissionDeniedText =
+        language === "eng"
+          ? "Camera permission was denied. Please enable it in settings."
+          : "El permiso de cámara fue denegado. Por favor habilítalo en configuración.";
+      const libraryPermissionDeniedText =
+        language === "eng"
+          ? "Photo library permission was denied. Please enable it in settings."
+          : "El permiso de la galería fue denegado. Por favor habilítalo en configuración.";
+
+      Alert.alert("", t.addPhoto, [
+        {
+          text: t.takePhoto,
+          onPress: async () => {
+            if (cameraPermission?.granted) {
+              const result = await ImagePicker.launchCameraAsync({
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 0.8,
+              });
+              if (!result.canceled && result.assets[0]) {
+                updateDogField(dogId, "photo", result.assets[0].uri);
+              }
+            } else if (
+              cameraPermission?.status === "denied" &&
+              !cameraPermission?.canAskAgain
+            ) {
+              Alert.alert("", cameraPermissionDeniedText, [
+                { text: openSettingsText, onPress: openSettings },
+                { text: t.cancel, style: "cancel" },
+              ]);
+            } else {
+              const { granted } = await requestCameraPermission();
+              if (granted) {
                 const result = await ImagePicker.launchCameraAsync({
                   allowsEditing: true,
                   aspect: [1, 1],
@@ -222,34 +262,34 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 if (!result.canceled && result.assets[0]) {
                   updateDogField(dogId, "photo", result.assets[0].uri);
                 }
-              } else if (cameraPermission?.status === "denied" && !cameraPermission?.canAskAgain) {
-                Alert.alert(
-                  "",
-                  cameraPermissionDeniedText,
-                  [
-                    { text: openSettingsText, onPress: openSettings },
-                    { text: t.cancel, style: "cancel" },
-                  ]
-                );
-              } else {
-                const { granted } = await requestCameraPermission();
-                if (granted) {
-                  const result = await ImagePicker.launchCameraAsync({
-                    allowsEditing: true,
-                    aspect: [1, 1],
-                    quality: 0.8,
-                  });
-                  if (!result.canceled && result.assets[0]) {
-                    updateDogField(dogId, "photo", result.assets[0].uri);
-                  }
-                }
               }
-            },
+            }
           },
-          {
-            text: t.chooseFromLibrary,
-            onPress: async () => {
-              if (mediaLibraryPermission?.granted) {
+        },
+        {
+          text: t.chooseFromLibrary,
+          onPress: async () => {
+            if (mediaLibraryPermission?.granted) {
+              const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 0.8,
+              });
+              if (!result.canceled && result.assets[0]) {
+                updateDogField(dogId, "photo", result.assets[0].uri);
+              }
+            } else if (
+              mediaLibraryPermission?.status === "denied" &&
+              !mediaLibraryPermission?.canAskAgain
+            ) {
+              Alert.alert("", libraryPermissionDeniedText, [
+                { text: openSettingsText, onPress: openSettings },
+                { text: t.cancel, style: "cancel" },
+              ]);
+            } else {
+              const { granted } = await requestMediaLibraryPermission();
+              if (granted) {
                 const result = await ImagePicker.launchImageLibraryAsync({
                   mediaTypes: ImagePicker.MediaTypeOptions.Images,
                   allowsEditing: true,
@@ -259,34 +299,12 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 if (!result.canceled && result.assets[0]) {
                   updateDogField(dogId, "photo", result.assets[0].uri);
                 }
-              } else if (mediaLibraryPermission?.status === "denied" && !mediaLibraryPermission?.canAskAgain) {
-                Alert.alert(
-                  "",
-                  libraryPermissionDeniedText,
-                  [
-                    { text: openSettingsText, onPress: openSettings },
-                    { text: t.cancel, style: "cancel" },
-                  ]
-                );
-              } else {
-                const { granted } = await requestMediaLibraryPermission();
-                if (granted) {
-                  const result = await ImagePicker.launchImageLibraryAsync({
-                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                    allowsEditing: true,
-                    aspect: [1, 1],
-                    quality: 0.8,
-                  });
-                  if (!result.canceled && result.assets[0]) {
-                    updateDogField(dogId, "photo", result.assets[0].uri);
-                  }
-                }
               }
-            },
+            }
           },
-          { text: t.cancel, style: "cancel" },
-        ]
-      );
+        },
+        { text: t.cancel, style: "cancel" },
+      ]);
     }
   };
 
@@ -316,16 +334,19 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   };
 
   const isOwnerFormValid = ownerData.name.trim() && ownerData.email.trim();
-  const isDogsFormValid = dogs.length > 0 && dogs.every(
-    (dog) => dog.name.trim() && dog.breed.trim() && dog.age.trim()
-  );
+  const isDogsFormValid =
+    dogs.length > 0 &&
+    dogs.every((dog) => dog.name.trim() && dog.breed.trim() && dog.age.trim());
 
   const renderDogCard = (dog: DogProfile, index: number) => (
     <View
       key={dog.id}
       style={[
         styles.dogCard,
-        { backgroundColor: theme.backgroundDefault, borderColor: theme.borderLight },
+        {
+          backgroundColor: theme.backgroundDefault,
+          borderColor: theme.borderLight,
+        },
       ]}
     >
       <View style={styles.dogCardHeader}>
@@ -333,9 +354,15 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           {language === "eng" ? `Dog ${index + 1}` : `Perro ${index + 1}`}
         </ThemedText>
         {dogs.length > 1 && (
-          <Pressable onPress={() => removeDog(dog.id)} style={styles.removeButton}>
+          <Pressable
+            onPress={() => removeDog(dog.id)}
+            style={styles.removeButton}
+          >
             <Feather name="trash-2" size={18} color={Colors.light.urgentRed} />
-            <ThemedText type="small" style={{ color: Colors.light.urgentRed, marginLeft: 4 }}>
+            <ThemedText
+              type="small"
+              style={{ color: Colors.light.urgentRed, marginLeft: 4 }}
+            >
               {t.removeDog}
             </ThemedText>
           </Pressable>
@@ -347,7 +374,10 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           onPress={() => pickImage(dog.id)}
           style={[
             styles.photoContainer,
-            { backgroundColor: theme.backgroundRoot, borderColor: theme.borderLight },
+            {
+              backgroundColor: theme.backgroundRoot,
+              borderColor: theme.borderLight,
+            },
           ]}
         >
           {dog.photo ? (
@@ -355,14 +385,22 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           ) : (
             <View style={styles.photoPlaceholder}>
               <Feather name="camera" size={28} color={theme.textMuted} />
-              <ThemedText type="small" style={{ color: theme.textMuted, marginTop: 4 }}>
+              <ThemedText
+                type="small"
+                style={{ color: theme.textMuted, marginTop: 4 }}
+              >
                 {t.addPhoto}
               </ThemedText>
             </View>
           )}
         </Pressable>
 
-        <View style={[styles.photoFieldsColumn, isWideScreen && styles.photoFieldsColumnWide]}>
+        <View
+          style={[
+            styles.photoFieldsColumn,
+            isWideScreen && styles.photoFieldsColumnWide,
+          ]}
+        >
           <View style={styles.fieldFullWidth}>
             <ThemedText type="small" style={styles.label}>
               {t.dogName} *
@@ -383,7 +421,9 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
             <TextInput
               style={inputStyle}
               value={dog.nickname}
-              onChangeText={(value) => updateDogField(dog.id, "nickname", value)}
+              onChangeText={(value) =>
+                updateDogField(dog.id, "nickname", value)
+              }
               placeholder={t.nicknamePlaceholder}
               placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
               autoCapitalize="words"
@@ -392,7 +432,9 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
         </View>
       </View>
 
-      <View style={[styles.dogFieldsRow, isWideScreen && styles.dogFieldsRowWide]}>
+      <View
+        style={[styles.dogFieldsRow, isWideScreen && styles.dogFieldsRowWide]}
+      >
         <View style={styles.fieldFullWidth}>
           <ThemedText type="small" style={styles.label}>
             {t.breed} *
@@ -420,7 +462,8 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
     </View>
   );
 
-  const ScrollComponent = Platform.OS === "web" ? ScrollView : KeyboardAwareScrollView;
+  const ScrollComponent =
+    Platform.OS === "web" ? ScrollView : KeyboardAwareScrollView;
 
   return (
     <ThemedView
@@ -479,7 +522,10 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
             <ThemedText type="h2" style={styles.stepTitle}>
               {t.ownerFormTitle}
             </ThemedText>
-            <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
+            <ThemedText
+              type="body"
+              style={[styles.stepSubtitle, { color: theme.textMuted }]}
+            >
               {t.ownerFormSubtitle}
             </ThemedText>
 
@@ -520,10 +566,17 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
               onPress={handleGoBack}
               style={[
                 styles.secondaryButton,
-                { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
+                {
+                  backgroundColor: theme.backgroundDefault,
+                  borderWidth: 1,
+                  borderColor: theme.borderLight,
+                },
               ]}
             >
-              <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
+              <ThemedText
+                type="body"
+                style={{ color: theme.text, fontWeight: "600" }}
+              >
                 {t.back}
               </ThemedText>
             </Button>
@@ -547,7 +600,10 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
             <ThemedText type="h2" style={styles.stepTitle}>
               {t.dogsFormTitle}
             </ThemedText>
-            <ThemedText type="body" style={[styles.stepSubtitle, { color: theme.textMuted }]}>
+            <ThemedText
+              type="body"
+              style={[styles.stepSubtitle, { color: theme.textMuted }]}
+            >
               {t.dogsFormSubtitle}
             </ThemedText>
 
@@ -560,15 +616,29 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 { borderColor: Colors.light.primary },
               ]}
             >
-              <Feather name="plus-circle" size={20} color={Colors.light.primary} />
-              <ThemedText type="body" style={{ color: Colors.light.primary, marginLeft: 8, fontWeight: "600" }}>
+              <Feather
+                name="plus-circle"
+                size={20}
+                color={Colors.light.primary}
+              />
+              <ThemedText
+                type="body"
+                style={{
+                  color: Colors.light.primary,
+                  marginLeft: 8,
+                  fontWeight: "600",
+                }}
+              >
                 {t.addAnotherDog}
               </ThemedText>
             </Pressable>
 
             <View style={styles.linksContainer}>
               <Pressable onPress={handleTermsPress}>
-                <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
+                <ThemedText
+                  type="small"
+                  style={[styles.link, { color: Colors.light.primary }]}
+                >
                   {t.termsLink}
                 </ThemedText>
               </Pressable>
@@ -576,14 +646,24 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
                 {" • "}
               </ThemedText>
               <Pressable onPress={handlePrivacyPress}>
-                <ThemedText type="small" style={[styles.link, { color: Colors.light.primary }]}>
+                <ThemedText
+                  type="small"
+                  style={[styles.link, { color: Colors.light.primary }]}
+                >
                   {t.privacyLink}
                 </ThemedText>
               </Pressable>
             </View>
 
             <View style={styles.disclaimerContainer}>
-              <ThemedText type="small" style={{ color: theme.textMuted, textAlign: "center", lineHeight: 18 }}>
+              <ThemedText
+                type="small"
+                style={{
+                  color: theme.textMuted,
+                  textAlign: "center",
+                  lineHeight: 18,
+                }}
+              >
                 {t.disclaimer}
               </ThemedText>
             </View>
@@ -594,10 +674,17 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
               onPress={handleGoBack}
               style={[
                 styles.secondaryButton,
-                { backgroundColor: theme.backgroundDefault, borderWidth: 1, borderColor: theme.borderLight },
+                {
+                  backgroundColor: theme.backgroundDefault,
+                  borderWidth: 1,
+                  borderColor: theme.borderLight,
+                },
               ]}
             >
-              <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
+              <ThemedText
+                type="body"
+                style={{ color: theme.text, fontWeight: "600" }}
+              >
                 {t.back}
               </ThemedText>
             </Button>

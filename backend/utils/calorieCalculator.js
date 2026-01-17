@@ -24,10 +24,10 @@ function calculateRER(weightLbs) {
  */
 function getActivityMultiplier(activityLevel) {
   const multipliers = {
-    'sedentary': 1.2,      // Indoor dogs with minimal activity
-    'moderate': 1.6,       // Average adult dogs with regular walks
-    'active': 2.0,         // Working dogs or dogs with high exercise
-    'very_active': 3.0     // Performance/competition dogs
+    sedentary: 1.2, // Indoor dogs with minimal activity
+    moderate: 1.6, // Average adult dogs with regular walks
+    active: 2.0, // Working dogs or dogs with high exercise
+    very_active: 3.0, // Performance/competition dogs
   };
 
   return multipliers[activityLevel] || 1.6; // Default to moderate
@@ -83,10 +83,10 @@ function calculateCalories(params) {
 
   // Validate inputs
   if (!weightLbs || weightLbs <= 0) {
-    throw new Error('Weight must be a positive number');
+    throw new Error("Weight must be a positive number");
   }
   if (ageYears < 0) {
-    throw new Error('Age cannot be negative');
+    throw new Error("Age cannot be negative");
   }
 
   // Step 1: Calculate base RER
@@ -114,8 +114,8 @@ function calculateCalories(params) {
     breakdown: {
       activityMultiplier: activityMult,
       ageMultiplier: ageMult,
-      sizeMultiplier: sizeMult
-    }
+      sizeMultiplier: sizeMult,
+    },
   };
 }
 
@@ -129,7 +129,7 @@ function calculateCalories(params) {
  */
 function calculatePortionSize(dailyCalories, caloriesPerCup, mealsPerDay = 2) {
   if (caloriesPerCup <= 0 || mealsPerDay <= 0) {
-    throw new Error('Invalid input for portion calculation');
+    throw new Error("Invalid input for portion calculation");
   }
 
   const totalCups = dailyCalories / caloriesPerCup;
@@ -139,7 +139,7 @@ function calculatePortionSize(dailyCalories, caloriesPerCup, mealsPerDay = 2) {
     totalCupsPerDay: parseFloat(totalCups.toFixed(2)),
     cupsPerMeal: parseFloat(cupsPerMeal.toFixed(2)),
     mealsPerDay,
-    caloriesPerMeal: Math.round(dailyCalories / mealsPerDay)
+    caloriesPerMeal: Math.round(dailyCalories / mealsPerDay),
   };
 }
 
@@ -152,16 +152,16 @@ function calculatePortionSize(dailyCalories, caloriesPerCup, mealsPerDay = 2) {
  */
 function generateMealSchedule(cupsPerMeal, mealsPerDay = 2) {
   const schedules = {
-    1: [{ time: '08:00', portion: cupsPerMeal }],
+    1: [{ time: "08:00", portion: cupsPerMeal }],
     2: [
-      { time: '08:00', portion: cupsPerMeal },
-      { time: '18:00', portion: cupsPerMeal }
+      { time: "08:00", portion: cupsPerMeal },
+      { time: "18:00", portion: cupsPerMeal },
     ],
     3: [
-      { time: '07:00', portion: cupsPerMeal },
-      { time: '13:00', portion: cupsPerMeal },
-      { time: '19:00', portion: cupsPerMeal }
-    ]
+      { time: "07:00", portion: cupsPerMeal },
+      { time: "13:00", portion: cupsPerMeal },
+      { time: "19:00", portion: cupsPerMeal },
+    ],
   };
 
   return schedules[mealsPerDay] || schedules[2];
@@ -172,5 +172,5 @@ module.exports = {
   calculatePortionSize,
   generateMealSchedule,
   calculateRER, // Export for testing
-  getActivityMultiplier // Export for testing
+  getActivityMultiplier, // Export for testing
 };
