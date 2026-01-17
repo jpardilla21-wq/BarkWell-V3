@@ -92,37 +92,37 @@ export default function HistoryScreenRedesign() {
   // Dynamic styles that use theme values
   const dynamicStyles = useMemo(() => ({
     headerTitle: {
-      fontSize: typography.h2.fontSize,
-      fontFamily: typography.display.fontFamily,
+      fontSize: typography.fontSize['2xl'],
+      fontFamily: typography.fontFamily.display,
       fontWeight: "700" as const,
       color: colors.neutral[900],
     },
     headerSubtitle: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[600],
       marginTop: spacing.xs,
     },
     itemLabel: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       fontWeight: "600" as const,
       color: colors.neutral[900],
     },
     itemDate: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       color: colors.neutral[500],
     },
     itemSummary: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[600],
       marginTop: 4,
     },
     emptyTitle: {
-      fontSize: typography.bodyL.fontSize,
+      fontSize: typography.fontSize.lg,
       color: colors.neutral[600],
       marginTop: spacing.md,
     },
     emptySubtitle: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[500],
       marginTop: spacing.xs,
       textAlign: "center" as const,

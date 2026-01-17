@@ -52,117 +52,117 @@ export default function OnboardingScreenRedesign({
   // Dynamic styles that use theme values
   const dynamicStyles = useMemo(() => ({
     welcomeTitle: {
-      fontSize: typography.h1.fontSize,
-      fontFamily: typography.display.fontFamily,
+      fontSize: typography.fontSize['3xl'],
+      fontFamily: typography.fontFamily.display,
       fontWeight: "700" as const,
       color: colors.neutral[900],
       textAlign: "center" as const,
       marginTop: spacing.lg,
     },
     welcomeSubtitle: {
-      fontSize: typography.bodyL.fontSize,
+      fontSize: typography.fontSize.lg,
       color: colors.neutral[600],
       textAlign: "center" as const,
       marginTop: spacing.sm,
       paddingHorizontal: spacing.xl,
     },
     orText: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       color: colors.neutral[500],
       paddingHorizontal: spacing.md,
     },
     termsText: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       color: colors.neutral[500],
       textAlign: "center" as const,
       marginTop: spacing.xl,
       paddingHorizontal: spacing.xl,
     },
     formTitle: {
-      fontSize: typography.h2.fontSize,
-      fontFamily: typography.display.fontFamily,
+      fontSize: typography.fontSize['2xl'],
+      fontFamily: typography.fontFamily.display,
       fontWeight: "700" as const,
       color: colors.neutral[900],
     },
     sectionTitle: {
-      fontSize: typography.h4.fontSize,
+      fontSize: typography.fontSize.lg,
       fontWeight: "600" as const,
       color: colors.neutral[900],
       marginBottom: spacing.md,
     },
     inputLabel: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       fontWeight: "600" as const,
       color: colors.neutral[700],
       marginBottom: spacing.xs,
     },
     dogNumber: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       fontWeight: "600" as const,
       color: colors.neutral[900],
     },
     photoButtonText: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       color: colors.neutral[600],
       marginTop: spacing.xs,
     },
     pricingTitle: {
-      fontSize: typography.h2.fontSize,
-      fontFamily: typography.display.fontFamily,
+      fontSize: typography.fontSize['2xl'],
+      fontFamily: typography.fontFamily.display,
       fontWeight: "700" as const,
       color: colors.neutral[900],
       textAlign: "center" as const,
     },
     timelineTitle: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       fontWeight: "600" as const,
       color: colors.neutral[900],
     },
     timelineText: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       color: colors.neutral[600],
     },
     planSectionTitle: {
-      fontSize: typography.h4.fontSize,
+      fontSize: typography.fontSize.lg,
       fontWeight: "600" as const,
       color: colors.neutral[900],
       marginTop: spacing.lg,
       marginBottom: spacing.md,
     },
     planName: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       fontWeight: "600" as const,
       color: colors.neutral[900],
     },
     planPrice: {
-      fontSize: typography.h3.fontSize,
+      fontSize: typography.fontSize.xl,
       fontWeight: "700" as const,
       color: colors.neutral[900],
       marginTop: spacing.xs,
     },
     planPeriod: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       fontWeight: "400" as const,
       color: colors.neutral[600],
     },
     planSavings: {
-      fontSize: typography.bodyS.fontSize,
-      color: colors.status.excellent,
+      fontSize: typography.fontSize.sm,
+      color: colors.status.excellent.text,
       marginTop: 4,
     },
     badgeText: {
-      fontSize: typography.bodyXS.fontSize,
+      fontSize: typography.fontSize.xs,
       fontWeight: "700" as const,
       color: colors.neutral.white,
     },
     noPaymentText: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       fontWeight: "600" as const,
       color: colors.neutral[900],
       marginLeft: spacing.sm,
     },
     legalText: {
-      fontSize: typography.bodyXS.fontSize,
+      fontSize: typography.fontSize.xs,
       color: colors.neutral[500],
       textAlign: "center" as const,
       marginTop: spacing.md,
@@ -362,8 +362,8 @@ export default function OnboardingScreenRedesign({
                 backgroundColor: colors.neutral.white,
                 borderColor: colors.neutral[300],
                 color: colors.neutral[900],
-                fontFamily: typography.body.fontFamily,
-                fontSize: typography.bodyM.fontSize,
+                fontFamily: typography.fontFamily.primary,
+                fontSize: typography.fontSize.base,
               },
             ]}
             value={ownerData.name}
@@ -384,8 +384,8 @@ export default function OnboardingScreenRedesign({
                 backgroundColor: colors.neutral.white,
                 borderColor: colors.neutral[300],
                 color: colors.neutral[900],
-                fontFamily: typography.body.fontFamily,
-                fontSize: typography.bodyM.fontSize,
+                fontFamily: typography.fontFamily.primary,
+                fontSize: typography.fontSize.base,
               },
             ]}
             value={ownerData.email}
@@ -411,7 +411,7 @@ export default function OnboardingScreenRedesign({
             </Text>
             {dogs.length > 1 && (
               <Pressable onPress={() => handleRemoveDog(index)}>
-                <Feather name="trash-2" size={18} color={colors.status.critical} />
+                <Feather name="trash-2" size={18} color={colors.status.critical.icon} />
               </Pressable>
             )}
           </View>
@@ -445,8 +445,8 @@ export default function OnboardingScreenRedesign({
                   backgroundColor: colors.neutral.white,
                   borderColor: colors.neutral[300],
                   color: colors.neutral[900],
-                  fontFamily: typography.body.fontFamily,
-                  fontSize: typography.bodyM.fontSize,
+                  fontFamily: typography.fontFamily.primary,
+                  fontSize: typography.fontSize.base,
                 },
               ]}
               value={dog.name}
@@ -464,6 +464,7 @@ export default function OnboardingScreenRedesign({
             <DogBreedDropdown
               value={dog.breed}
               onSelect={(breed) => updateDog(index, "breed", breed)}
+              isDark={false}
             />
           </View>
 
@@ -479,8 +480,8 @@ export default function OnboardingScreenRedesign({
                   backgroundColor: colors.neutral.white,
                   borderColor: colors.neutral[300],
                   color: colors.neutral[900],
-                  fontFamily: typography.body.fontFamily,
-                  fontSize: typography.bodyM.fontSize,
+                  fontFamily: typography.fontFamily.primary,
+                  fontSize: typography.fontSize.base,
                 },
               ]}
               value={dog.age}
@@ -583,7 +584,7 @@ export default function OnboardingScreenRedesign({
           variant={selectedPlan === "monthly" ? "elevated" : "outlined"}
           style={[
             styles.pricingCard,
-            selectedPlan === "monthly" && { borderColor: colors.primary[500], borderWidth: 2 },
+            selectedPlan === "monthly" ? { borderColor: colors.primary[500], borderWidth: 2 } : {},
           ]}
         >
           <View style={styles.pricingHeader}>
@@ -615,7 +616,7 @@ export default function OnboardingScreenRedesign({
           variant={selectedPlan === "yearly" ? "elevated" : "outlined"}
           style={[
             styles.pricingCard,
-            selectedPlan === "yearly" && { borderColor: colors.primary[500], borderWidth: 2 },
+            selectedPlan === "yearly" ? { borderColor: colors.primary[500], borderWidth: 2 } : {},
           ]}
         >
           {selectedPlan === "yearly" && (
@@ -654,7 +655,7 @@ export default function OnboardingScreenRedesign({
 
       {/* No Payment Due */}
       <View style={styles.noPayment}>
-        <Feather name="check-circle" size={20} color={colors.status.excellent} />
+        <Feather name="check-circle" size={20} color={colors.status.excellent.icon} />
         <Text style={dynamicStyles.noPaymentText}>
           No Payment Due Now
         </Text>

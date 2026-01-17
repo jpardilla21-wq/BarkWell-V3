@@ -166,7 +166,7 @@ export default function BehaviorCheckScreenRedesign() {
   const getStateColor = (state: BehaviorState) => {
     switch (state) {
       case "Relaxed":
-        return colors.status.excellent;
+        return colors.status.excellent.background;
       case "Happy & Engaged":
         return colors.primary[500];
       case "Anxious":
@@ -174,9 +174,9 @@ export default function BehaviorCheckScreenRedesign() {
       case "Overstimulated":
         return colors.secondary[500];
       case "Defensive":
-        return colors.status.warning;
+        return colors.status.warning.background;
       case "Possibly in Pain":
-        return colors.status.critical;
+        return colors.status.critical.background;
       default:
         return colors.neutral[400];
     }
@@ -185,77 +185,77 @@ export default function BehaviorCheckScreenRedesign() {
   // Dynamic styles that use theme values
   const dynamicStyles = useMemo(() => ({
     headerTitle: {
-      fontSize: typography.h2.fontSize,
-      fontFamily: typography.display.fontFamily,
+      fontSize: typography.fontSize['2xl'],
+      fontFamily: typography.fontFamily.display,
       fontWeight: "700" as const,
       color: colors.neutral[900],
       marginTop: spacing.md,
     },
     headerSubtitle: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[600],
       textAlign: "center" as const,
       marginTop: spacing.xs,
     },
     placeholderText: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[700],
       marginTop: spacing.md,
       textAlign: "center" as const,
     },
     placeholderSubtext: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       color: colors.neutral[500],
       marginTop: spacing.xs,
       textAlign: "center" as const,
     },
     videoReadyText: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[700],
       marginTop: spacing.md,
     },
     resultTitle: {
-      fontSize: typography.h3.fontSize,
+      fontSize: typography.fontSize.xl,
       fontWeight: "700" as const,
       color: colors.neutral[900],
     },
     resultSubtext: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       color: colors.neutral[500],
       marginTop: spacing.xs,
     },
     stateBadgeText: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       fontWeight: "700" as const,
       color: colors.neutral.white,
     },
     resultExplanation: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[700],
       marginTop: spacing.md,
-      lineHeight: typography.bodyM.lineHeight,
+      lineHeight: typography.fontSize.base * typography.lineHeight.relaxed,
     },
     sectionTitle: {
-      fontSize: typography.h4.fontSize,
+      fontSize: typography.fontSize.lg,
       fontWeight: "600" as const,
       color: colors.neutral[900],
       marginBottom: spacing.md,
     },
     observationLabel: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       fontWeight: "600" as const,
       color: colors.neutral[900],
     },
     observationText: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[600],
       marginTop: 2,
     },
     tipText: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[700],
       flex: 1,
-      lineHeight: typography.bodyM.lineHeight,
+      lineHeight: typography.fontSize.base * typography.lineHeight.relaxed,
     },
   }), [colors, spacing, typography]);
 

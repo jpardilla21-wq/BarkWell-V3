@@ -149,11 +149,11 @@ export default function PoopCheckScreenRedesign() {
   const getRiskColor = (level: RiskLevel) => {
     switch (level) {
       case "Low":
-        return colors.status.excellent;
+        return colors.status.excellent.background;
       case "Medium":
         return colors.accent[500];
       case "High":
-        return colors.status.critical;
+        return colors.status.critical.background;
       default:
         return colors.neutral[400];
     }
@@ -162,57 +162,57 @@ export default function PoopCheckScreenRedesign() {
   // Dynamic styles that use theme values
   const dynamicStyles = useMemo(() => ({
     headerTitle: {
-      fontSize: typography.h2.fontSize,
-      fontFamily: typography.display.fontFamily,
+      fontSize: typography.fontSize['2xl'],
+      fontFamily: typography.fontFamily.display,
       fontWeight: "700" as const,
       color: colors.neutral[900],
       marginTop: spacing.md,
     },
     headerSubtitle: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[600],
       textAlign: "center" as const,
       marginTop: spacing.xs,
     },
     placeholderText: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[700],
       marginTop: spacing.md,
       textAlign: "center" as const,
     },
     sectionLabel: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       fontWeight: "600" as const,
       color: colors.neutral[900],
       marginBottom: spacing.sm,
     },
     resultTitle: {
-      fontSize: typography.h3.fontSize,
+      fontSize: typography.fontSize.xl,
       fontWeight: "700" as const,
       color: colors.neutral[900],
     },
     riskBadgeText: {
-      fontSize: typography.bodyS.fontSize,
+      fontSize: typography.fontSize.sm,
       fontWeight: "700" as const,
       color: colors.neutral.white,
     },
     resultSummary: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[700],
       marginTop: spacing.md,
-      lineHeight: typography.bodyM.lineHeight,
+      lineHeight: typography.fontSize.base * typography.lineHeight.relaxed,
     },
     recommendationTitle: {
-      fontSize: typography.h4.fontSize,
+      fontSize: typography.fontSize.lg,
       fontWeight: "600" as const,
       color: colors.neutral[900],
       marginBottom: spacing.sm,
     },
     tipText: {
-      fontSize: typography.bodyM.fontSize,
+      fontSize: typography.fontSize.base,
       color: colors.neutral[700],
       flex: 1,
-      lineHeight: typography.bodyM.lineHeight,
+      lineHeight: typography.fontSize.base * typography.lineHeight.relaxed,
     },
   }), [colors, spacing, typography]);
 
@@ -297,8 +297,8 @@ export default function PoopCheckScreenRedesign() {
                 backgroundColor: colors.neutral.white,
                 color: colors.neutral[900],
                 borderColor: colors.neutral[300],
-                fontFamily: typography.body.fontFamily,
-                fontSize: typography.bodyM.fontSize,
+                fontFamily: typography.fontFamily.primary,
+                fontSize: typography.fontSize.base,
               },
             ]}
             value={description}

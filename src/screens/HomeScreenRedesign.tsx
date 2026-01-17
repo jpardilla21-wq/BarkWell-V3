@@ -353,7 +353,7 @@ export default function HomeScreenRedesign() {
               style={[
                 styles.quickActionButton,
                 {
-                  backgroundColor: colors.status.excellent,
+                  backgroundColor: colors.status.excellent.background,
                   borderRadius: borderRadius.lg,
                   padding: spacing.lg,
                   marginRight: spacing.md,
