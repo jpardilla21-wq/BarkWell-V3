@@ -8,10 +8,10 @@ export const Colors = {
     tabIconDefault: "#6E6E6E",
     tabIconSelected: "#4A7BFF",
     link: "#4A7BFF",
-    backgroundRoot: "#F6F6F6",
+    backgroundRoot: "#FDFDFD",
     backgroundDefault: "#FFFFFF",
-    backgroundSecondary: "#F0F0F0",
-    backgroundTertiary: "#E5E5E5",
+    backgroundSecondary: "#FDFDFD",
+    backgroundTertiary: "#F0F0F0",
     primary: "#4A7BFF",
     primaryGradientStart: "#4A7BFF",
     primaryGradientEnd: "#6ED2FF",
@@ -20,6 +20,10 @@ export const Colors = {
     urgentRed: "#FF6B6B",
     cardBackground: "#FFFFFF",
     borderLight: "#E5E5E5",
+    // Custom action button colors
+    actionButton1: "#EDF9D4",
+    actionButton2: "#CEB1FB",
+    actionButton3: "#BEEC7E",
   },
   dark: {
     text: "#ECEDEE",
@@ -40,6 +44,10 @@ export const Colors = {
     urgentRed: "#FF6B6B",
     cardBackground: "#2A2A2A",
     borderLight: "#404040",
+    // Custom action button colors (darker versions for dark mode)
+    actionButton1: "#3A4A2D",
+    actionButton2: "#4A3A5A",
+    actionButton3: "#4A5A3A",
   },
 };
 
