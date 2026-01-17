@@ -44,9 +44,9 @@
       [
         "expo-auth-session/google",
         {
-          "clientId": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
-          "iosClientId": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
-          "androidClientId": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+          "clientId": "${EXPO_PUBLIC_GOOGLE_CLIENT_ID}",
+          "iosClientId": "${EXPO_PUBLIC_GOOGLE_CLIENT_ID}",
+          "androidClientId": "${EXPO_PUBLIC_GOOGLE_CLIENT_ID}"
         }
       ]
     ],
