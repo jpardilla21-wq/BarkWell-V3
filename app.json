@@ -44,9 +44,9 @@
       [
         "expo-auth-session/google",
         {
-          "clientId": "${EXPO_PUBLIC_GOOGLE_CLIENT_ID}",
-          "iosClientId": "${EXPO_PUBLIC_GOOGLE_CLIENT_ID}",
-          "androidClientId": "${EXPO_PUBLIC_GOOGLE_CLIENT_ID}"
+          "clientId": "909160715250-1v7k6t355drgr0ra99132os5e9pts7hn.apps.googleusercontent.com",
+          "iosClientId": "909160715250-1v7k6t355drgr0ra99132os5e9pts7hn.apps.googleusercontent.com",
+          "androidClientId": "909160715250-1v7k6t355drgr0ra99132os5e9pts7hn.apps.googleusercontent.com"
         }
       ]
     ],
