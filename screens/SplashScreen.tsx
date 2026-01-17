@@ -1,12 +1,17 @@
-import React from "react";
-import { StyleSheet, View, Image, Pressable, ScrollView, Linking } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, View, Image, Pressable, ScrollView, Linking, Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
+import * as Google from "expo-auth-session/providers/google";
+import * as AppleAuthentication from "expo-apple-authentication";
+import * as WebBrowser from "expo-web-browser";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ThemedText } from "@/components/ThemedText";
-import { Colors, Spacing, BorderRadius, Typography } from "@/constants/theme";
+import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 import { Button } from "@/components/Button";
 import type { RootStackParamList } from "@/navigation/RootNavigator";
+
+WebBrowser.maybeCompleteAuthSession();
 
 type SplashScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Splash">;
@@ -14,15 +19,99 @@ type SplashScreenProps = {
 
 export default function SplashScreen({ navigation }: SplashScreenProps) {
   const insets = useSafeAreaInsets();
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleGoogleLogin = () => {
-    // TODO: Implement Google OAuth with expo-auth-session
-    navigation.replace("Onboarding");
+  // Google OAuth Setup
+  const [googleRequest, googleResponse, googlePromptAsync] = Google.useAuthRequest({
+    clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID || "",
+    scopes: ["profile", "email"],
+  });
+
+  // Handle Google OAuth response
+  useEffect(() => {
+    if (googleResponse?.type === "success") {
+      const { authentication } = googleResponse;
+      handleGoogleSuccess(authentication?.accessToken);
+    }
+  }, [googleResponse]);
+
+  const handleGoogleSuccess = async (token?: string) => {
+    try {
+      setIsLoading(true);
+      if (!token) {
+        Alert.alert("Error", "Failed to get Google token");
+        return;
+      }
+
+      // TODO: Send token to your backend
+      // const response = await fetch('YOUR_BACKEND_URL/auth/google', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ token }),
+      // });
+      // const data = await response.json();
+      // if (data.success) {
+      //   // Save token to secure storage
+      //   navigation.replace("Onboarding");
+      // }
+
+      // For now, just proceed to onboarding
+      navigation.replace("Onboarding");
+    } catch (error) {
+      Alert.alert("Login Failed", String(error));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleAppleLogin = () => {
-    // TODO: Implement Apple Sign In with expo-auth-session
-    navigation.replace("Onboarding");
+  const handleGoogleLogin = async () => {
+    try {
+      setIsLoading(true);
+      const result = await googlePromptAsync();
+      if (result?.type !== "success") {
+        setIsLoading(false);
+      }
+    } catch (error) {
+      Alert.alert("Google Login Error", String(error));
+      setIsLoading(false);
+    }
+  };
+
+  const handleAppleLogin = async () => {
+    try {
+      setIsLoading(true);
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      // TODO: Send credential to your backend
+      // const response = await fetch('YOUR_BACKEND_URL/auth/apple', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     identityToken: credential.identityToken,
+      //     user: credential.user,
+      //   }),
+      // });
+      // const data = await response.json();
+      // if (data.success) {
+      //   navigation.replace("Onboarding");
+      // }
+
+      // For now, just proceed to onboarding
+      navigation.replace("Onboarding");
+    } catch (error) {
+      const errorMsg = String(error);
+      if (errorMsg.includes("canceled")) {
+        return; // User cancelled, don't show error
+      }
+      Alert.alert("Apple Login Error", errorMsg);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleEmailLogin = () => {
@@ -60,22 +149,24 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
         <View style={styles.buttonSection}>
           <Pressable
             onPress={handleGoogleLogin}
+            disabled={!googleRequest || isLoading}
             style={({ pressed }) => [
               styles.socialButton,
-              { opacity: pressed ? 0.8 : 1 },
+              { opacity: pressed && !isLoading ? 0.8 : 1 },
             ]}
           >
             <Feather name="mail" size={20} color={Colors.light.primary} />
             <ThemedText type="body" style={styles.socialButtonText}>
-              Continue with Google
+              {isLoading ? "Signing in..." : "Continue with Google"}
             </ThemedText>
           </Pressable>
 
           <Pressable
             onPress={handleAppleLogin}
+            disabled={isLoading}
             style={({ pressed }) => [
               styles.socialButton,
-              { opacity: pressed ? 0.8 : 1 },
+              { opacity: pressed && !isLoading ? 0.8 : 1 },
             ]}
           >
             <Feather name="smartphone" size={20} color={Colors.light.primary} />
@@ -92,7 +183,9 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
             <View style={styles.dividerLine} />
           </View>
 
-          <Button onPress={handleEmailLogin}>Continue with Email</Button>
+          <Button onPress={handleEmailLogin} disabled={isLoading}>
+            Continue with Email
+          </Button>
         </View>
 
         <View style={styles.disclaimerSection}>
