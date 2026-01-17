@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getPets, getSubscriptionStatus } from './services/api'
 import PetProfile from './components/PetProfile'
 import WellnessDashboard from './components/WellnessDashboard'
@@ -11,6 +11,7 @@ import BreedInsights from './components/BreedInsights'
 // Phase 3 components
 import Shop from './components/Shop'
 import Pricing from './components/Pricing'
+import ActionButtons from './components/ActionButtons'
 
 function App() {
   const [pets, setPets] = useState([]);
@@ -20,6 +21,13 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, nutrition, learn, profile, shop, pricing
   const [currentTier, setCurrentTier] = useState('free');
   const [userId] = useState(1); // Hardcoded for demo
+
+  // Refs for scrolling to components
+  const wellnessRef = useRef(null);
+  const weightRef = useRef(null);
+  const treatRef = useRef(null);
+  const nutritionRef = useRef(null);
+  const profileRef = useRef(null);
 
   // Fetch pets and subscription status on mount
   useEffect(() => {
@@ -61,11 +69,54 @@ function App() {
     setActiveTab('pricing');
   };
 
+  const handleQuickAction = (actionId) => {
+    switch (actionId) {
+      case 'health':
+        setActiveTab('dashboard');
+        setTimeout(() => {
+          wellnessRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+        break;
+      case 'weight':
+        setActiveTab('dashboard');
+        setTimeout(() => {
+          weightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+        break;
+      case 'treat':
+        setActiveTab('dashboard');
+        setTimeout(() => {
+          treatRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+        break;
+      case 'nutrition':
+        setActiveTab('nutrition');
+        setTimeout(() => {
+          nutritionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+        break;
+      case 'activity':
+        setActiveTab('dashboard');
+        setTimeout(() => {
+          wellnessRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+        break;
+      case 'vet':
+        setActiveTab('profile');
+        setTimeout(() => {
+          profileRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+        break;
+      default:
+        break;
+    }
+  };
+
   const selectedPet = pets.find(pet => pet.id === selectedPetId);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FDFDFD' }}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading PupSense...</p>
@@ -76,7 +127,7 @@ function App() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FDFDFD' }}>
         <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md">
           <h2 className="text-red-800 font-semibold text-lg mb-2">Connection Error</h2>
           <p className="text-red-600 mb-4">{error}</p>
@@ -93,7 +144,7 @@ function App() {
 
   if (pets.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FDFDFD' }}>
         <div className="bg-white border border-gray-200 rounded-lg p-8 max-w-md text-center">
           <h2 className="text-gray-800 font-semibold text-xl mb-2">No Pets Found</h2>
           <p className="text-gray-600 mb-4">
@@ -108,7 +159,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ backgroundColor: '#FDFDFD' }}>
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -238,34 +289,45 @@ function App() {
             {/* Tab Content */}
             {activeTab === 'dashboard' && (
               <div className="space-y-8">
+                {/* Quick Action Buttons */}
+                <ActionButtons onAction={handleQuickAction} />
+
                 {/* Wellness Score Dashboard */}
-                <WellnessDashboard
-                  petId={selectedPetId}
-                  petName={selectedPet.name}
-                  petAge={parseFloat(selectedPet.age_years)}
-                  currentTier={currentTier}
-                  hasInsurance={false}
-                  onUpgrade={handleUpgrade}
-                />
+                <div ref={wellnessRef}>
+                  <WellnessDashboard
+                    petId={selectedPetId}
+                    petName={selectedPet.name}
+                    petAge={parseFloat(selectedPet.age_years)}
+                    currentTier={currentTier}
+                    hasInsurance={false}
+                    onUpgrade={handleUpgrade}
+                  />
+                </div>
 
                 {/* Treat Tracker - Phase 2 */}
-                <TreatTracker petId={selectedPetId} petName={selectedPet.name} />
+                <div ref={treatRef}>
+                  <TreatTracker petId={selectedPetId} petName={selectedPet.name} />
+                </div>
 
                 {/* Weight Tracking */}
-                <WeightTracking petId={selectedPetId} petName={selectedPet.name} />
+                <div ref={weightRef}>
+                  <WeightTracking petId={selectedPetId} petName={selectedPet.name} />
+                </div>
               </div>
             )}
 
             {activeTab === 'nutrition' && (
               <div className="space-y-8">
                 {/* Nutrition Planner - Phase 2 */}
-                <NutritionPlanner
-                  petId={selectedPetId}
-                  petName={selectedPet.name}
-                  petBreed={selectedPet.breed}
-                  petAge={parseFloat(selectedPet.age_years)}
-                  petWeight={null} // Will be fetched from weight logs
-                />
+                <div ref={nutritionRef}>
+                  <NutritionPlanner
+                    petId={selectedPetId}
+                    petName={selectedPet.name}
+                    petBreed={selectedPet.breed}
+                    petAge={parseFloat(selectedPet.age_years)}
+                    petWeight={null} // Will be fetched from weight logs
+                  />
+                </div>
               </div>
             )}
 
@@ -282,7 +344,9 @@ function App() {
                 <BreedInsights breedName={selectedPet.breed} />
 
                 {/* Pet Profile with Health Records */}
-                <PetProfile petId={selectedPetId} petName={selectedPet.name} />
+                <div ref={profileRef}>
+                  <PetProfile petId={selectedPetId} petName={selectedPet.name} />
+                </div>
               </div>
             )}
 

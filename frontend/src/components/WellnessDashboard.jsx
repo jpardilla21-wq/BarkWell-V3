@@ -96,15 +96,21 @@ function WellnessDashboard({ petId, petName, petAge, currentTier = 'free', hasIn
   };
 
   const getScoreColor = (score) => {
-    if (score >= 80) return 'text-green-600';
-    if (score >= 60) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 80) return '#6ED29B'; // Green
+    if (score >= 60) return '#FFD95F'; // Yellow
+    return '#FF6B6B'; // Red
   };
 
   const getScoreBgColor = (score) => {
-    if (score >= 80) return 'bg-green-100';
-    if (score >= 60) return 'bg-yellow-100';
-    return 'bg-red-100';
+    if (score >= 80) return '#BEEC7E'; // Light green from palette
+    if (score >= 60) return '#EDF9D4'; // Light yellow-green from palette
+    return '#FFE5E5'; // Light red
+  };
+
+  const getScoreTextColor = (score) => {
+    if (score >= 80) return '#2D5016';
+    if (score >= 60) return '#5F6B1D';
+    return '#991B1B';
   };
 
   const getScoreLabel = (score) => {
@@ -189,21 +195,53 @@ function WellnessDashboard({ petId, petName, petAge, currentTier = 'free', hasIn
 
         {/* Current Score Display */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          {/* Score Card */}
-          <div className={`rounded-lg p-6 ${currentScore ? getScoreBgColor(currentScore) : 'bg-gray-100'}`}>
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Current Wellness Score</h3>
+          {/* Score Card with Circular Gauge */}
+          <div className="rounded-xl p-8 bg-white border-2 border-gray-100 shadow-sm">
+            <h3 className="text-sm font-semibold text-gray-700 mb-6">Latest Scan</h3>
             {currentScore !== null ? (
-              <>
-                <div className={`text-5xl font-bold ${getScoreColor(currentScore)}`}>
-                  {currentScore}
-                  <span className="text-2xl">/100</span>
+              <div className="flex flex-col items-center">
+                {/* Circular Gauge */}
+                <div className="relative w-48 h-48">
+                  {/* Background Circle */}
+                  <svg className="transform -rotate-90 w-48 h-48">
+                    <circle
+                      cx="96"
+                      cy="96"
+                      r="80"
+                      stroke="#E5E7EB"
+                      strokeWidth="16"
+                      fill="none"
+                    />
+                    {/* Progress Circle */}
+                    <circle
+                      cx="96"
+                      cy="96"
+                      r="80"
+                      stroke={getScoreColor(currentScore)}
+                      strokeWidth="16"
+                      fill="none"
+                      strokeDasharray={`${(currentScore / 100) * 502.4} 502.4`}
+                      strokeLinecap="round"
+                      style={{ transition: 'stroke-dasharray 0.5s ease' }}
+                    />
+                  </svg>
+                  {/* Center Text */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <div className="text-6xl font-bold" style={{ color: getScoreTextColor(currentScore) }}>
+                      {currentScore}
+                    </div>
+                    <div className="text-lg font-medium text-gray-600 mt-1">
+                      {getScoreLabel(currentScore)}
+                    </div>
+                  </div>
                 </div>
-                <p className={`mt-2 text-sm font-medium ${getScoreColor(currentScore)}`}>
-                  {getScoreLabel(currentScore)}
-                </p>
-              </>
+              </div>
             ) : (
-              <p className="text-gray-500 text-sm">No data available. Add a daily log to get started.</p>
+              <div className="flex items-center justify-center h-48">
+                <p className="text-gray-500 text-sm text-center">
+                  No data available.<br/>Add a daily log to get started.
+                </p>
+              </div>
             )}
           </div>
 

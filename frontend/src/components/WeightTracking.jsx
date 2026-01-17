@@ -121,20 +121,20 @@ function WeightTracking({ petId, petName }) {
       <div className="p-6">
         {/* Weight Statistics */}
         {statistics && statistics.totalRecords > 0 && (
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="bg-gray-50 rounded-lg p-4 text-center">
-              <p className="text-xs text-gray-600 mb-1">Total Entries</p>
-              <p className="text-2xl font-bold text-gray-900">{statistics.totalRecords}</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="rounded-xl p-6 text-center border-2 border-gray-100" style={{ backgroundColor: '#EDF9D4' }}>
+              <p className="text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">Total Entries</p>
+              <p className="text-3xl font-bold text-gray-900">{statistics.totalRecords}</p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-4 text-center">
-              <p className="text-xs text-gray-600 mb-1">Weight Change</p>
-              <p className={`text-2xl font-bold ${getWeightTrendColor()}`}>
+            <div className="rounded-xl p-6 text-center border-2 border-gray-100" style={{ backgroundColor: '#CEB1FB' }}>
+              <p className="text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">Weight Change</p>
+              <p className={`text-3xl font-bold ${getWeightTrendColor()}`}>
                 {getWeightTrendIcon()} {statistics.weightChange} {statistics.unit}
               </p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-4 text-center">
-              <p className="text-xs text-gray-600 mb-1">% Change</p>
-              <p className={`text-2xl font-bold ${getWeightTrendColor()}`}>
+            <div className="rounded-xl p-6 text-center border-2 border-gray-100" style={{ backgroundColor: '#BEEC7E' }}>
+              <p className="text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">% Change</p>
+              <p className={`text-3xl font-bold ${getWeightTrendColor()}`}>
                 {statistics.percentageChange}%
               </p>
             </div>
