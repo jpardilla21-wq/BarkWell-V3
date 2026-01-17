@@ -17,13 +17,16 @@ type SplashScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Splash">;
 };
 
+// Your actual Google Client ID
+const GOOGLE_CLIENT_ID = "909160715250-1v7k6t355drgr0ra99132os5e9pts7hn.apps.googleusercontent.com";
+
 export default function SplashScreen({ navigation }: SplashScreenProps) {
   const insets = useSafeAreaInsets();
   const [isLoading, setIsLoading] = React.useState(false);
 
   // Google OAuth Setup
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useAuthRequest({
-    clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID || "",
+    clientId: GOOGLE_CLIENT_ID,
     scopes: ["profile", "email"],
   });
 
@@ -32,6 +35,9 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
     if (googleResponse?.type === "success") {
       const { authentication } = googleResponse;
       handleGoogleSuccess(authentication?.accessToken);
+    } else if (googleResponse?.type === "error") {
+      Alert.alert("Google Login Error", googleResponse.error?.message || "Unknown error");
+      setIsLoading(false);
     }
   }, [googleResponse]);
 
@@ -40,8 +46,11 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
       setIsLoading(true);
       if (!token) {
         Alert.alert("Error", "Failed to get Google token");
+        setIsLoading(false);
         return;
       }
+
+      console.log("Google Auth Token:", token);
 
       // TODO: Send token to your backend
       // const response = await fetch('YOUR_BACKEND_URL/auth/google', {
@@ -51,7 +60,6 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
       // });
       // const data = await response.json();
       // if (data.success) {
-      //   // Save token to secure storage
       //   navigation.replace("Onboarding");
       // }
 
@@ -59,7 +67,6 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
       navigation.replace("Onboarding");
     } catch (error) {
       Alert.alert("Login Failed", String(error));
-    } finally {
       setIsLoading(false);
     }
   };
@@ -67,7 +74,15 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
   const handleGoogleLogin = async () => {
     try {
       setIsLoading(true);
+      if (!googleRequest) {
+        Alert.alert("Error", "Google OAuth not initialized. Please restart the app.");
+        setIsLoading(false);
+        return;
+      }
+
       const result = await googlePromptAsync();
+      console.log("Google Auth Result:", result);
+
       if (result?.type !== "success") {
         setIsLoading(false);
       }
@@ -86,6 +101,8 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
           AppleAuthentication.AppleAuthenticationScope.EMAIL,
         ],
       });
+
+      console.log("Apple Auth Credential:", credential);
 
       // TODO: Send credential to your backend
       // const response = await fetch('YOUR_BACKEND_URL/auth/apple', {
@@ -106,10 +123,10 @@ export default function SplashScreen({ navigation }: SplashScreenProps) {
     } catch (error) {
       const errorMsg = String(error);
       if (errorMsg.includes("canceled")) {
+        setIsLoading(false);
         return; // User cancelled, don't show error
       }
       Alert.alert("Apple Login Error", errorMsg);
-    } finally {
       setIsLoading(false);
     }
   };
