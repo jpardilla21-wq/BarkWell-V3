@@ -2,13 +2,13 @@ import { Platform } from "react-native";
 
 export const Colors = {
   light: {
-    text: "#1E1E1E",
+    text: "#1B1C1B",
     textMuted: "#6E6E6E",
     buttonText: "#FFFFFF",
     tabIconDefault: "#6E6E6E",
     tabIconSelected: "#4A7BFF",
     link: "#4A7BFF",
-    backgroundRoot: "#F6F6F6",
+    backgroundRoot: "#FDFDFD",
     backgroundDefault: "#FFFFFF",
     backgroundSecondary: "#F0F0F0",
     backgroundTertiary: "#E5E5E5",
@@ -21,6 +21,9 @@ export const Colors = {
     urgentRed: "#FF6B6B",
     cardBackground: "#FFFFFF",
     borderLight: "#E5E5E5",
+    quickAction1: "#EDF9D4",
+    quickAction2: "#CEB1FB",
+    quickAction3: "#BEEC7E",
   },
   dark: {
     text: "#ECEDEE",
@@ -42,6 +45,9 @@ export const Colors = {
     urgentRed: "#FF6B6B",
     cardBackground: "#2A2A2A",
     borderLight: "#404040",
+    quickAction1: "#EDF9D4",
+    quickAction2: "#CEB1FB",
+    quickAction3: "#BEEC7E",
   },
 };
 

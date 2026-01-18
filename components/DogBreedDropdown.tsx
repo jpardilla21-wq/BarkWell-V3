@@ -306,6 +306,13 @@ export function DogBreedDropdown({
     }
   };
 
+  const handleBlur = () => {
+    // Delay closing to allow onPress to fire first
+    setTimeout(() => {
+      setShowDropdown(false);
+    }, 200);
+  };
+
   return (
     <View style={styles.wrapper}>
       <TextInput
@@ -320,7 +327,7 @@ export function DogBreedDropdown({
         value={value}
         onChangeText={handleInputChange}
         onFocus={() => value.length > 0 && setShowDropdown(true)}
-        onBlur={() => setShowDropdown(false)}
+        onBlur={handleBlur}
         placeholder="Start typing a breed..."
         placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
         autoCapitalize="words"

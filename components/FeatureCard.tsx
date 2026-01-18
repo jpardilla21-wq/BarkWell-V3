@@ -25,6 +25,7 @@ interface FeatureCardProps {
   emoji?: string;
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
+  backgroundColor?: string;
 }
 
 const springConfig: WithSpringConfig = {
@@ -45,6 +46,7 @@ export function FeatureCard({
   emoji,
   onPress,
   style,
+  backgroundColor,
 }: FeatureCardProps) {
   const { theme } = useTheme();
   const scale = useSharedValue(1);
@@ -68,7 +70,7 @@ export function FeatureCard({
       onPressOut={handlePressOut}
       style={[
         styles.card,
-        { backgroundColor: theme.cardBackground },
+        { backgroundColor: backgroundColor || theme.cardBackground },
         style,
         animatedStyle,
       ]}
