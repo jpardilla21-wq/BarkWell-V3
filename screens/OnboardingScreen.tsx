@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Image, TextInput, ScrollView, Platform, Linking, Pressable, Alert, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -17,6 +17,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useDogs, type DogProfile } from "@/contexts/DogContext";
 import { Colors, Spacing, BorderRadius, Typography } from "@/constants/theme";
 import type { RootStackParamList } from "@/navigation/RootNavigator";
+import {
+  signInWithGoogle,
+  signInWithApple,
+  isAppleSignInAvailable,
+} from "@/utils/socialAuth";
 
 type OnboardingScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Onboarding">;
@@ -59,6 +64,9 @@ const translations = {
     takePhoto: "Take Photo",
     chooseFromLibrary: "Choose from Library",
     cancel: "Cancel",
+    continueWithGoogle: "Continue with Google",
+    continueWithApple: "Continue with Apple",
+    orDivider: "OR",
   },
   esp: {
     getStarted: "Comenzar",
@@ -93,6 +101,9 @@ const translations = {
     takePhoto: "Tomar Foto",
     chooseFromLibrary: "Elegir de la Galería",
     cancel: "Cancelar",
+    continueWithGoogle: "Continuar con Google",
+    continueWithApple: "Continuar con Apple",
+    orDivider: "O",
   },
 };
 
@@ -120,8 +131,20 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
   const [dogs, setDogs] = useState<DogProfile[]>([createEmptyDog()]);
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
   const [mediaLibraryPermission, requestMediaLibraryPermission] = useMediaLibraryPermissions();
+  const [isAppleAuthAvailable, setIsAppleAuthAvailable] = useState(false);
+  const [isSocialAuthLoading, setIsSocialAuthLoading] = useState(false);
 
   const t = translations[language];
+
+  // Check if Apple Sign In is available
+  useEffect(() => {
+    checkAppleAuth();
+  }, []);
+
+  const checkAppleAuth = async () => {
+    const available = await isAppleSignInAvailable();
+    setIsAppleAuthAvailable(available);
+  };
 
   const handleIntroNext = () => {
     setStep("owner");
@@ -150,6 +173,52 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
       navigation.replace("Subscription");
     } catch (error) {
       Alert.alert("Error", "Failed to save dog profiles");
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsSocialAuthLoading(true);
+    try {
+      const result = await signInWithGoogle();
+
+      if (result.success && result.user) {
+        // Pre-fill owner data with Google info
+        setOwnerData({
+          name: result.user.name || "",
+          email: result.user.email || "",
+        });
+        // Move to dogs step
+        setStep("dogs");
+      } else if (result.error && !result.error.includes("cancelled")) {
+        Alert.alert("Sign In Failed", result.error);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to sign in with Google");
+    } finally {
+      setIsSocialAuthLoading(false);
+    }
+  };
+
+  const handleAppleSignIn = async () => {
+    setIsSocialAuthLoading(true);
+    try {
+      const result = await signInWithApple();
+
+      if (result.success && result.user) {
+        // Pre-fill owner data with Apple info
+        setOwnerData({
+          name: result.user.name || "",
+          email: result.user.email || "",
+        });
+        // Move to dogs step
+        setStep("dogs");
+      } else if (result.error && !result.error.includes("cancelled")) {
+        Alert.alert("Sign In Failed", result.error);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to sign in with Apple");
+    } finally {
+      setIsSocialAuthLoading(false);
     }
   };
 
@@ -465,6 +534,59 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
           </View>
 
           <View style={styles.buttonContainer}>
+            {/* Social Login Buttons */}
+            {isAppleAuthAvailable && (
+              <Pressable
+                onPress={handleAppleSignIn}
+                disabled={isSocialAuthLoading}
+                style={[
+                  styles.socialButton,
+                  styles.appleButton,
+                  { opacity: isSocialAuthLoading ? 0.6 : 1 },
+                ]}
+              >
+                <ThemedText style={{ fontSize: 20, color: "#FFFFFF" }}>
+
+                </ThemedText>
+                <ThemedText
+                  type="body"
+                  style={[styles.socialButtonText, { color: "#FFFFFF" }]}
+                >
+                  {t.continueWithApple}
+                </ThemedText>
+              </Pressable>
+            )}
+
+            <Pressable
+              onPress={handleGoogleSignIn}
+              disabled={isSocialAuthLoading}
+              style={[
+                styles.socialButton,
+                styles.googleButton,
+                { borderColor: theme.borderLight, opacity: isSocialAuthLoading ? 0.6 : 1 },
+              ]}
+            >
+              <View style={styles.googleIcon}>
+                <ThemedText style={{ fontSize: 20 }}>G</ThemedText>
+              </View>
+              <ThemedText type="body" style={styles.socialButtonText}>
+                {t.continueWithGoogle}
+              </ThemedText>
+            </Pressable>
+
+            {/* OR Divider */}
+            <View style={styles.dividerContainer}>
+              <View style={[styles.divider, { backgroundColor: theme.borderLight }]} />
+              <ThemedText
+                type="small"
+                style={[styles.dividerText, { color: theme.textMuted }]}
+              >
+                {t.orDivider}
+              </ThemedText>
+              <View style={[styles.divider, { backgroundColor: theme.borderLight }]} />
+            </View>
+
+            {/* Regular Get Started Button */}
             <Button onPress={handleIntroNext}>{t.getStarted}</Button>
           </View>
         </ScrollView>
@@ -700,6 +822,44 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
     marginBottom: Spacing.lg,
+    gap: Spacing.md,
+  },
+  socialButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: Spacing.buttonHeight,
+    borderRadius: BorderRadius.md,
+    gap: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+  },
+  appleButton: {
+    backgroundColor: "#000000",
+  },
+  googleButton: {
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+  },
+  googleIcon: {
+    width: 20,
+    height: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  socialButtonText: {
+    fontWeight: "600",
+  },
+  dividerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: Spacing.sm,
+  },
+  divider: {
+    flex: 1,
+    height: 1,
+  },
+  dividerText: {
+    marginHorizontal: Spacing.md,
   },
   buttonRow: {
     flexDirection: "row",
