@@ -29,7 +29,7 @@ const GOOGLE_OAUTH_CONFIG = {
   // iOS: Add iOS OAuth 2.0 Client ID
   // Android: Add Android OAuth 2.0 Client ID
   clientId: Platform.select({
-    web: "YOUR_GOOGLE_WEB_CLIENT_ID.apps.googleusercontent.com",
+    web: "909160715250-1v7k6t355drgr0ra99132os5e9pts7hn.apps.googleusercontent.com",
     ios: "YOUR_GOOGLE_IOS_CLIENT_ID.apps.googleusercontent.com",
     android: "YOUR_GOOGLE_ANDROID_CLIENT_ID.apps.googleusercontent.com",
   }),
