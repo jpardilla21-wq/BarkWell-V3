@@ -310,7 +310,7 @@ export function DogBreedDropdown({
     // Delay closing to allow onPress to fire first
     setTimeout(() => {
       setShowDropdown(false);
-    }, 200);
+    }, 300);
   };
 
   return (
@@ -348,16 +348,18 @@ export function DogBreedDropdown({
           {filteredBreeds.map((breed, index) => (
             <Pressable
               key={breed}
-              onPress={() => handleSelectBreed(breed)}
-              style={[
+              onPressIn={() => handleSelectBreed(breed)}
+              style={({ pressed }) => [
                 styles.option,
                 {
-                  backgroundColor:
-                    value === breed
+                  backgroundColor: pressed
+                    ? Colors.light.primary + "30"
+                    : value === breed
                       ? Colors.light.primary + "20"
                       : "transparent",
                   borderBottomColor: theme.borderLight,
-                  borderBottomWidth: index < filteredBreeds.length - 1 ? 1 : 0,
+                  borderBottomWidth:
+                    index < filteredBreeds.length - 1 ? 0.5 : 0,
                 },
               ]}
             >

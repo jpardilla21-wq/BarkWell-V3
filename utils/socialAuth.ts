@@ -41,6 +41,10 @@ const GOOGLE_OAUTH_CONFIG = {
  */
 export async function signInWithGoogle(): Promise<SocialAuthResult> {
   try {
+    console.log("🔐 Starting Google Sign-In");
+    console.log("📍 Redirect URI:", GOOGLE_OAUTH_CONFIG.redirectUri);
+    console.log("🔑 Client ID:", GOOGLE_OAUTH_CONFIG.clientId);
+
     const discovery = {
       authorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
       tokenEndpoint: "https://oauth2.googleapis.com/token",
@@ -55,9 +59,13 @@ export async function signInWithGoogle(): Promise<SocialAuthResult> {
       usePKCE: true,
     });
 
+    console.log("🚀 Opening OAuth prompt...");
     const result = await authRequest.promptAsync(discovery);
+    console.log("✅ OAuth result type:", result.type);
 
     if (result.type === "success") {
+      console.log("🎉 OAuth success! Exchanging code for token...");
+
       // Exchange code for token
       const tokenResponse = await AuthSession.exchangeCodeAsync(
         {
@@ -67,6 +75,8 @@ export async function signInWithGoogle(): Promise<SocialAuthResult> {
         },
         discovery
       );
+
+      console.log("🔑 Token received, fetching user info...");
 
       // Fetch user info
       const userInfoResponse = await fetch(
@@ -79,6 +89,7 @@ export async function signInWithGoogle(): Promise<SocialAuthResult> {
       );
 
       const userInfo = await userInfoResponse.json();
+      console.log("👤 User info received:", userInfo.email);
 
       return {
         success: true,
@@ -90,18 +101,20 @@ export async function signInWithGoogle(): Promise<SocialAuthResult> {
         },
       };
     } else if (result.type === "cancel") {
+      console.log("❌ User cancelled sign-in");
       return {
         success: false,
         error: "User cancelled the sign-in flow",
       };
     } else {
+      console.log("❌ Authentication failed. Result:", result);
       return {
         success: false,
-        error: "Authentication failed",
+        error: `Authentication failed: ${result.type}`,
       };
     }
   } catch (error) {
-    console.error("Google Sign-In Error:", error);
+    console.error("❌ Google Sign-In Error:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error occurred",
@@ -172,4 +185,18 @@ export async function signInWithApple(): Promise<SocialAuthResult> {
  */
 export async function isAppleSignInAvailable(): Promise<boolean> {
   return await AppleAuthentication.isAvailableAsync();
+}
+
+/**
+ * Get the current redirect URI (for debugging)
+ */
+export function getRedirectUri(): string {
+  return GOOGLE_OAUTH_CONFIG.redirectUri;
+}
+
+/**
+ * Get the current client ID (for debugging)
+ */
+export function getClientId(): string | undefined {
+  return GOOGLE_OAUTH_CONFIG.clientId;
 }
