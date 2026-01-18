@@ -1,5 +1,11 @@
 import React, { useState, useMemo } from "react";
-import { StyleSheet, View, TextInput, ScrollView, Pressable } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  ScrollView,
+  Pressable,
+} from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius, Typography, Colors } from "@/constants/theme";
@@ -271,14 +277,18 @@ const POPULAR_BREEDS = [
   "Yugoslav Shepherd",
 ];
 
-export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownProps) {
+export function DogBreedDropdown({
+  value,
+  onSelect,
+  isDark,
+}: DogBreedDropdownProps) {
   const { theme } = useTheme();
   const [showDropdown, setShowDropdown] = useState(false);
 
   const filteredBreeds = useMemo(() => {
     if (!value.trim()) return POPULAR_BREEDS;
     return POPULAR_BREEDS.filter((breed) =>
-      breed.toLowerCase().includes(value.toLowerCase())
+      breed.toLowerCase().includes(value.toLowerCase()),
     );
   }, [value]);
 
@@ -336,7 +346,9 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
                 styles.option,
                 {
                   backgroundColor:
-                    value === breed ? Colors.light.primary + "20" : "transparent",
+                    value === breed
+                      ? Colors.light.primary + "20"
+                      : "transparent",
                   borderBottomColor: theme.borderLight,
                   borderBottomWidth: index < filteredBreeds.length - 1 ? 1 : 0,
                 },

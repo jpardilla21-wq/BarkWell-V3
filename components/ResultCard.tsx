@@ -13,11 +13,7 @@ export function ResultCard({ children, style }: ResultCardProps) {
 
   return (
     <View
-      style={[
-        styles.card,
-        { backgroundColor: theme.cardBackground },
-        style,
-      ]}
+      style={[styles.card, { backgroundColor: theme.cardBackground }, style]}
     >
       {children}
     </View>
