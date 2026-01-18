@@ -10,6 +10,7 @@ import RootNavigator from "@/navigation/RootNavigator";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { DogProvider } from "@/contexts/DogContext";
+import { Colors } from "@/constants/theme";
 
 export default function App() {
   return (
@@ -35,5 +36,6 @@ export default function App() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor: Colors.light.backgroundRoot,
   },
 });
