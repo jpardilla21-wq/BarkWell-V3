@@ -771,14 +771,17 @@ const styles = StyleSheet.create({
   },
   fieldFullWidth: {
     flex: 1,
+    minWidth: 0,
   },
   dogFieldsRow: {
     flexDirection: "column",
     gap: Spacing.lg,
+    width: "100%",
   },
   dogFieldsRowWide: {
     flexDirection: "row",
     gap: Spacing.md,
+    width: "100%",
   },
   addDogButton: {
     flexDirection: "row",
