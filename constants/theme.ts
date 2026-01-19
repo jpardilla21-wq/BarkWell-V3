@@ -20,6 +20,7 @@ export const Colors = {
     urgentRed: "#FF6B6B",
     cardBackground: "#FFFFFF",
     borderLight: "#E5E5E5",
+    backgroundDark: "#D5D5D5",
   },
   dark: {
     text: "#ECEDEE",
@@ -40,6 +41,7 @@ export const Colors = {
     urgentRed: "#FF6B6B",
     cardBackground: "#2A2A2A",
     borderLight: "#404040",
+    backgroundDark: "#1A1A1A",
   },
 };
 
