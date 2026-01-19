@@ -770,7 +770,7 @@ const styles = StyleSheet.create({
     width: undefined,
   },
   fieldFullWidth: {
-    width: "100%",
+    flex: 1,
   },
   dogFieldsRow: {
     flexDirection: "column",
