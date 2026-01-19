@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Pressable, Image } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
@@ -52,11 +52,14 @@ export default function HomeScreen() {
   return (
     <ScreenScrollView>
       <View style={styles.header}>
-        <Image
-          source={require("../assets/images/pupsense-logo.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <View
+          style={[
+            styles.avatar,
+            { backgroundColor: theme.backgroundDefault },
+          ]}
+        >
+          <Feather name="github" size={28} color={Colors.light.primary} />
+        </View>
         <Pressable
           style={({ pressed }) => [
             styles.bellButton,
@@ -217,9 +220,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: Spacing.lg,
   },
-  logo: {
-    height: 40,
-    width: 120,
+  avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: BorderRadius.full,
+    justifyContent: "center",
+    alignItems: "center",
   },
   bellButton: {
     width: 44,
