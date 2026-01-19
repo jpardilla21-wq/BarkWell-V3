@@ -677,6 +677,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   input: {
+    width: "100%",
     height: Spacing.inputHeight,
     borderWidth: 1,
     borderRadius: BorderRadius.md,
