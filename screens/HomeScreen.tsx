@@ -51,6 +51,22 @@ export default function HomeScreen() {
 
   return (
     <ScreenScrollView>
+      <View style={styles.header}>
+        <Image
+          source={require("../assets/images/pupsense-logo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <Pressable
+          style={({ pressed }) => [
+            styles.bellButton,
+            { backgroundColor: theme.backgroundDefault, opacity: pressed ? 0.7 : 1 },
+          ]}
+        >
+          <Feather name="bell" size={22} color={theme.text} />
+        </Pressable>
+      </View>
+
       {dogs.length > 0 && (
         <View style={styles.dogsSection}>
           <View style={styles.dogsRowContainer}>
@@ -195,6 +211,23 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: Spacing.lg,
+  },
+  logo: {
+    height: 40,
+    width: 120,
+  },
+  bellButton: {
+    width: 44,
+    height: 44,
+    borderRadius: BorderRadius.full,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   dogsSection: {
     marginBottom: Spacing.lg,
   },

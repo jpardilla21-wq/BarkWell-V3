@@ -30,7 +30,7 @@ export default function HomeStackNavigator() {
         name="Home"
         component={HomeScreen}
         options={{
-          headerShown: false,
+          headerTitle: () => <HeaderTitle title="PupSense" />,
         }}
       />
       <Stack.Screen
