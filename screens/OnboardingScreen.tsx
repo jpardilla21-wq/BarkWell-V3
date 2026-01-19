@@ -393,7 +393,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
       </View>
 
       <View style={[styles.dogFieldsRow, isWideScreen && styles.dogFieldsRowWide]}>
-        <View style={[styles.fieldFullWidth, { flexShrink: 1 }]}>
+        <View style={isWideScreen ? styles.fieldFullWidth : styles.fieldContainer}>
           <ThemedText type="small" style={styles.label}>
             {t.breed} *
           </ThemedText>
@@ -403,7 +403,7 @@ export default function OnboardingScreen({ navigation }: OnboardingScreenProps) 
             isDark={isDark}
           />
         </View>
-        <View style={[styles.fieldFullWidth, { flexShrink: 1 }]}>
+        <View style={isWideScreen ? styles.fieldFullWidth : styles.fieldContainer}>
           <ThemedText type="small" style={styles.label}>
             {t.age} *
           </ThemedText>
