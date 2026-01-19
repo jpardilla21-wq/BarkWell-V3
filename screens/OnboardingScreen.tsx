@@ -682,6 +682,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     paddingHorizontal: Spacing.md,
     fontSize: Typography.bodyM.fontSize,
+    outlineWidth: 0, // Remove web focus outline (black line)
   },
   linksContainer: {
     flexDirection: "row",

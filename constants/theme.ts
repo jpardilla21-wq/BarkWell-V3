@@ -2,13 +2,13 @@ import { Platform } from "react-native";
 
 export const Colors = {
   light: {
-    text: "#1E1E1E",
+    text: "#1B1C1B",
     textMuted: "#6E6E6E",
     buttonText: "#FFFFFF",
     tabIconDefault: "#6E6E6E",
     tabIconSelected: "#4A7BFF",
     link: "#4A7BFF",
-    backgroundRoot: "#F6F6F6",
+    backgroundRoot: "#FDFDFD",
     backgroundDefault: "#FFFFFF",
     backgroundSecondary: "#F0F0F0",
     backgroundTertiary: "#E5E5E5",
@@ -21,6 +21,10 @@ export const Colors = {
     cardBackground: "#FFFFFF",
     borderLight: "#E5E5E5",
     backgroundDark: "#D5D5D5",
+    // Quick action intercalated colors
+    quickAction1: "#EDF9D4",
+    quickAction2: "#CEB1FB",
+    quickAction3: "#BEEC7E",
   },
   dark: {
     text: "#ECEDEE",
@@ -42,6 +46,10 @@ export const Colors = {
     cardBackground: "#2A2A2A",
     borderLight: "#404040",
     backgroundDark: "#1A1A1A",
+    // Quick action intercalated colors (darker variants for dark mode)
+    quickAction1: "#3D4A2A",
+    quickAction2: "#4A3A5A",
+    quickAction3: "#3A4A2A",
   },
 };
 

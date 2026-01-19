@@ -131,6 +131,7 @@ export default function HomeScreen() {
             emoji="💩"
             onPress={() => navigation.navigate("PoopTab")}
             style={styles.cardHalf}
+            backgroundColor={Colors.light.quickAction1}
           />
           <FeatureCard
             title="Food Scanner"
@@ -138,6 +139,7 @@ export default function HomeScreen() {
             emoji="🦴"
             onPress={() => navigation.navigate("FoodScanner")}
             style={styles.cardHalf}
+            backgroundColor={Colors.light.quickAction2}
           />
         </View>
         <FeatureCard
@@ -147,6 +149,7 @@ export default function HomeScreen() {
           iconColor={Colors.light.primary}
           onPress={() => navigation.navigate("BehaviorTab")}
           style={styles.cardFull}
+          backgroundColor={Colors.light.quickAction3}
         />
         <FeatureCard
           title="Weekly Snapshot"
@@ -155,6 +158,7 @@ export default function HomeScreen() {
           iconColor={Colors.light.primary}
           onPress={() => navigation.navigate("WeeklySnapshot")}
           style={styles.cardFull}
+          backgroundColor={Colors.light.quickAction1}
         />
       </View>
 

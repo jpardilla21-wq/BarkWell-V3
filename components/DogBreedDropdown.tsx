@@ -296,6 +296,13 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
     }
   };
 
+  const handleBlur = () => {
+    // Delay hiding dropdown to allow onPressIn to fire first
+    setTimeout(() => {
+      setShowDropdown(false);
+    }, 150);
+  };
+
   return (
     <View style={styles.wrapper}>
       <TextInput
@@ -310,7 +317,7 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
         value={value}
         onChangeText={handleInputChange}
         onFocus={() => value.length > 0 && setShowDropdown(true)}
-        onBlur={() => setShowDropdown(false)}
+        onBlur={handleBlur}
         placeholder="Start typing a breed..."
         placeholderTextColor={isDark ? "#9BA1A6" : "#6E6E6E"}
         autoCapitalize="words"
@@ -331,7 +338,7 @@ export function DogBreedDropdown({ value, onSelect, isDark }: DogBreedDropdownPr
           {filteredBreeds.map((breed, index) => (
             <Pressable
               key={breed}
-              onPress={() => handleSelectBreed(breed)}
+              onPressIn={() => handleSelectBreed(breed)}
               style={[
                 styles.option,
                 {
@@ -364,6 +371,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     paddingHorizontal: Spacing.md,
     fontSize: Typography.bodyM.fontSize,
+    outlineWidth: 0, // Remove web focus outline (black line)
   },
   dropdown: {
     marginTop: Spacing.xs,
