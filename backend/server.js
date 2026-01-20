@@ -57,6 +57,8 @@ const breedsRoutes = require('./routes/breeds');
 // Phase 3 routes (Monetization)
 const subscriptionsRoutes = require('./routes/subscriptions');
 const shopRoutes = require('./routes/shop');
+// Phase 5 routes (Analytics)
+const analyticsRoutes = require('./routes/analytics');
 
 // Mount routes
 app.use('/api/pets', petsRoutes);
@@ -70,6 +72,8 @@ app.use('/api/breeds', breedsRoutes);
 // Phase 3 routes (Monetization)
 app.use('/api/subscriptions', subscriptionsRoutes);
 app.use('/api/shop', shopRoutes);
+// Phase 5 routes (Analytics)
+app.use('/api/analytics', analyticsRoutes);
 
 // ================================================
 // ERROR HANDLING
@@ -180,6 +184,23 @@ app.listen(PORT, async () => {
   console.log('GET    /api/shop/categories                         - Get product categories');
   console.log('GET    /api/shop/insurance                          - Get insurance partners');
   console.log('POST   /api/shop/track-click                        - Track affiliate click');
+  console.log('');
+  console.log('--- Phase 5: Advanced Analytics ---');
+  console.log('GET    /api/analytics/dashboard                     - Admin dashboard overview');
+  console.log('GET    /api/analytics/subscriptions/metrics         - Subscription metrics');
+  console.log('GET    /api/analytics/subscriptions/churn           - Churn analysis');
+  console.log('GET    /api/analytics/subscriptions/funnel          - Conversion funnel');
+  console.log('GET    /api/analytics/affiliates/performance        - Affiliate performance');
+  console.log('GET    /api/analytics/affiliates/categories         - Performance by category');
+  console.log('GET    /api/analytics/users/growth                  - User growth metrics');
+  console.log('GET    /api/analytics/users/cohorts                 - Cohort analysis');
+  console.log('GET    /api/analytics/users/engagement              - Engagement metrics');
+  console.log('GET    /api/analytics/revenue/overview              - Revenue overview');
+  console.log('GET    /api/analytics/revenue/projections           - Revenue projections');
+  console.log('GET    /api/analytics/insurance/performance         - Insurance performance');
+  console.log('POST   /api/analytics/track                         - Track custom event');
+  console.log('POST   /api/analytics/affiliate-click               - Track affiliate click');
+  console.log('POST   /api/analytics/update-metrics                - Update daily metrics');
   console.log('');
 });
 

@@ -7,7 +7,9 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "init-db": "node scripts/initDatabase.js",
-    "migrate-phase2": "node scripts/migratePhase2.js"
+    "migrate-phase2": "node scripts/migratePhase2.js",
+    "migrate-phase3": "node scripts/migratePhase3.js",
+    "migrate-phase5": "node scripts/migratePhase5.js"
   },
   "keywords": ["pet", "health", "tracking", "api"],
   "author": "",

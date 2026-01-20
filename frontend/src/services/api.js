@@ -273,4 +273,95 @@ export const trackAffiliateClick = async (productId, petId, clickType = 'product
   return response.data;
 };
 
+// ================================================
+// ANALYTICS API (Phase 5 - Advanced Analytics)
+// ================================================
+
+export const getAnalyticsDashboard = async () => {
+  const response = await api.get('/analytics/dashboard');
+  return response.data;
+};
+
+export const getSubscriptionMetrics = async (startDate, endDate) => {
+  const response = await api.get('/analytics/subscriptions/metrics', {
+    params: { startDate, endDate }
+  });
+  return response.data;
+};
+
+export const getChurnAnalysis = async (months = 12) => {
+  const response = await api.get('/analytics/subscriptions/churn', {
+    params: { months }
+  });
+  return response.data;
+};
+
+export const getConversionFunnel = async () => {
+  const response = await api.get('/analytics/subscriptions/funnel');
+  return response.data;
+};
+
+export const getAffiliatePerformance = async (startDate, endDate, productType) => {
+  const response = await api.get('/analytics/affiliates/performance', {
+    params: { startDate, endDate, productType }
+  });
+  return response.data;
+};
+
+export const getAffiliateCategoryPerformance = async () => {
+  const response = await api.get('/analytics/affiliates/categories');
+  return response.data;
+};
+
+export const getUserGrowth = async (period = 30) => {
+  const response = await api.get('/analytics/users/growth', {
+    params: { period }
+  });
+  return response.data;
+};
+
+export const getCohortAnalysis = async () => {
+  const response = await api.get('/analytics/users/cohorts');
+  return response.data;
+};
+
+export const getEngagementMetrics = async (period = 30) => {
+  const response = await api.get('/analytics/users/engagement', {
+    params: { period }
+  });
+  return response.data;
+};
+
+export const getRevenueOverview = async (startDate, endDate) => {
+  const response = await api.get('/analytics/revenue/overview', {
+    params: { startDate, endDate }
+  });
+  return response.data;
+};
+
+export const getRevenueProjections = async () => {
+  const response = await api.get('/analytics/revenue/projections');
+  return response.data;
+};
+
+export const getInsurancePerformance = async () => {
+  const response = await api.get('/analytics/insurance/performance');
+  return response.data;
+};
+
+export const trackEvent = async (eventData) => {
+  const response = await api.post('/analytics/track', eventData);
+  return response.data;
+};
+
+export const trackAffiliateClickDetailed = async (clickData) => {
+  const response = await api.post('/analytics/affiliate-click', clickData);
+  return response.data;
+};
+
+export const updateDailyMetrics = async (date) => {
+  const response = await api.post('/analytics/update-metrics', { date });
+  return response.data;
+};
+
 export default api;
