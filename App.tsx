@@ -10,22 +10,25 @@ import RootNavigator from "@/navigation/RootNavigator";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { DogProvider } from "@/contexts/DogContext";
+import { RevenueCatProvider } from "@/contexts/RevenueCatContext";
 
 export default function App() {
   return (
     <ErrorBoundary>
       <LanguageProvider>
         <DogProvider>
-          <SafeAreaProvider>
-            <GestureHandlerRootView style={styles.root}>
-              <KeyboardProvider>
-                <NavigationContainer>
-                  <RootNavigator />
-                </NavigationContainer>
-                <StatusBar style="auto" />
-              </KeyboardProvider>
-            </GestureHandlerRootView>
-          </SafeAreaProvider>
+          <RevenueCatProvider>
+            <SafeAreaProvider>
+              <GestureHandlerRootView style={styles.root}>
+                <KeyboardProvider>
+                  <NavigationContainer>
+                    <RootNavigator />
+                  </NavigationContainer>
+                  <StatusBar style="auto" />
+                </KeyboardProvider>
+              </GestureHandlerRootView>
+            </SafeAreaProvider>
+          </RevenueCatProvider>
         </DogProvider>
       </LanguageProvider>
     </ErrorBoundary>
