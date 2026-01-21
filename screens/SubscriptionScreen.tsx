@@ -3,6 +3,7 @@ import { StyleSheet, View, Alert } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import RevenueCatUI from "react-native-purchases-ui";
 import { useSubscription } from "@/contexts/SubscriptionContext";
+import { trackEvent } from "@/services/analytics";
 import type { RootStackParamList } from "@/navigation/RootNavigator";
 
 type SubscriptionScreenProps = {
@@ -14,8 +15,15 @@ export default function SubscriptionScreen({
 }: SubscriptionScreenProps) {
   const { refreshStatus } = useSubscription();
 
+  React.useEffect(() => {
+    trackEvent("view_paywall");
+  }, []);
+
   const handlePurchaseCompleted = async (customerInfo: any) => {
     console.log("Purchase completed", customerInfo);
+    await trackEvent("purchase_completed", {
+      tier: customerInfo.entitlements.active["pawer Pro"] ? "pro" : "unknown"
+    });
     await refreshStatus();
     navigation.goBack();
   };

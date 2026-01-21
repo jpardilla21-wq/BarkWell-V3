@@ -11,6 +11,7 @@ import { useDogs } from "@/contexts/DogContext";
 import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 import { getProducts, getCategories, Product, Category } from "@/services/api";
 import { ShopStackParamList } from "@/navigation/ShopStackNavigator";
+import { trackScreenView, trackEvent } from "@/services/analytics";
 
 type ShopScreenNavigationProp = NativeStackNavigationProp<ShopStackParamList, "Shop">;
 
@@ -20,6 +21,10 @@ export default function ShopScreen() {
   const { selectedDogId } = useDogs();
 
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    trackScreenView("Shop");
+  }, []);
   const [refreshing, setRefreshing] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -65,7 +70,10 @@ export default function ShopScreen() {
         styles.productCard,
         { backgroundColor: theme.backgroundDefault },
       ]}
-      onPress={() => navigation.navigate("ProductDetails", { product: item })}
+      onPress={() => {
+        trackEvent("click_product", { productId: item.id, productName: item.name });
+        navigation.navigate("ProductDetails", { product: item });
+      }}
     >
       <Image source={{ uri: item.image_url }} style={styles.productImage} />
       <View style={styles.productInfo}>

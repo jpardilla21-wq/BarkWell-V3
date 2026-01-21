@@ -60,6 +60,7 @@ const breedsRoutes = require('./routes/breeds');
 // Phase 3 routes (Monetization)
 const subscriptionsRoutes = require('./routes/subscriptions');
 const shopRoutes = require('./routes/shop');
+const analyticsRoutes = require('./routes/analytics');
 
 // Mount routes
 app.use('/api/pets', petsRoutes);
@@ -73,6 +74,7 @@ app.use('/api/breeds', breedsRoutes);
 // Phase 3 routes (Monetization)
 app.use('/api/subscriptions', subscriptionsRoutes);
 app.use('/api/shop', shopRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // ================================================
 // ERROR HANDLING
