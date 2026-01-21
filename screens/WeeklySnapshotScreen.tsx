@@ -5,6 +5,7 @@ import { ScreenScrollView } from "@/components/ScreenScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { Button } from "@/components/Button";
 import { WeeklySnapshotCard } from "@/components/WeeklySnapshotCard";
+import { Paywall } from "@/components/Paywall";
 import { useTheme } from "@/hooks/useTheme";
 import { useDogs } from "@/contexts/DogContext";
 import { getWeeklySnapshot } from "@/services/weeklySnapshot";
@@ -68,48 +69,50 @@ export default function WeeklySnapshotScreen({
   };
 
   return (
-    <ScreenScrollView>
-      <View style={styles.cardWrapper}>
-        <WeeklySnapshotCard ref={cardRef} snapshot={snapshot} />
-      </View>
+    <Paywall minTier="plus" title="Unlock Weekly Reports" description="Get detailed weekly health insights with Pupsense Plus">
+      <ScreenScrollView>
+        <View style={styles.cardWrapper}>
+          <WeeklySnapshotCard ref={cardRef} snapshot={snapshot} />
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <Button onPress={handleShare} disabled={isSharing}>
-          {isSharing ? (
-            <View style={styles.loadingButton}>
-              <ActivityIndicator size="small" color="#FFFFFF" />
-              <ThemedText style={styles.loadingText}>Generating...</ThemedText>
-            </View>
-          ) : (
-            "Share Weekly Snapshot"
-          )}
-        </Button>
-
-        {Platform.OS !== "web" ? (
-          <Button
-            onPress={handleSave}
-            disabled={isSaving}
-            style={[
-              styles.secondaryButton,
-              { backgroundColor: theme.backgroundDefault, borderColor: Colors.light.primary },
-            ]}
-          >
-            {isSaving ? (
+        <View style={styles.buttonContainer}>
+          <Button onPress={handleShare} disabled={isSharing}>
+            {isSharing ? (
               <View style={styles.loadingButton}>
-                <ActivityIndicator size="small" color={Colors.light.primary} />
-                <ThemedText style={[styles.loadingText, { color: Colors.light.primary }]}>
-                  Saving...
-                </ThemedText>
+                <ActivityIndicator size="small" color="#FFFFFF" />
+                <ThemedText style={styles.loadingText}>Generating...</ThemedText>
               </View>
             ) : (
-              <ThemedText style={{ color: Colors.light.primary, fontWeight: "600" }}>
-                Save to Photos
-              </ThemedText>
+              "Share Weekly Snapshot"
             )}
           </Button>
-        ) : null}
-      </View>
-    </ScreenScrollView>
+
+          {Platform.OS !== "web" ? (
+            <Button
+              onPress={handleSave}
+              disabled={isSaving}
+              style={[
+                styles.secondaryButton,
+                { backgroundColor: theme.backgroundDefault, borderColor: Colors.light.primary },
+              ]}
+            >
+              {isSaving ? (
+                <View style={styles.loadingButton}>
+                  <ActivityIndicator size="small" color={Colors.light.primary} />
+                  <ThemedText style={[styles.loadingText, { color: Colors.light.primary }]}>
+                    Saving...
+                  </ThemedText>
+                </View>
+              ) : (
+                <ThemedText style={{ color: Colors.light.primary, fontWeight: "600" }}>
+                  Save to Photos
+                </ThemedText>
+              )}
+            </Button>
+          ) : null}
+        </View>
+      </ScreenScrollView>
+    </Paywall>
   );
 }
 

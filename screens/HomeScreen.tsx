@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ScreenScrollView } from "@/components/ScreenScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { FeatureCard } from "@/components/FeatureCard";
+import { InsuranceCard } from "@/components/InsuranceCard";
 import { useTheme } from "@/hooks/useTheme";
 import { useDogs } from "@/contexts/DogContext";
 import { Colors, Spacing, BorderRadius } from "@/constants/theme";
@@ -122,6 +123,8 @@ export default function HomeScreen() {
           How's your pup today?
         </ThemedText>
       </View>
+
+      <InsuranceCard />
 
       <View style={styles.cardsGrid}>
         <View style={styles.cardsRow}>

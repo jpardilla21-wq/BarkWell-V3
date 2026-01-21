@@ -48,6 +48,14 @@ export interface Partner {
   description: string;
 }
 
+export interface SubscriptionTier {
+  id: string;
+  name: string;
+  price: number;
+  interval: string;
+  features: string[];
+}
+
 export const getProducts = async (
   category?: string,
   size?: string,
@@ -131,5 +139,88 @@ export const trackAffiliateClick = async (
   } catch (error) {
     console.error("Error tracking click:", error);
     return { success: false };
+  }
+};
+
+export const getSubscriptionTiers = async (): Promise<{
+  success: boolean;
+  tiers: SubscriptionTier[];
+}> => {
+  try {
+    const response = await fetch(`${BASE_URL}/subscriptions/tiers`);
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching subscription tiers:", error);
+    return { success: false, tiers: [] };
+  }
+};
+
+export const getSubscriptionStatus = async (
+  userId: string | number
+): Promise<{
+  success: boolean;
+  tier: string;
+  expiry: string | null;
+}> => {
+  try {
+    const response = await fetch(`${BASE_URL}/subscriptions/status/${userId}`);
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching subscription status:", error);
+    return { success: false, tier: "free", expiry: null };
+  }
+};
+
+export const subscribeUser = async (
+  userId: string | number,
+  tier: string,
+  paymentMethodId: string = "mock_pm_123"
+): Promise<{ success: boolean; message?: string; error?: string }> => {
+  try {
+    const response = await fetch(`${BASE_URL}/subscriptions/subscribe`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+        tier,
+        paymentMethodId,
+      }),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error subscribing user:", error);
+    return { success: false, error: "Failed to process subscription" };
+  }
+};
+
+export const cancelSubscription = async (
+  userId: string | number
+): Promise<{ success: boolean; message?: string }> => {
+  try {
+    const response = await fetch(`${BASE_URL}/subscriptions/cancel`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId }),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error canceling subscription:", error);
+    return { success: false };
+  }
+};
+
+export const getPaymentHistory = async (
+  userId: string | number
+): Promise<{ success: boolean; payments: any[] }> => {
+  try {
+    const response = await fetch(`${BASE_URL}/subscriptions/payments/${userId}`);
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching payment history:", error);
+    return { success: false, payments: [] };
   }
 };
