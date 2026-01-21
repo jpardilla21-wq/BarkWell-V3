@@ -163,44 +163,14 @@ export const getSubscriptionStatus = async (
   }
 };
 
+// Deprecated or Mock function - using RevenueCat now
 export const subscribeUser = async (
   userId: string | number,
   tier: string,
   paymentMethodId: string = "mock_pm_123"
 ): Promise<{ success: boolean; message?: string; error?: string; url?: string }> => {
-  try {
-    // Phase 4: Use Stripe Checkout
-    const response = await fetch(`${BASE_URL}/subscriptions/create-checkout-session`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId,
-        tier,
-      }),
-    });
-
-    // If backend returns a Checkout Session URL, we return it
-    const data = await response.json();
-
-    if (data.success && data.url) {
-      return { success: true, url: data.url };
-    }
-
-    // Fallback to mock subscription if configured or error
-    if (data.mock) {
-      return data;
-    }
-
-    return { success: false, error: data.error || "Failed to create checkout session" };
-
-  } catch (error) {
-    console.error("Error subscribing user:", error);
-    // Fallback to old mock behavior locally if server endpoint fails (e.g. while transitioning)
-    // But ideally we want to force the new flow.
-    return { success: false, error: "Network error" };
-  }
+  console.warn("subscribeUser is deprecated. Use RevenueCat SDK instead.");
+  return { success: false, error: "Use RevenueCat SDK" };
 };
 
 export const cancelSubscription = async (
@@ -236,8 +206,6 @@ export const getPaymentHistory = async (
 export const openCheckoutSession = async (url: string) => {
   try {
     await WebBrowser.openBrowserAsync(url);
-    // Note: We might want to use AuthSession for deep linking back to the app on success
-    // For now, simpler browser open is enough for Phase 4 MVP
   } catch (error) {
     console.error("Failed to open web browser", error);
   }

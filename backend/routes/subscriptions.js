@@ -6,7 +6,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
-const stripe = require('../services/stripe');
 
 /**
  * GET /api/subscriptions/tiers
@@ -115,86 +114,40 @@ router.get('/status/:userId', async (req, res) => {
 });
 
 /**
- * POST /api/subscriptions/create-checkout-session
- * Create a Stripe Checkout Session
+ * POST /api/subscriptions/create-lemon-squeezy-checkout
+ * Create a Lemon Squeezy Checkout URL (Phase 4 Alternate)
  */
-router.post('/create-checkout-session', async (req, res) => {
+router.post('/create-lemon-squeezy-checkout', async (req, res) => {
   try {
     const { userId, tier } = req.body;
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 
-    // Pricing ID mapping (in production these would be real Stripe Price IDs)
-    // For now, we construct the line item manually
-    const prices = {
-      plus: 499, // cents
-      pro: 999,
+    // In production, we would call Lemon Squeezy API to generate a checkout link with custom data
+    // For now, we assume we have pre-configured variants and we just construct the URL
+    // https://docs.lemonsqueezy.com/guides/tutorials/selling-software-subscriptions
+
+    // Example: https://store.lemonsqueezy.com/checkout/buy/:variant_id?checkout[custom][user_id]=:user_id
+
+    const variantIds = {
+      plus: process.env.LEMON_SQUEEZY_PLUS_VARIANT_ID || '12345',
+      pro: process.env.LEMON_SQUEEZY_PRO_VARIANT_ID || '67890'
     };
 
-    if (!prices[tier]) {
-      return res.status(400).json({ error: 'Invalid tier' });
+    if (!variantIds[tier]) {
+       return res.status(400).json({ error: 'Invalid tier' });
     }
 
-    // Get user email
-    const userResult = await db.query('SELECT email, stripe_customer_id FROM users WHERE id = $1', [userId]);
-    if (userResult.rows.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    const user = userResult.rows[0];
-
-    let customerId = user.stripe_customer_id;
-
-    // Create customer if doesn't exist
-    if (!customerId) {
-      try {
-        const customer = await stripe.customers.create({
-          email: user.email,
-          metadata: { userId: userId },
-        });
-        customerId = customer.id;
-        // Save customer ID
-        await db.query('UPDATE users SET stripe_customer_id = $1 WHERE id = $2', [customerId, userId]);
-      } catch (e) {
-        console.warn('Failed to create Stripe customer, proceeding without existing ID', e);
-      }
-    }
-
-    const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: `PupSense ${tier.charAt(0).toUpperCase() + tier.slice(1)} Subscription`,
-            },
-            unit_amount: prices[tier],
-            recurring: {
-              interval: 'month',
-            },
-          },
-          quantity: 1,
-        },
-      ],
-      mode: 'subscription',
-      success_url: `${frontendUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${frontendUrl}/pricing`,
-      metadata: {
-        userId,
-        tier,
-      },
-    });
+    const checkoutUrl = `https://store.lemonsqueezy.com/checkout/buy/${variantIds[tier]}?checkout[custom][user_id]=${userId}`;
 
     res.json({
       success: true,
-      url: session.url,
-      sessionId: session.id,
+      url: checkoutUrl
     });
+
   } catch (error) {
-    console.error('Create checkout session error:', error);
+    console.error('Create LS checkout error:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to create checkout session',
+      error: 'Failed to create checkout'
     });
   }
 });

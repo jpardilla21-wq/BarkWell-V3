@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Pressable, Image } from "react-native";
+import { StyleSheet, View, Pressable, Image, Platform, Alert } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScreenScrollView } from "@/components/ScreenScrollView";
@@ -8,6 +8,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { useDogs } from "@/contexts/DogContext";
 import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 import type { ProfileStackParamList } from "@/navigation/ProfileStackNavigator";
+import RevenueCatUI from "react-native-purchases-ui";
 
 type ProfileScreenProps = {
   navigation: NativeStackNavigationProp<ProfileStackParamList, "Profile">;
@@ -16,8 +17,29 @@ type ProfileScreenProps = {
 export default function ProfileScreen({ navigation }: ProfileScreenProps) {
   const { theme } = useTheme();
   const { dogs, selectedDogId } = useDogs();
+  const [showCustomerCenter, setShowCustomerCenter] = React.useState(false);
 
   const selectedDog = dogs.find((dog) => dog.id === selectedDogId);
+
+  const handleManageSubscription = () => {
+    // Check if on mobile
+    if (Platform.OS === 'web') {
+      Alert.alert("Manage Subscription", "Please manage your subscription via the store you purchased it from.");
+      return;
+    }
+    setShowCustomerCenter(true);
+  };
+
+  if (showCustomerCenter) {
+    // Using CustomerCenterView instead of CustomerCenter as per recent SDK type definition or renaming
+    return (
+      <View style={{ flex: 1 }}>
+        <RevenueCatUI.CustomerCenter
+          onDismiss={() => setShowCustomerCenter(false)}
+        />
+      </View>
+    );
+  }
 
   if (!selectedDog) {
     return (
@@ -88,6 +110,27 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
               <Feather name="clock" size={20} color={Colors.light.primary} />
             </View>
             <ThemedText type="body">View History</ThemedText>
+          </View>
+          <Feather name="chevron-right" size={20} color={theme.textMuted} />
+        </Pressable>
+
+        <Pressable
+          onPress={handleManageSubscription}
+          style={({ pressed }) => [
+            styles.menuItem,
+            { backgroundColor: theme.backgroundDefault, opacity: pressed ? 0.7 : 1 },
+          ]}
+        >
+          <View style={styles.menuItemLeft}>
+            <View
+              style={[
+                styles.menuIcon,
+                { backgroundColor: Colors.light.warningYellow + "20" },
+              ]}
+            >
+              <Feather name="credit-card" size={20} color={Colors.light.warningYellow} />
+            </View>
+            <ThemedText type="body">Manage Subscription</ThemedText>
           </View>
           <Feather name="chevron-right" size={20} color={theme.textMuted} />
         </Pressable>
