@@ -8,7 +8,8 @@ type BehaviorState =
   | "Anxious"
   | "Overstimulated"
   | "Defensive"
-  | "Possibly in Pain";
+  | "Possibly in Pain"
+  | "Happy & Engaged";
 
 interface StatePillProps {
   state: BehaviorState;

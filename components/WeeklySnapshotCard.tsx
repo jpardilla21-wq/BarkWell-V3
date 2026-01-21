@@ -50,7 +50,11 @@ export const WeeklySnapshotCard = forwardRef<View, WeeklySnapshotCardProps>(
 
     const getY = (score: number) => {
       const normalized = (score - minScore) / scoreRange;
-      return chartHeight - chartPadding - normalized * (chartHeight - chartPadding * 2);
+      return (
+        chartHeight -
+        chartPadding -
+        normalized * (chartHeight - chartPadding * 2)
+      );
     };
 
     const points = snapshot.dailyScores
@@ -62,7 +66,10 @@ export const WeeklySnapshotCard = forwardRef<View, WeeklySnapshotCardProps>(
         <View style={styles.header}>
           <View style={styles.avatarContainer}>
             {snapshot.dogPhoto ? (
-              <Image source={{ uri: snapshot.dogPhoto }} style={styles.avatar} />
+              <Image
+                source={{ uri: snapshot.dogPhoto }}
+                style={styles.avatar}
+              />
             ) : (
               <View style={[styles.avatar, styles.avatarPlaceholder]}>
                 <Feather name="smile" size={24} color={Colors.light.primary} />
@@ -88,7 +95,10 @@ export const WeeklySnapshotCard = forwardRef<View, WeeklySnapshotCardProps>(
             </ThemedText>
             <View style={styles.kpiValueRow}>
               <Feather name={trendIcon.name} size={18} color={trendColor} />
-              <ThemedText type="body" style={[styles.kpiValue, { color: trendColor }]}>
+              <ThemedText
+                type="body"
+                style={[styles.kpiValue, { color: trendColor }]}
+              >
                 {snapshot.digestiveTrend}
               </ThemedText>
             </View>
@@ -204,7 +214,7 @@ export const WeeklySnapshotCard = forwardRef<View, WeeklySnapshotCardProps>(
         </View>
       </View>
     );
-  }
+  },
 );
 
 const styles = StyleSheet.create({

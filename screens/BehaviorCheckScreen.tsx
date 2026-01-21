@@ -318,7 +318,7 @@ export default function BehaviorCheckScreen() {
           <ThemedView
             style={[
               styles.videoPreview,
-              { backgroundColor: Colors.light.backgroundDark },
+              { backgroundColor: theme.backgroundSecondary },
             ]}
           >
             <Feather name="check-circle" size={48} color={Colors.light.softGreen} />

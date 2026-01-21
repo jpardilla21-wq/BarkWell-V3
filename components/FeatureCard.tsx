@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Pressable, ViewStyle, StyleProp, Text } from "react-native";
+import {
+  StyleSheet,
+  Pressable,
+  ViewStyle,
+  StyleProp,
+  Text,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import Animated, {
   useAnimatedStyle,
@@ -70,7 +76,12 @@ export function FeatureCard({
       {emoji ? (
         <Text style={styles.emoji}>{emoji}</Text>
       ) : (
-        <Feather name={iconName!} size={36} color={iconColor} style={styles.icon} />
+        <Feather
+          name={iconName!}
+          size={36}
+          color={iconColor}
+          style={styles.icon}
+        />
       )}
       <ThemedText type="h4" style={styles.title}>
         {title}
