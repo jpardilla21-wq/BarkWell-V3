@@ -11,7 +11,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useSubscription } from "@/contexts/SubscriptionContext";
 import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 import type { RootStackParamList } from "@/navigation/RootNavigator";
-import { getSubscriptionTiers, subscribeUser, SubscriptionTier } from "@/services/api";
+import { getSubscriptionTiers, subscribeUser, SubscriptionTier, openCheckoutSession } from "@/services/api";
 
 const translations = {
   eng: {
@@ -23,7 +23,7 @@ const translations = {
     disclaimer: "No hidden fees. Cancel anytime. Billed securely through App Store.",
     continueWith: "Continue with",
     loading: "Loading plans...",
-    subscribing: "Processing...",
+    subscribing: "Redirecting to Checkout...",
     successTitle: "Welcome Aboard!",
     successMessage: "You have successfully subscribed to",
     errorTitle: "Subscription Failed",
@@ -100,9 +100,18 @@ export default function SubscriptionScreen({
       // Hardcoded userId 1 for now as per app convention
       const result = await subscribeUser(1, selectedPlanId);
 
-      if (result.success) {
+      if (result.success && result.url) {
+        // Stripe Checkout Flow
+        await openCheckoutSession(result.url);
+        // After returning from browser, we might want to refresh status
+        // In a real app, we'd use deep linking to handle the return
+        // For now, we'll refresh status when the user comes back manually
+        // or assumes success if it redirects back properly (which we can't test fully here)
         await refreshStatus();
-        Alert.alert(
+      } else if (result.success) {
+         // Mock Flow (Fallback)
+         await refreshStatus();
+         Alert.alert(
           t.successTitle,
           `${t.successMessage} ${selectedPlanId}`,
           [{ text: "OK", onPress: () => navigation.replace("MainTabs") }]

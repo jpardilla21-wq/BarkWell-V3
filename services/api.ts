@@ -1,22 +1,14 @@
 import { Platform } from "react-native";
+import * as WebBrowser from "expo-web-browser";
 
 // Determine the base URL based on the environment
 const getBaseUrl = () => {
-  // If we are in development and running on an Android emulator, use 10.0.2.2
-  // If on iOS simulator, localhost is fine.
-  // If on a real device, we need the machine's IP.
-  // However, in Replit, we likely want to hit the Replit URL.
-
   if (__DEV__) {
-    // Check if we have a proxy URL from expo-constants or similar if needed.
-    // For now, I will assume localhost:3001 as per the documentation.
     if (Platform.OS === 'android') {
       return 'http://10.0.2.2:3001/api';
     }
     return 'http://localhost:3001/api';
   }
-
-  // Production URL (placeholder)
   return 'https://api.pupsense.com/api';
 };
 
@@ -175,9 +167,10 @@ export const subscribeUser = async (
   userId: string | number,
   tier: string,
   paymentMethodId: string = "mock_pm_123"
-): Promise<{ success: boolean; message?: string; error?: string }> => {
+): Promise<{ success: boolean; message?: string; error?: string; url?: string }> => {
   try {
-    const response = await fetch(`${BASE_URL}/subscriptions/subscribe`, {
+    // Phase 4: Use Stripe Checkout
+    const response = await fetch(`${BASE_URL}/subscriptions/create-checkout-session`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -185,13 +178,28 @@ export const subscribeUser = async (
       body: JSON.stringify({
         userId,
         tier,
-        paymentMethodId,
       }),
     });
-    return await response.json();
+
+    // If backend returns a Checkout Session URL, we return it
+    const data = await response.json();
+
+    if (data.success && data.url) {
+      return { success: true, url: data.url };
+    }
+
+    // Fallback to mock subscription if configured or error
+    if (data.mock) {
+      return data;
+    }
+
+    return { success: false, error: data.error || "Failed to create checkout session" };
+
   } catch (error) {
     console.error("Error subscribing user:", error);
-    return { success: false, error: "Failed to process subscription" };
+    // Fallback to old mock behavior locally if server endpoint fails (e.g. while transitioning)
+    // But ideally we want to force the new flow.
+    return { success: false, error: "Network error" };
   }
 };
 
@@ -222,5 +230,15 @@ export const getPaymentHistory = async (
   } catch (error) {
     console.error("Error fetching payment history:", error);
     return { success: false, payments: [] };
+  }
+};
+
+export const openCheckoutSession = async (url: string) => {
+  try {
+    await WebBrowser.openBrowserAsync(url);
+    // Note: We might want to use AuthSession for deep linking back to the app on success
+    // For now, simpler browser open is enough for Phase 4 MVP
+  } catch (error) {
+    console.error("Failed to open web browser", error);
   }
 };

@@ -25,12 +25,15 @@ app.use(cors({
   credentials: true,
 }));
 
-// Parse JSON request bodies
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // HTTP request logging
 app.use(morgan('dev'));
+
+// Webhook routes need raw body, so we mount them before body-parser
+app.use('/api/webhooks', require('./routes/webhooks'));
+
+// Parse JSON request bodies for other routes
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // ================================================
 // API ROUTES
