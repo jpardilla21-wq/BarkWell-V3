@@ -11,6 +11,7 @@ The project is in a **Fractured State**.
 *   **Web Frontend:** Appears to be **Phase 3 Complete** based on file structure and status docs.
 *   **Mobile App (Root):** **CRITICAL FAILURE**. The mobile app is in a legacy "Phase 1.5" state. It completely lacks the Phase 3 features (Shop, Insurance, correct Pricing), has 0% integration with the Backend monetization endpoints, and contains compile-time errors.
 *   **Testing:** **CRITICAL FAILURE**. Contrary to the `implementation_status.md` which claims "All Passing", there are **ZERO tests** in the codebase.
+*   **Missing Features (Phase 5 & 6):** Investigation confirms that Phase 5 (Analytics) and Phase 6 (Referral Program) are **NOT present** in this repository, despite user expectations.
 
 ---
 
@@ -50,20 +51,43 @@ The Mobile App is severely lagging behind the project goals.
 
 ---
 
-## 🛠 3. Backend & Database Analysis
+## 🔎 3. Advanced Feature Search (Phase 5 & 6)
 
-### 3.1 Status: ✅ HEALTHY
+A targeted forensic search was conducted to verify if "Advanced Analytics" (Phase 5) or "Referral Program" (Phase 6) code exists in the repository.
+
+### 3.1 Phase 5: Advanced Analytics
+*   **Search Terms:** "Cohort", "Funnel", "LTV", "CAC", "Retention".
+*   **Findings:** **ZERO** implementation found.
+    *   Terms only appear in documentation (READMEs, status files) as "Future Work".
+    *   No database tables for analytics events.
+    *   No backend routes for aggregation or reporting.
+*   **Status:** **NOT IMPLEMENTED**.
+
+### 3.2 Phase 6: Referral Program (User-to-User)
+*   **Search Terms:** "Referral", "Invite", "SocialShare".
+*   **Findings:** **ZERO** User Referral code found.
+    *   The term "Referral" exists but refers exclusively to **Insurance Referrals** (Phase 3), which is implemented.
+    *   No logic exists for generating user invite codes or tracking signups.
+*   **Status:** **NOT IMPLEMENTED**.
+
+**Conclusion:** If work has begun on Phase 5 or 6, it resides in a local environment or a branch not pushed to this repository. This repository is strictly at a **Phase 3 (Monetization)** baseline.
+
+---
+
+## 🛠 4. Backend & Database Analysis
+
+### 4.1 Status: ✅ HEALTHY
 The backend is the strongest part of the current build.
 *   **Schema Alignment:** The SQL schema (`database/phase3-schema.sql`) matches the code usage in `backend/routes/`.
 *   **Features:** Endpoints for `subscriptions`, `shop`, and `insurance` are fully implemented and ready to serve data.
 *   **Database Connection:** The connection logic (`config/database.js`) is robust, though it failed in the sandbox (expectedly) due to no running Postgres instance.
 
-### 3.2 Security Note
+### 4.2 Security Note
 *   The `subscribe` endpoint is a **Mock**. It creates valid subscription records without real payment validation. This is acceptable for Phase 3 development but **must not go to production** without Stripe integration (Phase 4).
 
 ---
 
-## 📋 4. Recommendations & Next Steps
+## 📋 5. Recommendations & Next Steps
 
 ### Priority 1: Fix the Mobile App (Critical Path)
 1.  **Update Subscription Screen:** Rewrite `screens/SubscriptionScreen.tsx` to fetch Tiers from `GET /api/subscriptions/tiers` instead of hardcoding legacy prices.
