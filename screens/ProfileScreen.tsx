@@ -136,6 +136,27 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
         </Pressable>
 
         <Pressable
+          onPress={() => navigation.navigate("Referral")}
+          style={({ pressed }) => [
+            styles.menuItem,
+            { backgroundColor: theme.backgroundDefault, opacity: pressed ? 0.7 : 1 },
+          ]}
+        >
+          <View style={styles.menuItemLeft}>
+            <View
+              style={[
+                styles.menuIcon,
+                { backgroundColor: Colors.light.softGreen + "20" },
+              ]}
+            >
+              <Feather name="gift" size={20} color={Colors.light.softGreen} />
+            </View>
+            <ThemedText type="body">Refer a Friend</ThemedText>
+          </View>
+          <Feather name="chevron-right" size={20} color={theme.textMuted} />
+        </Pressable>
+
+        <Pressable
           style={({ pressed }) => [
             styles.menuItem,
             { backgroundColor: theme.backgroundDefault, opacity: pressed ? 0.7 : 1 },

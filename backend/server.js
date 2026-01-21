@@ -61,6 +61,7 @@ const breedsRoutes = require('./routes/breeds');
 const subscriptionsRoutes = require('./routes/subscriptions');
 const shopRoutes = require('./routes/shop');
 const analyticsRoutes = require('./routes/analytics');
+const referralsRoutes = require('./routes/referrals');
 
 // Mount routes
 app.use('/api/pets', petsRoutes);
@@ -75,6 +76,7 @@ app.use('/api/breeds', breedsRoutes);
 app.use('/api/subscriptions', subscriptionsRoutes);
 app.use('/api/shop', shopRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/referrals', referralsRoutes);
 
 // ================================================
 // ERROR HANDLING

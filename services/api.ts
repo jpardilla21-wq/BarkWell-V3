@@ -210,3 +210,45 @@ export const openCheckoutSession = async (url: string) => {
     console.error("Failed to open web browser", error);
   }
 };
+
+// --- Referral System ---
+
+export const getReferralCode = async (userId: string | number): Promise<{ success: boolean; code?: string }> => {
+  try {
+    const response = await fetch(`${BASE_URL}/referrals/code?userId=${userId}`);
+    return await response.json();
+  } catch (error) {
+    console.error("Error getting referral code:", error);
+    return { success: false };
+  }
+};
+
+export const redeemReferralCode = async (
+  userId: string | number,
+  code: string
+): Promise<{ success: boolean; message?: string; error?: string }> => {
+  try {
+    const response = await fetch(`${BASE_URL}/referrals/redeem`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, code }),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error redeeming code:", error);
+    return { success: false, error: "Network error" };
+  }
+};
+
+export const getReferralStats = async (userId: string | number): Promise<{
+  success: boolean;
+  stats?: { referralCount: number; rewardsEarned: number; progressToNextReward: number; target: number }
+}> => {
+  try {
+    const response = await fetch(`${BASE_URL}/referrals/stats?userId=${userId}`);
+    return await response.json();
+  } catch (error) {
+    console.error("Error getting referral stats:", error);
+    return { success: false };
+  }
+};
