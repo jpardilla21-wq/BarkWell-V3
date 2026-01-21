@@ -6,7 +6,7 @@ import Purchases, {
 } from 'react-native-purchases';
 
 // Config
-const API_KEY = 'test_MXWebbdbJtwxgRMVXlCHkssmRQQ';
+const API_KEY = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY || 'test_MXWebbdbJtwxgRMVXlCHkssmRQQ';
 const ENTITLEMENT_ID = 'pawer Pro'; // As requested by user
 
 export const initRevenueCat = async (userId?: string) => {
