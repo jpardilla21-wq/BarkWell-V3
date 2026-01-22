@@ -6,6 +6,7 @@ import { Platform, StyleSheet } from "react-native";
 import HomeStackNavigator from "@/navigation/HomeStackNavigator";
 import PoopStackNavigator from "@/navigation/PoopStackNavigator";
 import BehaviorStackNavigator from "@/navigation/BehaviorStackNavigator";
+import ShopStackNavigator from "@/navigation/ShopStackNavigator";
 import ProfileStackNavigator from "@/navigation/ProfileStackNavigator";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -13,6 +14,7 @@ export type MainTabParamList = {
   HomeTab: undefined;
   PoopTab: undefined;
   BehaviorTab: undefined;
+  ShopTab: undefined;
   ProfileTab: undefined;
 };
 
@@ -74,6 +76,16 @@ export default function MainTabNavigator() {
           title: "Behavior",
           tabBarIcon: ({ color, size }) => (
             <Feather name="activity" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ShopTab"
+        component={ShopStackNavigator}
+        options={{
+          title: "Shop",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="shopping-bag" size={size} color={color} />
           ),
         }}
       />

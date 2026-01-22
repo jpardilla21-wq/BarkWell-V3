@@ -1,6 +1,6 @@
 import * as FileSystem from "expo-file-system";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
 
 export class APIKeyError extends Error {
   constructor(service: string) {

@@ -4,6 +4,7 @@ import SplashScreen from "@/screens/SplashScreen";
 import OnboardingScreen from "@/screens/OnboardingScreen";
 import SubscriptionScreen from "@/screens/SubscriptionScreen";
 import MainTabNavigator from "@/navigation/MainTabNavigator";
+import { trackScreenView } from "@/services/analytics";
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -21,6 +22,15 @@ export default function RootNavigator() {
       screenOptions={{
         headerShown: false,
         animation: "fade",
+      }}
+      screenListeners={{
+        state: (e) => {
+          // Basic screen tracking
+          const route = e.data.state?.routes[e.data.state.index];
+          if (route) {
+            trackScreenView(route.name);
+          }
+        },
       }}
     >
       <Stack.Screen name="Splash" component={SplashScreen} />

@@ -114,10 +114,58 @@ router.get('/status/:userId', async (req, res) => {
 });
 
 /**
+ * POST /api/subscriptions/create-lemon-squeezy-checkout
+ * Create a Lemon Squeezy Checkout URL (Phase 4 Alternate)
+ */
+router.post('/create-lemon-squeezy-checkout', async (req, res) => {
+  try {
+    const { userId, tier } = req.body;
+
+    // In production, we would call Lemon Squeezy API to generate a checkout link with custom data
+    // For now, we assume we have pre-configured variants and we just construct the URL
+    // https://docs.lemonsqueezy.com/guides/tutorials/selling-software-subscriptions
+
+    // Example: https://store.lemonsqueezy.com/checkout/buy/:variant_id?checkout[custom][user_id]=:user_id
+
+    const variantIds = {
+      plus: process.env.LEMON_SQUEEZY_PLUS_VARIANT_ID || '12345',
+      pro: process.env.LEMON_SQUEEZY_PRO_VARIANT_ID || '67890'
+    };
+
+    if (!variantIds[tier]) {
+       return res.status(400).json({ error: 'Invalid tier' });
+    }
+
+    const checkoutUrl = `https://store.lemonsqueezy.com/checkout/buy/${variantIds[tier]}?checkout[custom][user_id]=${userId}`;
+
+    res.json({
+      success: true,
+      url: checkoutUrl
+    });
+
+  } catch (error) {
+    console.error('Create LS checkout error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to create checkout'
+    });
+  }
+});
+
+/**
  * POST /api/subscriptions/subscribe
  * Mock payment endpoint - simulates Stripe subscription
+ * (Kept for backward compatibility or dev testing without Stripe keys)
  */
 router.post('/subscribe', async (req, res) => {
+  // Check if we want to use real Stripe flow (e.g. via flag)
+  // For now, let's keep the mock implementation as a fallback
+  // if STRIPE_SECRET_KEY is explicitly 'sk_test_mock_key'
+  // AND the client didn't call create-checkout-session.
+
+  // This existing implementation serves as the 'Mock' mode
+  // for clients that haven't updated or for dev environments.
+
   const client = await db.getClient();
 
   try {

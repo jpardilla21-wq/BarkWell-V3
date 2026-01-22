@@ -25,12 +25,15 @@ app.use(cors({
   credentials: true,
 }));
 
-// Parse JSON request bodies
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // HTTP request logging
 app.use(morgan('dev'));
+
+// Webhook routes need raw body, so we mount them before body-parser
+app.use('/api/webhooks', require('./routes/webhooks'));
+
+// Parse JSON request bodies for other routes
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // ================================================
 // API ROUTES
@@ -57,6 +60,8 @@ const breedsRoutes = require('./routes/breeds');
 // Phase 3 routes (Monetization)
 const subscriptionsRoutes = require('./routes/subscriptions');
 const shopRoutes = require('./routes/shop');
+const analyticsRoutes = require('./routes/analytics');
+const referralsRoutes = require('./routes/referrals');
 
 // Mount routes
 app.use('/api/pets', petsRoutes);
@@ -70,6 +75,8 @@ app.use('/api/breeds', breedsRoutes);
 // Phase 3 routes (Monetization)
 app.use('/api/subscriptions', subscriptionsRoutes);
 app.use('/api/shop', shopRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/referrals', referralsRoutes);
 
 // ================================================
 // ERROR HANDLING
